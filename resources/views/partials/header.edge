@@ -1,20 +1,26 @@
 <header>
-  <div>
+  <nav>
     <div>
-      Oj acie skibidi
+      <a href="/" class="dont_underline">
+        <img src="/logo.png" alt="Logo OKI" height="100%">
+        <h1>Tutorial?</h1>
+      </a>
+      <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
+      <a href="/">Materiały</a>
+      <a href="/list">Lista zadań</a>
+      <a href="/my_path">Moja ścieżka</a>
     </div>
+
     <div>
-      <nav>
-        @if(auth.user)
-          @!avatar({ initials: auth.user.initials })
-          @form({ route: 'session.destroy', method: 'POST' })
-            @!button({ text: 'Logout' })
-          @end
-        @else
-          @!link({ route: 'new_account.create', text: 'Signup' })
-          @!link({ route: 'session.create', text: 'Login' })
+      @if(auth.user)
+        @!avatar({ initials: auth.user.initials })
+        @form({ route: 'session.destroy', method: 'POST' })
+          @!button({ text: 'Wyloguj' })
         @end
-      </nav>
+      @else
+        <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
+        @!link({ route: 'session.create', text: 'Zaloguj' })
+      @end
     </div>
-  </div>
+  </nav>
 </header>

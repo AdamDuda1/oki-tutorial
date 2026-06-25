@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Purple+Purse&display=swap');
 
 :root {
   --font-brand: "JetBrains Mono"; /* font-family: var(--font-brand), monospace; */
+  --font-accent: "Purple Purse"; /* font-family: var(--font-accent), serif; */
 
   --oki-gray: oklch(0.556 0 0);
   --oki-yellow: oklch(0.904 0.153 95.162);
@@ -45,41 +47,46 @@ a {
   text-decoration: none;
 }
 
-[x-cloak] {
-  display: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--text);
-}
-
-/* Header */
 header {
-  max-width: 1440px;
-  margin: auto;
-  padding: 0 30px;
+  background: var(--background-darker);
+  box-shadow: rgb(0 0 0 / 0.25) 0 4px 16px;
+  z-index: 100000;
+  position: absolute;
+  width: 100vw;
+  padding: 0 20px;
 }
-header > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-}
+
 header nav {
   display: flex;
+  justify-content: space-between;
+}
+
+header nav div {
+  display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 17px;
 }
-header nav a {
-  font-weight: 500;
+
+header nav div a:not(.dont_underline):hover {
+  text-decoration: underline;
 }
-header nav a:hover,
-header nav a.current {
+
+header nav div a {
+  display: flex;
+  align-items: center;
+}
+
+header nav div img {
+  height: 50px;
+  padding: 3px;
+}
+
+header nav div h1 {
+  font-family: var(--font-accent), serif;
+  font-size: 40px;
+  letter-spacing: -0.5px;
+  color: var(--oki-gray);
+  padding: 0 10px;
 }
 
 /* Main */
@@ -93,6 +100,11 @@ main {
   background: #fff;
   border: 1px solid var(--brand-lighter);
 }
+
+a:not(.dont_underline):hover {
+  text-decoration: underline;
+}
+
 
 /* Form */
 .form-container {
@@ -131,8 +143,10 @@ button {
 }
 input {
   height: 40px;
-  border: 1px solid var(--brand);
   padding: 0 16px;
+}
+input:focus {
+  border: 1px solid var(--brand) !important;
 }
 input[data-invalid='true'],
 textarea[data-invalid='true'] {
