@@ -64,7 +64,7 @@ header nav {
 header nav div {
   display: flex;
   align-items: center;
-  gap: 17px;
+  gap: 14px;
 }
 
 header nav div a:not(.dont_underline):hover {
