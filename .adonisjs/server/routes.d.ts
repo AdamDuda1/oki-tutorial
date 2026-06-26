@@ -7,6 +7,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'list': { paramsTuple?: []; params?: {} }
     'my_path': { paramsTuple?: []; params?: {} }
+    'admin': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
@@ -17,6 +18,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'list': { paramsTuple?: []; params?: {} }
     'my_path': { paramsTuple?: []; params?: {} }
+    'admin': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }
@@ -24,6 +26,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'list': { paramsTuple?: []; params?: {} }
     'my_path': { paramsTuple?: []; params?: {} }
+    'admin': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
   }

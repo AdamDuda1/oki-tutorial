@@ -5,6 +5,7 @@ import router from '@adonisjs/core/services/router'
 router.on('/').render('pages/index').as('home')
 router.on('/list').render('pages/list').as('list')
 router.on('/my_path').render('pages/my_path').as('my_path')
+router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
 
 router
   .group(() => {

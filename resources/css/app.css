@@ -165,6 +165,7 @@ button {
   border: none;
   padding: 10px;
   font-weight: 500;
+  cursor: pointer;
 }
 button:hover {
   background: var(--brand-hovered);

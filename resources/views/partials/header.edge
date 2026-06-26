@@ -13,6 +13,11 @@
       <a href="/list">Lista zadań</a>
       /
       <a href="/my_path">Moja ścieżka</a>
+
+      @if(auth.user && auth.user.isAdmin)
+        /
+        <a href="/admin" style="color: var(--brand)">Admin</a>
+      @endif
     </div>
 
     <div>
