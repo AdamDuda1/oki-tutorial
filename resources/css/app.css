@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Purple+Purse&display=swap');
-
 :root {
   --font-brand: "JetBrains Mono"; /* font-family: var(--font-brand), monospace; */
   --font-accent: "Purple Purse"; /* font-family: var(--font-accent), serif; */
