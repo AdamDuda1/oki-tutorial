@@ -1,0 +1,14 @@
+@layout({ title: 'Lista zadań' })
+  <h1>Lista zadań</h1>
+
+  @each(zadanie in zadania)
+    <div>#{{ zadanie.idZadania }} -
+    <a href="{{ zadanie.linkTresc }}" target="_blank">{{ zadanie.nazwa }}</a>
+    @if (zadanie.linkZrodlo != null)
+      <a href="{{ zadanie.linkZrodlo }}">({{ zadanie.zrodlo }})</a>
+    @else
+      ({{ zadanie.zrodlo }})
+    @end
+    </div>
+  @end
+@end

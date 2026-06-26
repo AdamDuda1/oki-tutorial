@@ -1,10 +1,16 @@
+import ListaZadan from '#models/lista_zadan'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/index').as('home')
-router.on('/lista_zadan').render('pages/list').as('list')
-router.on('/moja_sciezka').render('pages/my_path').as('my_path')
+router
+  .get('/lista_zadan', async ({ view }) => {
+    const zadania = await ListaZadan.all()
+    return view.render('pages/lista_zadan', { zadania })
+  })
+  .as('list')
+router.on('/moja_sciezka').render('pages/moja_sciezka').as('my_path')
 router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
 
 router
