@@ -7,6 +7,62 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class ListaZadanSchema extends BaseModel {
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
+  $columns = ListaZadanSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column()
+  declare difficulty: number | null
+  @column()
+  declare hint: string | null
+  @column()
+  declare idAutora: number | null
+  @column({ isPrimary: true })
+  declare idZadania: number
+  @column()
+  declare kodCpp: string | null
+  @column()
+  declare kodPython: string | null
+  @column()
+  declare linkOmowienieText: string | null
+  @column()
+  declare linkOmowienieVid: string | null
+  @column()
+  declare linkTresc: string
+  @column()
+  declare linkWyslij: string | null
+  @column()
+  declare linkZrodlo: string | null
+  @column()
+  declare nazwa: string
+  @column()
+  declare published: boolean
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare zrodlo: string
+}
+
+export class TaskSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'isCompleted', 'title', 'updatedAt', 'userId'] as const
+  $columns = TaskSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isCompleted: boolean
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
