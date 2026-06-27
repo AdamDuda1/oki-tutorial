@@ -5,9 +5,23 @@ import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/index').as('home')
 router
-  .get('/lista_zadan', async ({ view }) => {
-    const zadania = await ListaZadan.all()
-    return view.render('pages/lista_zadan', { zadania })
+  .get('/lista_zadan', async ({ view, request }) => {
+    const qs = request.qs()
+    const difficulty = qs.difficulty ? Number(qs.difficulty) : null
+    const zrodlo = qs.zrodlo || null
+
+    const query = ListaZadan.query().orderBy('id_zadania')
+    if (difficulty) query.where('difficulty', difficulty)
+    if (zrodlo) query.where('zrodlo', zrodlo)
+    const zadania = await query
+
+    const zrodlaRows = await ListaZadan.query()
+      .select('zrodlo')
+      .distinct('zrodlo')
+      .orderBy('zrodlo')
+    const zrodla = zrodlaRows.map((r) => r.zrodlo)
+
+    return view.render('pages/lista_zadan', { zadania, zrodla, filters: { difficulty, zrodlo } })
   })
   .as('list')
 router.on('/moja_sciezka').render('pages/moja_sciezka').as('my_path')

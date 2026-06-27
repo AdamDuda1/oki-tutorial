@@ -1,0 +1,190 @@
+.lista-zadan-page {
+  padding: 24px 32px;
+}
+
+.lista-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lista-header h1 {
+  font-size: 28px;
+}
+
+.task-count {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+form.filters {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.difficulty-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--oki-gray);
+  color: var(--oki-gray);
+  user-select: none;
+  line-height: 1.4;
+}
+
+.pill input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pill:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.pill.active {
+  background: var(--text);
+  color: var(--text-inverted);
+  border-color: var(--text);
+}
+
+.pill.diff-1 { border-color: var(--easy); color: var(--easy); }
+.pill.diff-1:hover { background: oklch(0.94 0.04 151); }
+.pill.diff-1.active { background: var(--easy); color: #fff; border-color: var(--easy); }
+
+.pill.diff-2 { border-color: var(--medium); color: var(--medium); }
+.pill.diff-2:hover { background: oklch(0.96 0.04 75); }
+.pill.diff-2.active { background: var(--medium); color: #fff; border-color: var(--medium); }
+
+.pill.diff-3 { border-color: var(--hard); color: var(--hard); }
+.pill.diff-3:hover { background: oklch(0.95 0.04 35); }
+.pill.diff-3.active { background: var(--hard); color: #fff; border-color: var(--hard); }
+
+.pill.diff-4 { border-color: oklch(0.42 0.18 35); color: oklch(0.42 0.18 35); }
+.pill.diff-4:hover { background: oklch(0.93 0.04 35); }
+.pill.diff-4.active { background: oklch(0.42 0.18 35); color: #fff; border-color: oklch(0.42 0.18 35); }
+
+.source-select {
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font: inherit;
+  font-size: 13px;
+}
+
+.filter-btn {
+  height: 30px;
+  width: auto;
+  padding: 0 16px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.clear-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: underline;
+}
+
+.clear-link:hover {
+  color: var(--text);
+}
+
+.empty-state {
+  padding: 40px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.zadania-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.zadania-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--background-darker);
+  border-bottom: 2px solid var(--brand-lighter);
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.zadania-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--brand-lighter);
+  vertical-align: middle;
+}
+
+.zadania-table tr:hover td {
+  background: var(--background-darker);
+}
+
+.col-id {
+  color: var(--text-secondary);
+  font-size: 12px;
+  width: 48px;
+}
+
+.col-nazwa {
+  font-weight: 500;
+}
+
+.col-zrodlo {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.col-difficulty {
+  white-space: nowrap;
+}
+
+.col-materialy {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.diff-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.diff-badge.diff-1 { background: oklch(0.94 0.04 151); color: var(--easy); }
+.diff-badge.diff-2 { background: oklch(0.96 0.05 75); color: oklch(0.58 0.13 75); }
+.diff-badge.diff-3 { background: oklch(0.94 0.04 35); color: var(--hard); }
+.diff-badge.diff-4 { background: oklch(0.91 0.04 35); color: oklch(0.42 0.18 35); }
+
+.material-link {
+  font-size: 12px;
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.material-link:hover {
+  color: var(--brand-hovered);
+}

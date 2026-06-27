@@ -1,14 +1,86 @@
 @layout({ title: 'Lista zadań' })
-  <h1>Lista zadań</h1>
+  @let(diffLabels = ['', 'Łatwe', 'Średnie', 'Trudne', 'Bardzo trudne'])
 
-  @each(zadanie in zadania)
-    <div>#{{ zadanie.idZadania }} -
-    <a href="{{ zadanie.linkTresc }}" target="_blank">{{ zadanie.nazwa }}</a>
-    @if (zadanie.linkZrodlo != null)
-      <a href="{{ zadanie.linkZrodlo }}">({{ zadanie.zrodlo }})</a>
-    @else
-      ({{ zadanie.zrodlo }})
-    @end
+  <div class="lista-zadan-page">
+    <div class="lista-header">
+      <h1>Lista zadań</h1>
+      <span class="task-count">{{ zadania.length }} zadań</span>
     </div>
-  @end
+
+    <form class="filters" method="GET" action="/lista_zadan">
+      <div class="filter-row">
+        <div class="difficulty-pills">
+          <label class="pill {{ !filters.difficulty ? 'active' : '' }}">
+            <input type="radio" name="difficulty" value="">
+            Wszystkie
+          </label>
+          @each(d in [1, 2, 3, 4])
+            <label class="pill diff-{{ d }} {{ filters.difficulty === d ? 'active' : '' }}">
+              <input type="radio" name="difficulty" value="{{ d }}" {{ filters.difficulty === d ? 'checked' : '' }}>
+              {{ diffLabels[d] }}
+            </label>
+          @end
+        </div>
+
+        <select name="zrodlo" class="source-select">
+          <option value="">Wszystkie źródła</option>
+          @each(z in zrodla)
+            <option value="{{ z }}" {{ filters.zrodlo === z ? 'selected' : '' }}>{{ z }}</option>
+          @end
+        </select>
+
+        <button type="submit" class="filter-btn">Filtruj</button>
+        @if(filters.difficulty || filters.zrodlo)
+          <a href="/lista_zadan" class="clear-link">Wyczyść</a>
+        @end
+      </div>
+    </form>
+
+    @if(zadania.length === 0)
+      <p class="empty-state">Brak zadań dla wybranych filtrów.</p>
+    @else
+      <table class="zadania-table">
+        <thead>
+          <tr>
+            <th class="col-id">#</th>
+            <th>Nazwa</th>
+            <th>Źródło</th>
+            <th>Trudność</th>
+            <th>Materiały</th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(z in zadania)
+            <tr>
+              <td class="col-id">{{ z.idZadania }}</td>
+              <td class="col-nazwa">
+                <a href="{{ z.linkTresc }}" target="_blank" rel="noopener">{{ z.nazwa }}</a>
+              </td>
+              <td class="col-zrodlo">
+                @if(z.linkZrodlo)
+                  <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener">{{ z.zrodlo }}</a>
+                @else
+                  {{ z.zrodlo }}
+                @end
+              </td>
+              <td class="col-difficulty">
+                <span class="diff-badge diff-{{ z.difficulty }}">{{ diffLabels[z.difficulty] }}</span>
+              </td>
+              <td class="col-materialy" style="height: 39px">
+                @if(z.linkOmowienieText)
+                  <a href="{{ z.linkOmowienieText }}" target="_blank" rel="noopener" class="material-link">tekst</a>
+                @end
+                @if(z.linkOmowienieVid)
+                  <a href="{{ z.linkOmowienieVid }}" target="_blank" rel="noopener" class="material-link">wideo</a>
+                @end
+                @if(!z.linkOmowienieVid && !z.linkOmowienieText)
+                  nie :(
+                @end
+              </td>
+            </tr>
+          @end
+        </tbody>
+      </table>
+    @end
+  </div>
 @end
