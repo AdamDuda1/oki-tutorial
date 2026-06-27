@@ -1,13 +1,15 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import db from '@adonisjs/lucid/services/db'
+import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   async run() {
+    const now = DateTime.now().toSQL()!
     await db.table('poziomy').multiInsert([
-      { position: 1, nazwa: 'Programowanie OD PODSTAW', created_at: new Date(), updated_at: new Date() },
-      { position: 2, nazwa: 'Olimpiada OD PODSTAW',    created_at: new Date(), updated_at: new Date() },
-      { position: 3, nazwa: 'Olimpiada POZIOM II',     created_at: new Date(), updated_at: new Date() },
-      { position: 4, nazwa: 'Olimpiada ZAAWANSOWANA',  created_at: new Date(), updated_at: new Date() },
+      { position: 1, nazwa: 'Programowanie OD PODSTAW', created_at: now, updated_at: now },
+      { position: 2, nazwa: 'Olimpiada OD PODSTAW',    created_at: now, updated_at: now },
+      { position: 3, nazwa: 'Olimpiada POZIOM II',     created_at: now, updated_at: now },
+      { position: 4, nazwa: 'Olimpiada ZAAWANSOWANA',  created_at: now, updated_at: now },
     ])
 
     const [p1, p2, p3] = await db.from('poziomy').orderBy('position').select('id_poziomu')
@@ -25,8 +27,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([218, 50]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
       {
         id_poziomu: p1.id_poziomu,
@@ -39,8 +41,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([3, 16, 89]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
 
       // Olimpiada OD PODSTAW
@@ -61,8 +63,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([6]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
       {
         id_poziomu: p2.id_poziomu,
@@ -81,8 +83,8 @@ export default class extends BaseSeeder {
         custom_html: '<p>Suma prefiksowa tablicy <code>a[]</code> to tablica <code>p[]</code> gdzie <code>p[i] = a[0] + ... + a[i]</code>.</p>',
         zadania: JSON.stringify([84, 7, 10]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
       {
         id_poziomu: p2.id_poziomu,
@@ -101,8 +103,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([29, 128]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
       {
         id_poziomu: p2.id_poziomu,
@@ -115,8 +117,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([1, 136]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
 
       // Olimpiada POZIOM II
@@ -131,8 +133,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([51, 44, 45]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
       {
         id_poziomu: p3.id_poziomu,
@@ -145,8 +147,8 @@ export default class extends BaseSeeder {
         custom_html: null,
         zadania: JSON.stringify([46, 57, 147]),
         published: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: now,
+        updated_at: now,
       },
     ])
   }
