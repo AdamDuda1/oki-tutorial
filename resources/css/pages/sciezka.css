@@ -1,0 +1,71 @@
+.sciezka-app {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.sidenav {
+  width: clamp(400px, 15vw, 800px);
+  background-color: var(--background-darker);
+  padding: 13px;
+  box-shadow: rgb(0 0 0 / 0.25) 4px 0 16px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+
+  a:not(.category_header) {
+    padding: 0 3px;
+    margin: 2px 3px;
+  }
+
+  .category_header {
+    padding: 3px 8px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    margin: 4px 0;
+
+    &:not(.active) {
+      background: var(--brand-lighter);
+      &:hover { background-color: var(--brand-lighter-hovered); }
+    }
+
+    &.active {
+      background: var(--brand);
+      &:hover { background-color: var(--brand-hovered); }
+    }
+  }
+}
+
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid black;
+  font-family: monospace;
+  margin-left: 10px;
+}
+
+.topic {
+  padding: 4px 16px;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.topic:hover {
+  background: #f0f0f0;
+}
+
+.topic.active {
+  font-weight: bold;
+}
+
+.topic.active::after {
+  content: " ←";
+}
+
+
+.content {
+  padding: 10px 50px;
+  max-height: 100vh;
+  overflow-y: auto;
+  flex: 1;
+}

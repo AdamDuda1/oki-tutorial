@@ -4,6 +4,8 @@
   padding: 0;
 
   font-family: var(--font-brand), monospace;
+
+  scroll-behavior: smooth;
 }
 
 html,
@@ -14,6 +16,7 @@ body {
   color: var(--text);
   font-size: 16px;
   line-height: 1.5;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -23,6 +26,14 @@ a {
 
 a:not(.dont_underline):hover {
   text-decoration: underline;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.medium {
+  font-weight: 500;
 }
 
 header {
@@ -69,12 +80,9 @@ header nav div h1 {
 }
 
 main {
-  max-width: 1440px;
-  margin: 0 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100vh - 65px);
-  background: #fff;
-  border: 1px solid var(--brand-lighter);
+  background: var(--background);
 }

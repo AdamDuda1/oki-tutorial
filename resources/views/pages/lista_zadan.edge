@@ -3,7 +3,7 @@
 
   <div class="lista-zadan-page">
     <div class="lista-header">
-      <h1>Lista zadań</h1>
+      <h1 style="font-size: 42px">Lista zadań</h1>
       <span class="task-count">{{ zadania.length }} zadań</span>
     </div>
 
@@ -83,4 +83,5 @@
       </table>
     @end
   </div>
+  @!pagination({ currentPage: currentPage, totalPages: totalPages, baseUrl: '/lista_zadan' })
 @end

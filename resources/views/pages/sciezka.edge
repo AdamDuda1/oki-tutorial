@@ -1,0 +1,23 @@
+@layout({ title: 'Materiały' })
+  <div class="sciezka-app">
+    <nav class="sidenav">
+      <a href="#444">Wstęp</a>
+      <a href="#444">Przydatne linki</a>
+      <a href="#444" class="category_header">Kontakt</a>
+      <a href="#444" class="category_header active">Kontakt</a>
+      <nav class="topic-list">
+        <a href="#" class="topic">Stos, Kolejka, Mapa</a>
+        <a href="#" class="topic active">Sumy prefiksowe</a>
+        <a href="#" class="topic">Binary search</a>
+        <a href="#" class="topic">Algorytm Euklidesa</a>
+      </nav>
+      <a href="#444" class="category_header">Kontakt</a>
+    </nav>
+
+    <div class="content">
+      @each(i in Array.from({ length: 5000 }, (_, n) => n))
+        <span id="{{i}}">{{ i }} <br></span>
+      @end
+    </div>
+  </div>
+@end

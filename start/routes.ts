@@ -3,7 +3,13 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/index').as('home')
+router.on('/').redirect('sciezka', { id: 0 })
+
+// router.on('/').render('pages/index').as('home')
+router.on('/sciezka/:id').render('pages/sciezka').as('sciezka')
+router.on('/moja_sciezka').render('pages/moja_sciezka').as('moja_sciezka')
+router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
+
 router
   .get('/lista_zadan', async ({ view, request }) => {
     const qs = request.qs()
@@ -23,9 +29,7 @@ router
 
     return view.render('pages/lista_zadan', { zadania, zrodla, filters: { difficulty, zrodlo } })
   })
-  .as('list')
-router.on('/moja_sciezka').render('pages/moja_sciezka').as('my_path')
-router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
+  .as('lista_zadan')
 
 router
   .group(() => {
