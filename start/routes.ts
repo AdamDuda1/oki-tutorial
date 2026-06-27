@@ -2,11 +2,12 @@ import ListaZadan from '#models/lista_zadan'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import SciezkasController from '#controllers/sciezkas_controller'
 
 router.on('/').redirect('sciezka', { id: 0 })
 
 // router.on('/').render('pages/index').as('home')
-router.on('/sciezka/:id').render('pages/sciezka').as('sciezka')
+router.get('/sciezka/:id', [SciezkasController, 'index']).as('sciezka')
 router.on('/moja_sciezka').render('pages/moja_sciezka').as('moja_sciezka')
 router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
 
