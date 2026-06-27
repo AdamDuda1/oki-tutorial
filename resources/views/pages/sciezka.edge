@@ -19,11 +19,21 @@
 
     <div class="content">
 
-      <div class="topic_block">
-      <h2>Sumy prefiksowe</h2>
-</div>
+      <div class="topic_box" x-data="{ open: false }">
 
+        <button class="toggle" @click="open = !open">
+          <span class="box_arrow" :class="{ open }">▶</span>
+          <h2 class="topic_name bold">Sumy prefiksowe</h2>
+        </button>
 
+        <div class="box" :class="{ open }">
+          <div class="box_inner">
+            <a href="#" class="material-link">tekst ↗</a>
+            <a href="#" class="material-link">wideo ↗</a>
+            <a href="#" class="material-link">zadania ↗</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 @end
