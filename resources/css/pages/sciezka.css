@@ -77,8 +77,11 @@
   outline: 1px solid #cacaca;
   border-radius: 8px;
 
-  .toggle {
+  > .toggle {
+    width: 100%;
+    padding: 10px 14px;
     border-radius: 8px;
+    cursor: pointer;
     display: flex;
     background: var(--background);
     color: var(--text);
@@ -92,25 +95,29 @@
     }
   }
 
-  .box {
+  > .box {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.22s ease;
     &.open { grid-template-rows: 1fr; }
   }
 
-  .box_inner {
+  > .box > .box_inner {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding-bottom: 0;
+    gap: 10px;
+    padding: 0 14px;
     transition: padding-bottom 0.22s ease;
+  }
 
-    .topic_html {
-      margin-top: -7px;
-      padding: 16px;
-    }
+  > .box.open > .box_inner {
+    padding-bottom: 14px;
+  }
+
+  .topic_html {
+    font-size: 14px;
+    padding: 4px 0;
   }
 }
 
@@ -118,11 +125,12 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
+  padding-top: 4px;
 
   iframe {
     border-radius: 8px;
-    margin: 5px;
+    flex-shrink: 0;
     width: 35vw;
     aspect-ratio: 16 / 9;
   }
@@ -130,6 +138,9 @@
   .learning_materials {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+
+    h3 { margin-bottom: 4px; }
 
     a {
       font-size: 14px;
@@ -138,12 +149,16 @@
   }
 }
 
-.topic_box .tasks_box {
-  outline: 1px solid #cacaca;
+.tasks_box {
+  outline: 1px solid #e0e0e0;
   border-radius: 8px;
+  margin: 0 -14px -14px;
 
-  .toggle {
+  > .toggle {
+    width: 100%;
+    padding: 8px 12px;
     border-radius: 8px;
+    cursor: pointer;
     display: flex;
     background: var(--background);
     color: var(--text);
@@ -153,24 +168,75 @@
     .task_box_arrow {
       display: inline-block;
       transition: transform 0.2s ease;
-      scale: 0.8;
+      font-size: 10px;
       &.open { transform: rotate(90deg); }
     }
   }
 
-  .box {
+  > .box {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.22s ease;
     &.open { grid-template-rows: 1fr; }
   }
 
-  .box_inner {
+  > .box > .box_inner {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 15px;
-    gap: 14px;
+    padding: 0 12px;
     transition: padding-bottom 0.22s ease;
+
+  }
+
+  > .box.open > .box_inner {
+    padding-bottom: 12px;
+  }
+}
+
+.task_box {
+  outline: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 10px;
+
+  > .toggle {
+    width: 100%;
+    padding: 4px 12px;
+    border-radius: 8px;
+    display: flex;
+    cursor: pointer;
+    background: var(--background);
+    color: var(--text);
+    align-items: center;
+    gap: 7px;
+    font-size: 16px;
+
+    .task_box_arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+      font-size: 10px;
+      &.open { transform: rotate(90deg); }
+    }
+  }
+
+  > .box {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.22s ease;
+    &.open { grid-template-rows: 1fr; }
+  }
+
+  > .box > .box_inner {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 12px;
+    transition: padding-bottom 0.22s ease;
+
+  }
+
+  > .box.open > .box_inner {
+    padding-bottom: 12px;
   }
 }

@@ -57,7 +57,20 @@
                     </button>
                     <div class="box" :class="{ open }">
                       <div class="box_inner">
+a
+                      </div>
+                    </div>
+                  </div>
 
+
+                  <div class="task_box" x-data="{ open: false }">
+                    <button class="toggle" @click="open = !open">
+                      <span class="task_box_arrow" :class="{ open }">▶</span>
+                      <h3 class="bold">Zadania</h3>
+                    </button>
+                    <div class="box" :class="{ open }">
+                      <div class="box_inner">
+b
                       </div>
                     </div>
                   </div>
