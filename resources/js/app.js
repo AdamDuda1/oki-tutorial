@@ -28,6 +28,20 @@ if (import.meta.env.VITE_FEATURE_ANIMATE_PATH_CHANGES === 'true') {
   })
 }
 
+window.theme_switch = function() {
+  document.querySelector(':root')
+    .style.setProperty('--background', 'black')
+  document.querySelector(':root')
+    .style.setProperty('--text', 'white')
+  document.querySelector(':root').style.setProperty('--text', 'white')
+  document.querySelector(':root').style.setProperty('--text', 'white')
+}
+
+function theme_update() {
+
+}
+
+
 Alpine.data('alert', function () {
   return {
     isVisible: false,

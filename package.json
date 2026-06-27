@@ -68,6 +68,7 @@
     "@hotwired/turbo": "^8.0.23",
     "@vinejs/vine": "^4.4.0",
     "better-sqlite3": "^12.10.0",
+    "dotenv": "^17.4.2",
     "edge.js": "^6.5.1",
     "luxon": "^3.7.2",
     "mysql2": "^3.22.5",
