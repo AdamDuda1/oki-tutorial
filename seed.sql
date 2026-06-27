@@ -197,7 +197,7 @@ VALUES
   ('Kompatybilna para', 'OIJ', 'https://szkopul.edu.pl/task_archive/oig/', 'https://szkopul.edu.pl/problemset/problem/fTOZY6PYd0P_f70NvaD0VfXt/site', NULL, NULL, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('Figura szachowa', 'OIJ', 'https://szkopul.edu.pl/task_archive/oig/', 'https://szkopul.edu.pl/problemset/problem/MOmybu5E29p7bZr_1KiRu_4Q/site', NULL, NULL, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('Dwa odcinki', 'OIJ', 'https://szkopul.edu.pl/task_archive/oig/', 'https://szkopul.edu.pl/problemset/problem/jaTssihk1mJQPA4d2wjuCw6G/site', NULL, NULL, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  ('It\''s not a Bug, It\''s a Feature', 'OKI', 'https://oki.org.pl/tutorial', 'https://szkopul.edu.pl/problemset/problem/Cy9jzXDD3p4KQFiyUdCgBOtQ/site', NULL, NULL, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('It\'s not a Bug, It\'s a Feature', 'OKI', 'https://oki.org.pl/tutorial', 'https://szkopul.edu.pl/problemset/problem/Cy9jzXDD3p4KQFiyUdCgBOtQ/site', NULL, NULL, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('Brygada Grzecznych 1', 'OKI', 'https://oki.org.pl/tutorial', 'https://szkopul.edu.pl/problemset/problem/bg1/site', NULL, NULL, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('Kostka brukowa 1', 'OKI', 'https://oki.org.pl/tutorial', 'https://szkopul.edu.pl/problemset/problem/kb1/site/', NULL, NULL, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   ('Grupy dyskusyjne', 'Codeforces', 'https://codeforces.com/problemset/problem/1167/C', 'https://szkopul.edu.pl/problemset/problem/ojcNgKqibcGiy--QJAK5Bhe9/site', NULL, NULL, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
