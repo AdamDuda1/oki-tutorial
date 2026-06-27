@@ -3,80 +3,95 @@
     <nav class="sidenav">
       <a href="#444" class="medium">Wstęp</a>
       <a href="#444" class="medium">Przydatne linki</a>
-      <a href="#444" class="medium category_header">Programowanie OD PODSTAW</a>
-      <a href="#444" class="bold category_header active">Olimpiada OD PODSTAW</a>
 
-      <nav class="topic_list">
-        @each(temat in tematy)
-          <a href="#{{temat.idTematu}}" class="medium topic">{{temat.nazwa}}</a>
-        @end
-      </nav>
+      @each (poziom in poziomy)
+        @if (poziom.idPoziomu == params.id)
+          <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category_header active">{{poziom.nazwa}}</a>
+          <nav class="topic_list">
+            @each (temat in tematy)
+              <a href="#{{temat.idTematu}}" class="medium topic">{{temat.nazwa}}</a>
+            @end
+          </nav>
+        @else
+          <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category_header">{{poziom.nazwa}}</a>
+        @endif
+      @end
 
-      <a href="#444" class="medium category_header">Olimpiada POZIOM II</a>
-      <a href="#444" class="medium category_header">Olimpiada ZAAWANSOWANA</a>
     </nav>
 
     <div class="content">
 
-      <div class="topic_box" x-data="{ open: false }">
-        <button class="toggle" @click="open = !open">
-          <span class="box_arrow" :class="{ open }">▶</span>
-          <h2 class="bold">Sumy prefiksowe</h2>
-        </button>
-        <div class="box" :class="{ open }">
-          <div class="box_inner">
-            <div class="topic_header">
-              <div>
-                <iframe src="https://www.youtube-nocookie.com/embed/Yvw7l18dH44?si=drw8WmKp0mgMgqr3&amp;start=62" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+      @each (temat in tematy)
+
+        <div class="topic_box" x-data="{ open: false }">
+          <button class="toggle" @click="open = !open">
+            <span class="box_arrow" :class="{ open }">▶</span>
+            <h2 class="bold">{{temat.nazwa}}</h2>
+          </button>
+          <div class="box" :class="{ open }">
+            <div class="box_inner">
+              <div class="topic_header">
+                <div>
+                  @if (temat.linkYt)
+                    <iframe src="{{temat.linkYt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  @end
+                </div>
+                <div class="learning_materials">
+                  <h3>Materiały do nauki</h3>
+                  @each(material in temat.$extras.materialy)
+                    <a href="{{ material.link }}" class="medium" target="_blank">
+                      {{ material.opis }}
+                      <img height="10" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab">
+                    </a>
+                  @end
+                </div>
               </div>
-              <div class="learning_materials">
-                <h3>Materiały do nauki</h3>
-                <a href="#" class="medium" target="_blank">OKI p1 2025/26 <img height="10px" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab"></a>
-                <a href="#" class="medium" target="_blank">Z blogu szkolasdasdakfjsdah <img height="10px" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab"></a>
-                <a href="#" class="medium" target="_blank">Omówienie z oij.edu.pl <img height="10px" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab"></a>
+              <div class="topic_html">
+                @if (temat.customHtml)
+                  {{{temat.customHtml}}}
+                @end
               </div>
-            </div>
-            <div class="topic_html">
-              This is kfjasdhkajfsd HTML
-            </div>
 
-            <div class="tasks_box" x-data="{ open: false }">
-              <button class="toggle" @click="open = !open">
-                <span class="task_box_arrow" :class="{ open }">▶</span>
-                <h3 class="bold">Zadania</h3>
-              </button>
-              <div class="box" :class="{ open }">
-                <div class="box_inner">
+              <div class="tasks_box" x-data="{ open: false }">
+                <button class="toggle" @click="open = !open">
+                  <span class="task_box_arrow" :class="{ open }">▶</span>
+                  <h3 class="bold">Zadania</h3>
+                </button>
+                <div class="box" :class="{ open }">
+                  <div class="box_inner">
 
 
-                  <div class="task_box" x-data="{ open: false }">
-                    <button class="toggle" @click="open = !open">
-                      <div class="toggle_left">
-                        <span class="task_box_arrow" :class="{ open }">▶</span>
-                        <h3 class="medium">Zadanie Nazwa</h3>
-                      </div>
-                      <span class="toggle_right difficulty-3">trudne (3)</span>
-                    </button>
-                    <div class="box" :class="{ open }">
-                      <div class="box_inner">
-                        <button class="task_action">Treść</button> <!-- TODO make the icons centered vertically -->
-                        <button class="task_action"><img src="/icons/i_send.svg"> Wyślij</button>
-                        <button class="task_action"><img src="/icons/i_hint.svg"> Hint</button>
-                        <button class="task_action"><img src="/icons/i_vid.svg"> Omówienie</button>
-                        <button class="task_action"><img src="/icons/i_note.svg"> Omówienie</button>
-                        <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod C++</button>
-                        <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod Python</button>
+                    <div class="task_box" x-data="{ open: false }">
+                      <button class="toggle" @click="open = !open">
+                        <div class="toggle_left">
+                          <span class="task_box_arrow" :class="{ open }">▶</span>
+                          <h3 class="medium">Zadanie Nazwa</h3>
+                        </div>
+                        <span class="toggle_right difficulty-3">trudne (3)</span>
+                      </button>
+                      <div class="box" :class="{ open }">
+                        <div class="box_inner">
+                          <button class="task_action">Treść</button> <!-- TODO make the icons centered vertically -->
+                          <button class="task_action"><img src="/icons/i_send.svg"> Wyślij</button>
+                          <button class="task_action"><img src="/icons/i_hint.svg"> Hint</button>
+                          <button class="task_action"><img src="/icons/i_vid.svg"> Omówienie</button>
+                          <button class="task_action"><img src="/icons/i_note.svg"> Omówienie</button>
+                          <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod C++</button>
+                          <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod Python</button>
+                        </div>
                       </div>
                     </div>
+
+
                   </div>
-
-
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
+      @end
     </div>
   </div>
 @end
