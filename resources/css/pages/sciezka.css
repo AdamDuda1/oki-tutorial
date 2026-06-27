@@ -72,7 +72,9 @@
 }
 
 .topic_box {
-  border: 1px solid rgb(91 91 91 / 0.32);
+  /*border: 1px solid rgb(91 91 91 / 0.32);*/
+  /*border: 1px solid #cacaca inner;*/
+  outline: 1px solid #cacaca;
   border-radius: 8px;
 
   .toggle {
@@ -100,11 +102,75 @@
   .box_inner {
     overflow: hidden;
     display: flex;
-    gap: 14px;
+    flex-direction: column;
+    gap: 5px;
     padding-bottom: 0;
     transition: padding-bottom 0.22s ease;
+
+    .topic_html {
+      margin-top: -7px;
+      padding: 16px;
+    }
   }
 }
 
+.topic_header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 
+  iframe {
+    border-radius: 8px;
+    margin: 5px;
+    width: 35vw;
+    aspect-ratio: 16 / 9;
+  }
 
+  .learning_materials {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      font-size: 14px;
+      color: var(--brand);
+    }
+  }
+}
+
+.topic_box .tasks_box {
+  outline: 1px solid #cacaca;
+  border-radius: 8px;
+
+  .toggle {
+    border-radius: 8px;
+    display: flex;
+    background: var(--background);
+    color: var(--text);
+    align-items: center;
+    gap: 7px;
+
+    .task_box_arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+      scale: 0.8;
+      &.open { transform: rotate(90deg); }
+    }
+  }
+
+  .box {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.22s ease;
+    &.open { grid-template-rows: 1fr; }
+  }
+
+  .box_inner {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 14px;
+    transition: padding-bottom 0.22s ease;
+  }
+}

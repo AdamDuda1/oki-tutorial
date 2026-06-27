@@ -20,17 +20,51 @@
     <div class="content">
 
       <div class="topic_box" x-data="{ open: false }">
-
         <button class="toggle" @click="open = !open">
           <span class="box_arrow" :class="{ open }">▶</span>
-          <h2 class="topic_name bold">Sumy prefiksowe</h2>
+          <h2 class="bold">Sumy prefiksowe</h2>
         </button>
-
         <div class="box" :class="{ open }">
           <div class="box_inner">
-            <a href="#" class="material-link">tekst ↗</a>
-            <a href="#" class="material-link">wideo ↗</a>
-            <a href="#" class="material-link">zadania ↗</a>
+            <div class="topic_header">
+              <div>
+                <iframe src="https://www.youtube-nocookie.com/embed/Yvw7l18dH44?si=drw8WmKp0mgMgqr3&amp;start=62" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="learning_materials">
+                <h3>Materiały do nauki</h3>
+                <a href="#" target="_blank">OKI p1 2025/26 ↗</a>
+                <a href="#" target="_blank">Z blogu szkolasdasdakfjsdah ↗</a>
+                <a href="#" target="_blank">Omówienie z oij.edu.pl ↗</a>
+              </div>
+            </div>
+            <div class="topic_html">
+              This is kfjasdhkajfsd HTML
+            </div>
+
+            <div class="tasks_box" x-data="{ open: false }">
+              <button class="toggle" @click="open = !open">
+                <span class="task_box_arrow" :class="{ open }">▶</span>
+                <h3 class="bold">Zadania</h3>
+              </button>
+              <div class="box" :class="{ open }">
+                <div class="box_inner">
+
+
+                  <div class="task_box" x-data="{ open: false }">
+                    <button class="toggle" @click="open = !open">
+                      <span class="task_box_arrow" :class="{ open }">▶</span>
+                      <h3 class="bold">Zadania</h3>
+                    </button>
+                    <div class="box" :class="{ open }">
+                      <div class="box_inner">
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
