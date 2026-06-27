@@ -63,25 +63,8 @@ export class PoziomySchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
-export class TaskSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'isCompleted', 'title', 'updatedAt', 'userId'] as const
-  $columns = TaskSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare isCompleted: boolean
-  @column()
-  declare title: string
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-  @column()
-  declare userId: number | null
-}
-
 export class TematySchema extends BaseModel {
-  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadania', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
   $columns = TematySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -105,6 +88,8 @@ export class TematySchema extends BaseModel {
   declare published: boolean
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column()
+  declare zadania: any | null
   @column()
   declare zewnetrzneMaterialy: any | null
   @column()
