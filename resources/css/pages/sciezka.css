@@ -62,7 +62,7 @@
 }
 
 .content {
-  padding: 10px 50px;
+  padding: 30px 50px;
   max-height: 100vh;
   overflow-y: auto;
   flex: 1;
