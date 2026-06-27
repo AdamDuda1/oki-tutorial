@@ -7,7 +7,6 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
-
 export class ListaZadanSchema extends BaseModel {
   static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
@@ -45,6 +44,71 @@ export class ListaZadanSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare zrodlo: string
+}
+
+export class PoziomySchema extends BaseModel {
+  static $columns = ['createdAt', 'deletedAt', 'idPoziomu', 'nazwa', 'position', 'updatedAt'] as const
+  $columns = PoziomySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare idPoziomu: number
+  @column()
+  declare nazwa: string
+  @column()
+  declare position: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TaskSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'isCompleted', 'title', 'updatedAt', 'userId'] as const
+  $columns = TaskSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isCompleted: boolean
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number | null
+}
+
+export class TematySchema extends BaseModel {
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
+  $columns = TematySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare customHtml: string | null
+  @column.dateTime()
+  declare deletedAt: DateTime | null
+  @column()
+  declare idPoziomu: number
+  @column({ isPrimary: true })
+  declare idTematu: number
+  @column()
+  declare krotkiOpis: string | null
+  @column()
+  declare linkYt: string | null
+  @column()
+  declare nazwa: string
+  @column()
+  declare position: number
+  @column()
+  declare published: boolean
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare zewnetrzneMaterialy: any | null
+  @column()
+  declare zewnetrzneMaterialyOpisy: any | null
 }
 
 export class UserSchema extends BaseModel {
