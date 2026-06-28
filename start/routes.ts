@@ -1,36 +1,18 @@
-import ListaZadan from '#models/lista_zadan'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
-import SciezkasController from '#controllers/sciezkas_controller'
+const SciezkaController = () => import('#controllers/sciezka_controller')
+const ListaZadanController = () => import('#controllers/lista_zadan_controller')
 
-router.on('/').redirect('sciezka', { id: 0 })
+router.on('/').redirect('sciezka', { id: 1 })
 
+// router.on('/').redirect('sciezka', { id: 0 })
 // router.on('/').render('pages/index').as('home')
-router.get('/sciezka/:id', [SciezkasController, 'index']).as('sciezka')
+router.get('/sciezka/:id', [SciezkaController, 'index']).as('sciezka')
 router.on('/moja_sciezka').render('pages/moja_sciezka').as('moja_sciezka')
-router.on('/admin').render('pages/admin').as('admin') // TODO CONTROLLER!!!
+router.on('/admin').render('pages/admin').as('admin')
 
-router
-  .get('/lista_zadan', async ({ view, request }) => {
-    const qs = request.qs()
-    const difficulty = qs.difficulty ? Number(qs.difficulty) : null
-    const zrodlo = qs.zrodlo || null
-
-    const query = ListaZadan.query().orderBy('id_zadania')
-    if (difficulty) query.where('difficulty', difficulty)
-    if (zrodlo) query.where('zrodlo', zrodlo)
-    const zadania = await query
-
-    const zrodlaRows = await ListaZadan.query()
-      .select('zrodlo')
-      .distinct('zrodlo')
-      .orderBy('zrodlo')
-    const zrodla = zrodlaRows.map((r) => r.zrodlo)
-
-    return view.render('pages/lista_zadan', { zadania, zrodla, filters: { difficulty, zrodlo } })
-  })
-  .as('lista_zadan')
+router.get('/lista_zadan', [ListaZadanController, 'index']).as('lista_zadan')
 
 router
   .group(() => {

@@ -186,7 +186,6 @@
     flex-direction: column;
     padding: 0 12px;
     transition: padding-bottom 0.22s ease;
-
   }
 
   > .box.open > .box_inner {
@@ -230,12 +229,15 @@
   > .box > .box_inner {
     overflow: hidden;
     transition: padding-bottom 0.22s ease;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 0 8px;
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
 
-    button {
+    .task_action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       width: auto;
       transition: background-color 0.22s ease;
       border-radius: 6px;
@@ -245,26 +247,28 @@
       font-weight: 550;
 
       img {
-        position: relative;
-        margin-top: -49px;
-        top: 10px;
-        margin-left: -2px;
-        margin-right: -2px;
+        height: 14px;
+        width: auto;
+        /*position: relative;*/
+        /*margin-top: -49px;*/
+        /*top: 10px;*/
+        /*margin-left: -2px;*/
+        /*margin-right: -2px;*/
       }
     }
 
+    a.task_action {
+      background: var(--brand);
+      color: white;
+      border: none;
+
+      &:hover { background: var(--brand-hovered); }
+    }
   }
-
-
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*gap: 10px;*/
-  /*padding: 0 12px;*/
-  /*transition: padding-bottom 0.22s ease;*/
-
 
   > .box.open > .box_inner {
     padding-bottom: 12px;
+    padding-top: 8px;
   }
 
   .toggle_left {
@@ -279,15 +283,8 @@
     top: 1px;
   }
 
-  .difficulty-1 {
-    color: var(--easy);
-  }
-
-  .difficulty-2 {
-    color: var(--medium);
-  }
-
-  .difficulty-3 {
-    color: var(--hard);
-  }
+  .difficulty-1 { color: var(--easy); }
+  .difficulty-2 { color: var(--medium); }
+  .difficulty-3 { color: var(--hard); }
+  .difficulty-4 { color: oklch(0.42 0.18 35); }
 }

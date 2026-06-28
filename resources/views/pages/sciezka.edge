@@ -1,9 +1,8 @@
 @layout({ title: 'Materiały' })
+  @let(diffLabels = ['', 'łatwe', 'średnie', 'trudne', 'bardzo trudne'])
+
   <div class="sciezka-app">
     <nav class="sidenav">
-      <a href="#444" class="medium">Wstęp</a>
-      <a href="#444" class="medium">Przydatne linki</a>
-
       @each (poziom in poziomy)
         @if (poziom.idPoziomu == params.id)
           <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category_header active">{{poziom.nazwa}}</a>
@@ -16,15 +15,11 @@
           <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category_header">{{poziom.nazwa}}</a>
         @endif
       @end
-
     </nav>
 
     <div class="content">
-
-
       @each (temat in tematy)
-
-        <div class="topic_box" x-data="{ open: false }">
+        <div class="topic_box" x-data="{ open: false }" id="{{temat.idTematu}}">
           <button class="toggle" @click="open = !open">
             <span class="box_arrow" :class="{ open }">▶</span>
             <h2 class="bold">{{temat.nazwa}}</h2>
@@ -40,57 +35,69 @@
                 <div class="learning_materials">
                   <h3>Materiały do nauki</h3>
                   @each(material in temat.$extras.materialy)
-                    <a href="{{ material.link }}" class="medium" target="_blank">
+                    <a href="{{ material.link }}" class="medium" target="_blank" rel="noopener">
                       {{ material.opis }}
                       <img height="10" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab">
                     </a>
                   @end
                 </div>
               </div>
-              <div class="topic_html">
-                @if (temat.customHtml)
+
+              @if(temat.customHtml)
+                <div class="topic_html">
                   {{{temat.customHtml}}}
-                @end
-              </div>
+                </div>
+              @end
 
-              <div class="tasks_box" x-data="{ open: false }">
-                <button class="toggle" @click="open = !open">
-                  <span class="task_box_arrow" :class="{ open }">▶</span>
-                  <h3 class="bold">Zadania</h3>
-                </button>
-                <div class="box" :class="{ open }">
-                  <div class="box_inner">
-
-
-                    <div class="task_box" x-data="{ open: false }">
-                      <button class="toggle" @click="open = !open">
-                        <div class="toggle_left">
-                          <span class="task_box_arrow" :class="{ open }">▶</span>
-                          <h3 class="medium">Zadanie Nazwa</h3>
+              @if(temat.$extras.tasks.length > 0)
+                <div class="tasks_box" x-data="{ open: false }">
+                  <button class="toggle" @click="open = !open">
+                    <span class="task_box_arrow" :class="{ open }">▶</span>
+                    <h3 class="bold">Zadania</h3>
+                  </button>
+                  <div class="box" :class="{ open }">
+                    <div class="box_inner">
+                      @each(zadanie in temat.$extras.tasks)
+                        <div class="task_box" x-data="{ open: false }">
+                          <button class="toggle" @click="open = !open">
+                            <div class="toggle_left">
+                              <span class="task_box_arrow" :class="{ open }">▶</span>
+                              <h3 class="medium">{{ zadanie.nazwa }}</h3>
+                            </div>
+                            <span class="toggle_right difficulty-{{ zadanie.difficulty }}">{{ diffLabels[zadanie.difficulty] }} ({{ zadanie.difficulty }})</span>
+                          </button>
+                          <div class="box" :class="{ open }">
+                            <div class="box_inner">
+                              <a href="{{ zadanie.linkTresc }}" class="task_action" target="_blank" rel="noopener">Treść</a>
+                              @if(zadanie.linkWyslij)
+                                <a href="{{ zadanie.linkWyslij }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
+                              @end
+                              @if(zadanie.hint)
+                                <button class="task_action"><img src="/icons/i_hint.svg" alt=""> Hint</button>
+                              @end
+                              @if(zadanie.linkOmowienieVid)
+                                <a href="{{ zadanie.linkOmowienieVid }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
+                              @end
+                              @if(zadanie.linkOmowienieText)
+                                <a href="{{ zadanie.linkOmowienieText }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
+                              @end
+                              @if(zadanie.kodCpp)
+                                <button class="task_action"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
+                              @end
+                              @if(zadanie.kodPython)
+                                <button class="task_action"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
+                              @end
+                            </div>
+                          </div>
                         </div>
-                        <span class="toggle_right difficulty-3">trudne (3)</span>
-                      </button>
-                      <div class="box" :class="{ open }">
-                        <div class="box_inner">
-                          <button class="task_action">Treść</button> <!-- TODO make the icons centered vertically -->
-                          <button class="task_action"><img src="/icons/i_send.svg"> Wyślij</button>
-                          <button class="task_action"><img src="/icons/i_hint.svg"> Hint</button>
-                          <button class="task_action"><img src="/icons/i_vid.svg"> Omówienie</button>
-                          <button class="task_action"><img src="/icons/i_note.svg"> Omówienie</button>
-                          <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod C++</button>
-                          <button class="task_action"><img src="/icons/i_code.svg" style="top: 7px"> Kod Python</button>
-                        </div>
-                      </div>
+                      @end
                     </div>
-
-
                   </div>
                 </div>
-              </div>
+              @end
             </div>
           </div>
         </div>
-
       @end
     </div>
   </div>

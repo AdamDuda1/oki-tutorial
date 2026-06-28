@@ -11,8 +11,10 @@
       <a href="/">Materiały</a>
       /
       <a href="/lista_zadan">Lista zadań</a>
-      /
-      <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
+      @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
+        /
+        <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
+      @end
 
       @if(auth.user && auth.user.isAdmin)
         /

@@ -3,7 +3,7 @@
 
   <div class="lista-zadan-page">
     <div class="lista-header">
-      <h1 style="font-size: 42px">Lista zadań</h1>
+      <h1>Lista zadań</h1>
       <span class="task-count">{{ zadania.length }} zadań</span>
     </div>
 
@@ -66,7 +66,7 @@
               <td class="col-difficulty">
                 <span class="diff-badge diff-{{ z.difficulty }}">{{ diffLabels[z.difficulty] }}</span>
               </td>
-              <td class="col-materialy" style="height: 39px">
+              <td class="col-materialy">
                 @if(z.linkOmowienieText)
                   <a href="{{ z.linkOmowienieText }}" target="_blank" rel="noopener" class="material-link">tekst</a>
                 @end

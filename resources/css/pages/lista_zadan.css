@@ -10,7 +10,7 @@
 }
 
 .lista-header h1 {
-  font-size: 28px;
+  font-size: 42px;
 }
 
 .task-count {
@@ -164,6 +164,7 @@ form.filters {
   display: flex;
   gap: 8px;
   white-space: nowrap;
+  height: 39px;
 }
 
 .diff-badge {
