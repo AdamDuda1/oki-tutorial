@@ -46,19 +46,21 @@
             <th>Nazwa</th>
             <th>Źródło</th>
             <th>Trudność</th>
-            <th>Materiały</th>
           </tr>
         </thead>
-        <tbody>
-          @each(z in zadania)
-            <tr>
+        @each(z in zadania)
+          <tbody x-data="{ open: false }" class="task_row">
+            <tr @click="open = !open">
               <td class="col-id">{{ z.idZadania }}</td>
               <td class="col-nazwa">
-                <a href="{{ z.linkTresc }}" target="_blank" rel="noopener">{{ z.nazwa }}</a>
+                <div class="toggle_left">
+                  <span class="task_box_arrow" :class="{ open }">▶</span>
+                  {{ z.nazwa }}
+                </div>
               </td>
               <td class="col-zrodlo">
                 @if(z.linkZrodlo)
-                  <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener">{{ z.zrodlo }}</a>
+                  <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener" @click.stop>{{ z.zrodlo }}</a>
                 @else
                   {{ z.zrodlo }}
                 @end
@@ -66,20 +68,36 @@
               <td class="col-difficulty">
                 <span class="diff-badge diff-{{ z.difficulty }}">{{ diffLabels[z.difficulty] }}</span>
               </td>
-              <td class="col-materialy">
-                @if(z.linkOmowienieText)
-                  <a href="{{ z.linkOmowienieText }}" target="_blank" rel="noopener" class="material-link">tekst</a>
-                @end
-                @if(z.linkOmowienieVid)
-                  <a href="{{ z.linkOmowienieVid }}" target="_blank" rel="noopener" class="material-link">wideo</a>
-                @end
-                @if(!z.linkOmowienieVid && !z.linkOmowienieText)
-                  nie :(
-                @end
+            </tr>
+            <tr class="expand_row">
+              <td colspan="4">
+                <div class="box" :class="{ open }">
+                  <div class="box_inner">
+                    <a href="{{ z.linkTresc }}" class="task_action" target="_blank" rel="noopener">Treść</a>
+                    @if(z.linkWyslij)
+                      <a href="{{ z.linkWyslij }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
+                    @end
+                    @if(z.hint)
+                      <button class="task_action"><img src="/icons/i_hint.svg" alt=""> Hint</button>
+                    @end
+                    @if(z.linkOmowienieVid)
+                      <a href="{{ z.linkOmowienieVid }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
+                    @end
+                    @if(z.linkOmowienieText)
+                      <a href="{{ z.linkOmowienieText }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
+                    @end
+                    @if(z.kodCpp)
+                      <button class="task_action"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
+                    @end
+                    @if(z.kodPython)
+                      <button class="task_action"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
+                    @end
+                  </div>
+                </div>
               </td>
             </tr>
-          @end
-        </tbody>
+          </tbody>
+        @end
       </table>
     @end
   </div>
