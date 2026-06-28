@@ -1,0 +1,82 @@
+.admin-edit-task {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.admin-edit-task h1 {
+  font-size: 28px;
+  margin-bottom: 32px;
+}
+
+.admin-edit-task h2 {
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--brand-lighter);
+}
+
+.admin-form-section {
+  margin-bottom: 28px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+}
+
+.admin-form-grid .span-2 {
+  grid-column: 1 / -1;
+}
+
+.admin-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.admin-form-actions button {
+  width: auto;
+  padding: 10px 28px;
+}
+
+.admin-page {
+  padding: 32px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.admin-page h1 {
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.admin-page ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.admin-page ul li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--brand-lighter);
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-page ul li a:hover {
+  background: var(--brand-lighter);
+  border-color: var(--brand);
+  text-decoration: none;
+}

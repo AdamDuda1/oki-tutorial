@@ -5,8 +5,10 @@
         <img src="/logo.png" alt="Logo OKI" height="100%">
         <h1>branding tbd!</h1>
       </a>
-      /
-      <a href="/moja_sciezka">Moja ścieżka</a>
+      @if(auth.user)
+        /
+        <a href="/moja_sciezka">Moja ścieżka</a>
+      @end
       /
       <a href="/">Materiały</a>
       /

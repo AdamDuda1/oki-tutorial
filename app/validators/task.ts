@@ -1,0 +1,18 @@
+import vine from '@vinejs/vine'
+
+const optionalUrl = () => vine.string().url().optional().nullable()
+const optionalText = () => vine.string().optional().nullable()
+
+export const taskValidator = vine.create({
+  nazwa: vine.string(),
+  zrodlo: vine.string(),
+  linkTresc: vine.string().url(),
+  linkWyslij: optionalUrl(),
+  linkZrodlo: optionalUrl(),
+  linkOmowienieText: optionalUrl(),
+  linkOmowienieVid: optionalUrl(),
+  difficulty: vine.number().range([1, 4]).optional().nullable(),
+  hint: optionalText(),
+  kodCpp: optionalText(),
+  kodPython: optionalText(),
+})

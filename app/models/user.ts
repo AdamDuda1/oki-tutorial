@@ -13,6 +13,6 @@ export default class User extends compose(UserSchema, withAuthFinder(hash)) {
   }
 
   get isAdmin() {
-    return true
+    return this.role === 'admin'
   }
 }

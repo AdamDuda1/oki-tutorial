@@ -4,6 +4,8 @@
  */
 
 export const controllers = {
+  Admin: () => import('#controllers/admin_controller'),
+  AdminTasks: () => import('#controllers/admin_tasks_controller'),
   ListaZadan: () => import('#controllers/lista_zadan_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Sciezka: () => import('#controllers/sciezka_controller'),
