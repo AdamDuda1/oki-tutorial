@@ -41,6 +41,7 @@ router
     router.post('edit_task/:id', [AdminTasksController, 'update']).as('admin.edit_task.update')
     router.get('edit_difficulty_levels', [AdminTasksController, 'difficulty_levels_create']).as('admin.difficulty_levels.create')
     router.post('edit_difficulty_levels', [AdminTasksController, 'difficulty_levels_update']).as('admin.difficulty_levels.update')
+    router.post('edit_difficulty_levels/new', [AdminTasksController, 'difficulty_levels_store']).as('admin.difficulty_levels.store')
   })
   .prefix('/admin')
   .use(middleware.admin())

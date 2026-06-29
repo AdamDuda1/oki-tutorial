@@ -153,3 +153,24 @@
 .diff-input-rozwiniecie {
   flex: 1;
 }
+
+.diff-btn-delete {
+  margin-left: auto;
+  flex-shrink: 0;
+  width: auto;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+}
+
+.diff-btn-delete:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}

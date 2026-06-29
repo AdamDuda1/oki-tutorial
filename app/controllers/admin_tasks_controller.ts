@@ -59,6 +59,8 @@ export default class AdminTasksController {
         level.position = Number(data.position)
         await level.save()
       }
+      const submittedIds = levels.map(d => Number(d.id))
+      await PoziomTrudnosci.query().whereNotIn('id_poziomu_trudnosci', submittedIds).delete()
     }
 
     session.flash('success', 'Poziomy trudności zostały zaktualizowane.')
@@ -66,6 +68,20 @@ export default class AdminTasksController {
   }
 
   async difficulty_levels_store({ request, response, session }: HttpContext) {
+    const skrot = request.input('skrot', '').trim()
+    const rozwiniecie = request.input('rozwiniecie', '').trim()
+    const color = request.input('color') || null
 
+    if (!skrot || !rozwiniecie) {
+      session.flash('error', 'Skrót i rozwinięcie są wymagane.')
+      return response.redirect().back()
+    }
+
+    const last = await PoziomTrudnosci.query().orderBy('position', 'desc').first()
+    const position = (last?.position ?? 0) + 1
+
+    await PoziomTrudnosci.create({ skrot, rozwiniecie, color, position })
+    session.flash('success', 'Poziom trudności został dodany.')
+    return response.redirect().back()
   }
 }

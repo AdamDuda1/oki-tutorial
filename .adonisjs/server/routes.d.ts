@@ -19,6 +19,7 @@ export type ScannedRoutes = {
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
+    'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -49,6 +50,7 @@ export type ScannedRoutes = {
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
+    'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {
