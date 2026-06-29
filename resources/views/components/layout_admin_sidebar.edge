@@ -1,21 +1,9 @@
 <div class="sciezka-app">
   <nav class="sidenav">
-    @each (poziom in poziomy)
-      @if (poziom.idPoziomu == params.id)
-        <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category_header active">{{poziom.nazwa}}</a>
-        <nav class="topic_list">
-          @each (temat in tematy)
-            <a href="#{{temat.idTematu}}" class="medium topic">{{temat.nazwa}}</a>
-          @end
-        </nav>
-      @else
-        <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category_header">{{poziom.nazwa}}</a>
-      @endif
-    @end
+    <a style="font-size: 18px" href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} topic">Nowe zadanie</a>
   </nav>
 
   <div class="content">
-  <div class="admin-edit-task">
     {{{ await $slots.main() }}}
   </div>
 </div>

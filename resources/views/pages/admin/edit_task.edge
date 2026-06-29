@@ -1,5 +1,5 @@
 @layout({ title: task ? 'Edytuj zadanie' : 'Nowe zadanie' })
-@layout_admin_sidebar()
+@layoutAdminSidebar({ page: task ? 'Edytuj zadanie' : 'Nowe zadanie' })
   @let(isNew = task === null)
   @let(formRoute = isNew ? 'admin.edit_task.store' : 'admin.edit_task.update')
   @let(formParams = isNew ? {} : { id: task.idZadania })
