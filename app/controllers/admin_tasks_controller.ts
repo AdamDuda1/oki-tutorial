@@ -31,4 +31,8 @@ export default class AdminTasksController {
     session.flash('success', 'Zadanie zostało zaktualizowane.')
     return response.redirect().back()
   }
+
+  async difficulty_levels_create({ view }: HttpContext) {
+    return view.render('pages/admin/edit_difficulty_levels')
+  }
 }

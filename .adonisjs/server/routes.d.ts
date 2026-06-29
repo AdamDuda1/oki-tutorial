@@ -17,6 +17,7 @@ export type ScannedRoutes = {
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin_tasks.difficulty_levels_create': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -27,6 +28,7 @@ export type ScannedRoutes = {
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin_tasks.difficulty_levels_create': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -37,6 +39,7 @@ export type ScannedRoutes = {
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin_tasks.difficulty_levels_create': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }

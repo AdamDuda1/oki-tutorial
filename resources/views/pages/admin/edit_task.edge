@@ -16,7 +16,6 @@
 
   @form({ route: formRoute, routeParams: formParams, method: 'POST' })
 
-    {{-- Basic info --}}
     <div class="admin-form-section">
       <h2>Podstawowe informacje</h2>
       <div class="admin-form-grid">
@@ -126,7 +125,6 @@
 
     <div class="admin-form-actions">
       @!button({ text: isNew ? 'Dodaj zadanie' : 'Zapisz zmiany', type: 'submit' })
-      <a href="/lista_zadan" class="medium">← Wróć do listy zadań</a>
     </div>
   @end
 </div>

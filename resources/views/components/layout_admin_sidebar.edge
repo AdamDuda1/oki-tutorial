@@ -1,9 +1,11 @@
 <div class="sciezka-app">
   <nav class="sidenav">
-    <a style="font-size: 18px" href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} topic">Nowe zadanie</a>
+    <span class="admin-nav-separator">LISTA ZADAŃ</span>
+    <a href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Nowe zadanie</a>
+    <a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Edytuj poziomy trudności' ? 'bold' : 'medium' }} admin-nav-topic">Poziomy trudności</a>
   </nav>
 
-  <div class="content">
+  <div class="content" style="padding-left: 70px; padding-right: 70px;">
     {{{ await $slots.main() }}}
   </div>
 </div>
