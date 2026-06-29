@@ -1,0 +1,108 @@
+@layout({ title: 'Materiały' })
+@layoutAdminSidebar({ page: 'Edytuj tematy' })
+
+<div class="admin-edit-task">
+  <h1>Materiały</h1>
+
+  <script id="materialy-data" type="application/json">
+    {{{ JSON.stringify(poziomy.map(p => ({
+      id: p.idPoziomu,
+      nazwa: p.nazwa,
+      tematy: p.tematy.map(t => ({ id: t.idTematu, nazwa: t.nazwa, published: t.published })),
+    }))) }}}
+  </script>
+
+  <form method="POST" action="{{ route('admin.materialy.update_positions') }}" x-data="materialyEditor">
+    {{ csrfField() }}
+
+    {{-- Hidden position inputs --}}
+    <template x-for="(p, pi) in poziomy" :key="p.id">
+      <div style="display: contents;">
+        <input type="hidden" :name="`p[${p.id}]`" :value="pi + 1">
+        <template x-for="(t, ti) in p.tematy" :key="t.id">
+          <input type="hidden" :name="`t[${t.id}]`" :value="ti + 1">
+        </template>
+      </div>
+    </template>
+
+    {{-- Poziomy drag list --}}
+    <template x-for="(p, pi) in poziomy" :key="p.id">
+      <div
+        class="materialy-poziom-block"
+        :class="{
+          'is-dragging': dragging?.type === 'poziom' && dragging.pi === pi,
+          'drop-above': over?.type === 'poziom' && over.pi === pi && insertPos === 'before' && dragging?.pi !== pi,
+          'drop-below': over?.type === 'poziom' && over.pi === pi && insertPos === 'after' && dragging?.pi !== pi,
+        }"
+        draggable="false"
+        @dragstart="startPoziom(pi)"
+        @dragover.prevent="overPoziom(pi, $event)"
+        @drop.prevent="drop()"
+        @dragend="$el.draggable = false; _clear()"
+        @mouseup="$el.draggable = false"
+      >
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+          <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
+          <strong x-text="p.nazwa"></strong>
+          <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" style="margin-left: auto; font-size: 13px; color: var(--brand);">+ Nowy temat</a>
+        </div>
+
+        <div class="diff-level-list">
+          <template x-for="(t, ti) in p.tematy" :key="t.id">
+            <div
+              class="diff-level-row"
+              :class="{
+                'is-dragging': dragging?.type === 'temat' && dragging.pi === pi && dragging.ti === ti,
+                'drop-above': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'before' && dragging?.ti !== ti,
+                'drop-below': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'after' && dragging?.ti !== ti,
+              }"
+              draggable="false"
+              @dragstart.stop="startTemat(pi, ti)"
+              @dragover.prevent="overTemat(pi, ti, $event)"
+              @drop.prevent="drop()"
+              @dragend="$el.draggable = false; _clear()"
+              @mouseup.stop="$el.draggable = false"
+            >
+              <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">⠿</span>
+              <a :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa"></a>
+              <span x-show="!t.published" style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    <div class="admin-form-actions" style="margin-top: 8px;">
+      @!button({ text: 'Zapisz kolejność', type: 'submit' })
+    </div>
+  </form>
+
+  {{-- Add poziom --}}
+  <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+    <h2>Dodaj nowy poziom</h2>
+    <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
+      {{ csrfField() }}
+      <div style="display: flex; gap: 12px; align-items: flex-end;">
+        <input name="nazwa" placeholder="Nazwa poziomu" required style="flex: 1;">
+        @!button({ text: 'Dodaj', type: 'submit' })
+      </div>
+    </form>
+  </div>
+
+  {{-- Uncategorised --}}
+  @if(uncategorised.length > 0)
+    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+      <h2>Bez przypisanego poziomu</h2>
+      <div class="diff-level-list">
+        @each(temat in uncategorised)
+          <div class="diff-level-row">
+            <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" style="flex: 1;">{{ temat.nazwa }}</a>
+          </div>
+        @end
+      </div>
+    </div>
+  @end
+</div>
+
+@end
+@end

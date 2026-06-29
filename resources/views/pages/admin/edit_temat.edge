@@ -1,0 +1,93 @@
+@layout({ title: temat ? 'Edytuj temat' : 'Nowy temat' })
+@layoutAdminSidebar({ page: temat ? 'Edytuj tematy' : 'Nowy temat' })
+
+@let(isNew = temat === null)
+@let(formRoute = isNew ? 'admin.materialy.store_temat' : 'admin.materialy.update_temat')
+@let(formParams = isNew ? {} : { id: temat.idTematu })
+@let(poziomOptions = poziomy.map(p => ({
+  value: p.idPoziomu,
+  name: p.nazwa,
+  isSelected: temat ? temat.idPoziomu === p.idPoziomu : p.idPoziomu === selectedPoziomu,
+})))
+
+@if(!isNew)
+  <a href="{{ route('admin.materialy') }}" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
+@end
+
+<h1>{{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}</h1>
+
+<script id="materials-data" type="application/json">
+  {{{ JSON.stringify(temat ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
+    url,
+    opis: (temat.zewnetrzneMaterialyOpisy ?? [])[i] ?? '',
+  })) : []) }}}
+</script>
+
+@form({ route: formRoute, routeParams: formParams, method: 'POST' })
+
+  <div class="admin-form-section">
+    <h2>Podstawowe informacje</h2>
+    <div class="admin-form-grid">
+      <div>
+        @field.root({ name: 'nazwa' })
+          @!field.label({ text: 'Nazwa' })
+          @!input.control({ value: temat ? temat.nazwa : '' })
+          @!field.error()
+        @end
+      </div>
+      <div>
+        @field.root({ name: 'idPoziomu' })
+          @!field.label({ text: 'Poziom' })
+          @!select.control({ options: poziomOptions })
+          @!field.error()
+        @end
+      </div>
+      <div class="span-2">
+        @field.root({ name: 'krotkiOpis' })
+          @!field.label({ text: 'Krótki opis' })
+          @!textarea.control({ rows: 3, value: temat ? (temat.krotkiOpis ?? '') : '' })
+          @!field.error()
+        @end
+      </div>
+      <div>
+        @field.root({ name: 'linkYt' })
+          @!field.label({ text: 'Link YouTube' })
+          @!input.control({ type: 'url', value: temat ? (temat.linkYt ?? '') : '' })
+          @!field.error()
+        @end
+      </div>
+      <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
+        <input type="checkbox" name="published" id="published" style="width: auto; height: 18px; cursor: pointer;" {{ temat && temat.published ? 'checked' : '' }} />
+        <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-form-section" x-data="materialsEditor">
+    <h2>Zewnętrzne materiały</h2>
+    <template x-for="(m, i) in materials" :key="i">
+      <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+        <input :name="`mat_url[${i}]`" x-model="m.url" type="url" placeholder="URL" style="flex: 2;">
+        <input :name="`mat_opis[${i}]`" x-model="m.opis" placeholder="Opis" style="flex: 3;">
+        <button type="button" class="diff-btn-delete" @click="remove(i)">✕</button>
+      </div>
+    </template>
+    <button type="button" @click="add()" style="font-size: 13px; color: var(--brand); background: none; border: none; cursor: pointer; padding: 0;">+ Dodaj materiał</button>
+  </div>
+
+  <div class="admin-form-section">
+    <h2>Zadania</h2>
+    @field.root({ name: 'zadania' })
+      @!field.label({ text: 'IDs zadań (każde ID w nowej linii)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.zadania ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @end
+  </div>
+
+  <div class="admin-form-actions">
+    @!button({ text: isNew ? 'Dodaj temat' : 'Zapisz zmiany', type: 'submit' })
+  </div>
+
+@end
+
+@end
+@end

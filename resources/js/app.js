@@ -74,6 +74,66 @@ Alpine.data('levelEditor', () => ({
   _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
 }))
 
+Alpine.data('materialyEditor', () => ({
+  poziomy: [],
+  dragging: null, over: null, insertPos: null,
+
+  init() {
+    const el = document.getElementById('materialy-data')
+    if (el) this.poziomy = JSON.parse(el.textContent)
+  },
+
+  startPoziom(pi) { this.dragging = { type: 'poziom', pi } },
+  startTemat(pi, ti) { this.dragging = { type: 'temat', pi, ti } },
+
+  overPoziom(pi, event) {
+    if (this.dragging?.type !== 'poziom') return
+    const r = event.currentTarget.getBoundingClientRect()
+    this.over = { type: 'poziom', pi }
+    this.insertPos = event.clientY < r.top + r.height / 2 ? 'before' : 'after'
+  },
+
+  overTemat(pi, ti, event) {
+    if (this.dragging?.type !== 'temat' || this.dragging.pi !== pi) return
+    const r = event.currentTarget.getBoundingClientRect()
+    this.over = { type: 'temat', pi, ti }
+    this.insertPos = event.clientY < r.top + r.height / 2 ? 'before' : 'after'
+  },
+
+  drop() {
+    const d = this.dragging, o = this.over
+    if (!d || !o) { this._clear(); return }
+    if (d.type === 'poziom' && o.type === 'poziom' && d.pi !== o.pi) {
+      const items = [...this.poziomy]
+      const [item] = items.splice(d.pi, 1)
+      let at = this.insertPos === 'before' ? o.pi : o.pi + 1
+      if (o.pi > d.pi) at--
+      items.splice(at, 0, item)
+      this.poziomy = items
+    } else if (d.type === 'temat' && o.type === 'temat' && d.pi === o.pi && d.ti !== o.ti) {
+      const items = [...this.poziomy[d.pi].tematy]
+      const [item] = items.splice(d.ti, 1)
+      let at = this.insertPos === 'before' ? o.ti : o.ti + 1
+      if (o.ti > d.ti) at--
+      items.splice(at, 0, item)
+      this.poziomy[d.pi].tematy = items
+    }
+    this._clear()
+  },
+
+  _clear() { this.dragging = null; this.over = null; this.insertPos = null },
+}))
+
+Alpine.data('materialsEditor', () => ({
+  materials: [],
+  init() {
+    const el = document.getElementById('materials-data')
+    if (el) this.materials = JSON.parse(el.textContent)
+  },
+  add() { this.materials.push({ url: '', opis: '' }) },
+  remove(i) { this.materials.splice(i, 1) },
+}))
+
 Alpine.data('alert', function () {
   return {
     isVisible: false,

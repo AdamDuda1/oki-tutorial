@@ -175,3 +175,28 @@
   border-color: #fca5a5;
   color: #dc2626;
 }
+
+.materialy-poziom-block {
+  position: relative;
+  padding: 12px 16px;
+  border: 1px solid var(--brand-lighter);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: var(--background-darker);
+  transition: opacity 0.15s;
+}
+
+.materialy-poziom-block.is-dragging { opacity: 0.35; }
+
+.materialy-poziom-block.drop-above::before,
+.materialy-poziom-block.drop-below::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--brand);
+  border-radius: 1px;
+}
+
+.materialy-poziom-block.drop-above::before { top: -5px; }
+.materialy-poziom-block.drop-below::after  { bottom: -5px; }
