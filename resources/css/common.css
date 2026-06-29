@@ -41,6 +41,10 @@ a:not(.dont_underline):hover {
   font-weight: 500;
 }
 
+.no-animate-on-path-change {
+  transition: opacity 0s ease !important;
+}
+
 header {
   background: var(--background-darker);
   box-shadow: rgb(0 0 0 / 0.25) 0 4px 16px;

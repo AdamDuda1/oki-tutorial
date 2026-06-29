@@ -13,16 +13,27 @@ export default class ListaZadanController {
     if (zrodlo) query.where('zrodlo', zrodlo)
     const zadania = await query
 
-    const zrodlaRows = await ListaZadan.query().select('zrodlo').distinct('zrodlo').orderBy('zrodlo')
+    const zrodlaRows = await ListaZadan.query()
+      .select('zrodlo')
+      .distinct('zrodlo')
+      .orderBy('zrodlo')
     const zrodla = zrodlaRows.map((r) => r.zrodlo)
 
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+
+    const withAlpha: (hex: string, alpha: number) => string = (hex: string, alpha: number) => {
+      const a = Math.round(alpha * 255)
+        .toString(16)
+        .padStart(2, '0')
+      return hex + a
+    }
 
     return view.render('pages/lista_zadan', {
       zadania,
       zrodla,
       poziomyTrudnosci,
       filters: { idPoziomuTrudnosci, zrodlo },
+      withAlpha,
     })
   }
 }

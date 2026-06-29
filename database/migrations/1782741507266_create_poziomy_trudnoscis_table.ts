@@ -21,19 +21,6 @@ export default class extends BaseSchema {
         .inTable('poziomy_trudnosci')
         .onDelete('SET NULL')
     })
-
-    this.defer(async (db) => {
-      await db.table('poziomy_trudnosci').insert([
-        { skrot: 'Ł', rozwiniecie: 'Łatwe', position: 1, created_at: new Date().toISOString().replace('T', ' ').slice(0, 23) },
-        { skrot: 'Ś', rozwiniecie: 'Średnie', position: 2, created_at: new Date().toISOString().replace('T', ' ').slice(0, 23) },
-        { skrot: 'T', rozwiniecie: 'Trudne', position: 3, created_at: new Date().toISOString().replace('T', ' ').slice(0, 23) },
-        { skrot: 'BT', rozwiniecie: 'Bardzo trudne', position: 4, created_at: new Date().toISOString().replace('T', ' ').slice(0, 23) },
-      ])
-
-      for (const d of [1, 2, 3, 4]) {
-        await db.from('lista_zadan').where('difficulty', d).update({ id_poziomu_trudnosci: d })
-      }
-    })
   }
 
   async down() {

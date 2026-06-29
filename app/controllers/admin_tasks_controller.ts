@@ -64,4 +64,8 @@ export default class AdminTasksController {
     session.flash('success', 'Poziomy trudności zostały zaktualizowane.')
     return response.redirect().back()
   }
+
+  async difficulty_levels_store({ request, response, session }: HttpContext) {
+
+  }
 }

@@ -2,7 +2,7 @@
 @layoutAdminSidebar({ page: 'Edytuj poziomy trudności' })
 
 <div class="admin-edit-task">
-  <h1>Poziomy trudności</h1>
+  <h1>Edytuj poziomy trudności</h1>
 
   <script id="levels-data" type="application/json">
     {{{ JSON.stringify(poziomyTrudnosci.map(pt => ({
@@ -32,11 +32,11 @@
           @dragend="_clear()"
         >
           <span class="drag-handle">⠿</span>
-          <input type="hidden" :name="`levels[${i}][id]`"       :value="level.id">
-          <input type="hidden" :name="`levels[${i}][position]`"  :value="i + 1">
-          <input type="color"  :name="`levels[${i}][color]`"     x-model="level.color" class="diff-color-picker">
-          <input :name="`levels[${i}][skrot]`"       x-model="level.skrot"       placeholder="Skrót"       class="diff-input-skrot">
-          <input :name="`levels[${i}][rozwiniecie]`"  x-model="level.rozwiniecie"  placeholder="Rozwinięcie"  class="diff-input-rozwiniecie">
+          <input type="hidden" :name="`levels[${i}][id]`" :value="level.id">
+          <input type="hidden" :name="`levels[${i}][position]`" :value="i + 1">
+          <input type="color" :name="`levels[${i}][color]`" x-model="level.color" class="diff-color-picker">
+          <input :name="`levels[${i}][skrot]`" x-model="level.skrot" placeholder="Skrót" class="diff-input-skrot">
+          <input :name="`levels[${i}][rozwiniecie]`" x-model="level.rozwiniecie" placeholder="Rozwinięcie" class="diff-input-rozwiniecie">
         </div>
       </template>
     </div>
@@ -45,6 +45,29 @@
       @!button({ text: 'Zapisz', type: 'submit' })
     </div>
   </form>
+</div>
+
+<div class="admin-edit-task" style="padding-top: 35px; margin-top: 25px; border-top: 1px solid black;">
+  <h1>Dodaj nowy</h1>
+
+  @form({ route: formRoute, routeParams: formParams, method: 'POST' })
+
+    <div class="admin-form-section">
+      <input type="color"  :name="`levels[${i}][color]`"     x-model="level.color" class="diff-color-picker">
+      <input :name="`levels[${i}][skrot]`"       x-model="level.skrot"       placeholder="Skrót"       class="diff-input-skrot">
+      <input :name="`levels[${i}][rozwiniecie]`"  x-model="level.rozwiniecie"  placeholder="Rozwinięcie"  class="diff-input-rozwiniecie">
+    </div>
+
+  @end
+
+  <div class="admin-form-actions">
+    @!button({ text: 'Zapisz', type: 'submit' })
+  </div>
+</div>
+
+<div style="display: flex; margin-top: 20px; gap: 10px;">
+  <img src="/images/admin_reference_for_adding_task_diff.png">
+  <span style="font-size: 12px;">Dla odniesienia - tutaj skrót to `T3`, rozwinięcie to `Mega trudne!`.<br>Kolor tła to kolor z alphą 10%.</span>
 </div>
 
 @end

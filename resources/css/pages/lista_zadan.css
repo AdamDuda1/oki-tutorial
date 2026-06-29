@@ -158,6 +158,16 @@ form.filters {
 
 .col-difficulty {
   white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
+
+  .rozwiniecie {
+    display: none;
+  }
+
+  &:hover .rozwiniecie {
+    display: inline-flex;
+  }
 }
 
 .diff-badge {
@@ -167,11 +177,6 @@ form.filters {
   font-size: 12px;
   font-weight: 500;
 }
-
-.diff-badge.diff-1 { background: oklch(0.94 0.04 151); color: var(--easy); }
-.diff-badge.diff-2 { background: oklch(0.96 0.05 75); color: oklch(0.58 0.13 75); }
-.diff-badge.diff-3 { background: oklch(0.94 0.04 35); color: var(--hard); }
-.diff-badge.diff-4 { background: oklch(0.91 0.04 35); color: oklch(0.42 0.18 35); }
 
 .task_row {
   > tr {

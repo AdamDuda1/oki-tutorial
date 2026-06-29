@@ -5,7 +5,7 @@
       <span class="task-count">{{ zadania.length }} zadań</span>
     </div>
 
-    <form class="filters" method="GET" action="/lista_zadan">
+    <!--form class="filters" method="GET" action="/lista_zadan">
       <div class="filter-row">
         <div class="difficulty-pills">
           <label class="pill {{ !filters.idPoziomuTrudnosci ? 'active' : '' }}">
@@ -32,7 +32,7 @@
           <a href="/lista_zadan" class="clear-link">Wyczyść</a>
         @end
       </div>
-    </form>
+    </form-->
 
     @if(zadania.length === 0)
       <p class="empty-state">Brak zadań dla wybranych filtrów.</p>
@@ -43,7 +43,7 @@
             <th class="col-id">#</th>
             <th>Nazwa</th>
             <th>Źródło</th>
-            <th>Trudność</th>
+            <th style="width: 200px;"><span style="float: right">Trudność</span></th>
           </tr>
         </thead>
         @each(z in zadania)
@@ -64,7 +64,12 @@
                 @end
               </td>
               <td class="col-difficulty">
-                <span class="diff-badge diff-{{ z.poziomuTrudnosci ? z.poziomuTrudnosci.position : '' }}">{{ z.poziomuTrudnosci ? z.poziomuTrudnosci.skrot : '—' }}</span>
+                <span class="diff-badge" style="
+                color: {{ poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color || '#000' }};
+                background-color: {{ withAlpha(poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color, 0.1) || '#ffffff' }};">
+                  {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.skrot : '??' }}
+                  <span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span>
+                </span>
               </td>
             </tr>
             <tr class="expand_row">
