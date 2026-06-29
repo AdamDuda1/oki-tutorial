@@ -83,8 +83,8 @@
     <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
       {{ csrfField() }}
       <div style="display: flex; gap: 12px; align-items: flex-end;">
-        <input name="nazwa" placeholder="Nazwa poziomu" required style="flex: 1;">
-        @!button({ text: 'Dodaj', type: 'submit' })
+        <input name="nazwa" placeholder="Nazwa poziomu" required>
+        @!button({ text: 'Dodaj', type: 'submit', style: 'flex: 1' })
       </div>
     </form>
   </div>
