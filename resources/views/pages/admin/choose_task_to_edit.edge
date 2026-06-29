@@ -1,0 +1,28 @@
+@layout({ title: 'Wybierz zadanie do edycji' })
+@layoutAdminSidebar({ page: 'Wybierz zadanie do edycji' })
+
+<table class="zadania-table">
+        <thead>
+          <tr>
+            <th class="col-id">#</th>
+            <th>Nazwa</th>
+            <th>co zrobić?</th>
+          </tr>
+        </thead>
+        @each(z in zadania)
+          <tbody x-data="{ open: false }" class="task_row">
+            <tr @click="open = !open">
+              <td>{{ z.idZadania }}</td>
+              <td>{{ z.nazwa }}</td>
+              <td>
+                <a style="color: var(--brand)" href="">usuń ></a>
+                <a style="color: var(--brand)" href="">ukryj ></a>
+                <a style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj ></a>
+              </td>
+            </tr>
+          </tbody>
+        @end
+      </table>
+
+@end
+@end

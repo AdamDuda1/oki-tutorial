@@ -35,6 +35,7 @@ router
 router
   .group(() => {
     router.get('/', [AdminController, 'index']).as('admin')
+    router.get('edit_task', [AdminTasksController, 'index']).as('admin.edit_task.index')
     router.get('edit_task/new', [AdminTasksController, 'create']).as('admin.edit_task.create')
     router.post('edit_task/new', [AdminTasksController, 'store']).as('admin.edit_task.store')
     router.get('edit_task/:id', [AdminTasksController, 'edit']).as('admin.edit_task.edit')

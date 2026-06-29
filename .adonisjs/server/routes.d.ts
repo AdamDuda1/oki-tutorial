@@ -13,6 +13,7 @@ export type ScannedRoutes = {
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -28,6 +29,7 @@ export type ScannedRoutes = {
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
@@ -39,6 +41,7 @@ export type ScannedRoutes = {
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }

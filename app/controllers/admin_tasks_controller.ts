@@ -4,6 +4,12 @@ import PoziomTrudnosci from '#models/poziom_trudnosci'
 import { taskValidator } from '#validators/task'
 
 export default class AdminTasksController {
+  async index({ view }: HttpContext) {
+    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    const zadania = await ListaZadan.query().orderBy('id_zadania')
+    return view.render('pages/admin/choose_task_to_edit', { poziomyTrudnosci, zadania })
+  }
+
   async create({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci })

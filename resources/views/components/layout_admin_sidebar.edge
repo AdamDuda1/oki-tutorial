@@ -1,8 +1,16 @@
 <div class="sciezka-app">
   <nav class="sidenav">
     <span class="admin-nav-separator">LISTA ZADAŃ</span>
+    <a href="/admin/edit_task" class="{{ $props.get('page') === 'Wybierz zadanie do edycji' || $props.get('page') === 'Edytuj zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Edytuj zadanie</a>
     <a href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Nowe zadanie</a>
     <a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Edytuj poziomy trudności' ? 'bold' : 'medium' }} admin-nav-topic">Poziomy trudności</a>
+    <a href="/admin/edit_tags" class="{{ $props.get('page') === 'Edytuj tagi zadań' ? 'bold' : 'medium' }} admin-nav-topic">Tagi zadań</a>
+    <!--span class="admin-nav-separator" style="margin-top: 25px">ZAKŁADKA MATERIAŁY</span-->
+    <!--a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Nowy temat' ? 'bold' : 'medium' }} admin-nav-topic">Nowy temat</a-->
+    <!--a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Edytuj tematy' ? 'bold' : 'medium' }} admin-nav-topic">Edytuj tematy</a-->
+    <!--span class="admin-nav-separator" style="margin-top: 25px">ZARZĄDZANIE STRONĄ</span-->
+    <!--a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a-->
+    <!--a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic">Statystyki i historia zmian</a-->
   </nav>
 
   <div class="content" style="padding-left: 70px; padding-right: 70px;">
