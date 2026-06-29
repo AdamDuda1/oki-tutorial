@@ -5,11 +5,12 @@
   @let(formParams = isNew ? {} : { id: task.idZadania })
 
   @let(diffOptions = [
-    { value: '', name: '— brak —', isSelected: !task || task.difficulty === null },
-    { value: 1, name: 'Łatwe (1)', isSelected: task && task.difficulty === 1 },
-    { value: 2, name: 'Średnie (2)', isSelected: task && task.difficulty === 2 },
-    { value: 3, name: 'Trudne (3)', isSelected: task && task.difficulty === 3 },
-    { value: 4, name: 'Bardzo trudne (4)', isSelected: task && task.difficulty === 4 },
+    { value: '', name: '— brak —', isSelected: !task || task.idPoziomuTrudnosci === null },
+    ...poziomyTrudnosci.map(pt => ({
+      value: pt.idPoziomuTrudnosci,
+      name: pt.rozwiniecie,
+      isSelected: task && task.idPoziomuTrudnosci === pt.idPoziomuTrudnosci,
+    })),
   ])
 
 <h1>{{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}</h1>
@@ -34,7 +35,7 @@
           @end
         </div>
         <div>
-          @field.root({ name: 'difficulty' })
+          @field.root({ name: 'idPoziomuTrudnosci' })
             @!field.label({ text: 'Trudność' })
             @!select.control({ options: diffOptions })
             @!field.error()

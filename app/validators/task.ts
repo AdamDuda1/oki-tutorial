@@ -11,7 +11,7 @@ export const taskValidator = vine.create({
   linkZrodlo: optionalUrl(),
   linkOmowienieText: optionalUrl(),
   linkOmowienieVid: optionalUrl(),
-  difficulty: vine.number().range([1, 4]).optional().nullable(),
+  idPoziomuTrudnosci: vine.number().optional().nullable(),
   hint: optionalText(),
   kodCpp: optionalText(),
   kodPython: optionalText(),

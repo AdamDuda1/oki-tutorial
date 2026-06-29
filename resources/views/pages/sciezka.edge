@@ -1,5 +1,4 @@
 @layout({ title: 'Materiały' })
-  @let(diffLabels = ['', 'łatwe', 'średnie', 'trudne', 'bardzo trudne'])
 
   <div class="sciezka-app">
     <nav class="sidenav">
@@ -64,7 +63,7 @@
                               <span class="task_box_arrow" :class="{ open }">▶</span>
                               <h3 class="medium">{{ zadanie.nazwa }}</h3>
                             </div>
-                            <span class="toggle_right difficulty-{{ zadanie.difficulty }}">{{ diffLabels[zadanie.difficulty] }} ({{ zadanie.difficulty }})</span>
+                            <span class="toggle_right difficulty-{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.position : '' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
                           </button>
                           <div class="box" :class="{ open }">
                             <div class="box_inner">

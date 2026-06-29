@@ -8,18 +8,18 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime()
   declare deletedAt: DateTime | null
   @column()
-  declare difficulty: number | null
-  @column()
   declare hint: string | null
   @column()
   declare idAutora: number | null
+  @column()
+  declare idPoziomuTrudnosci: number | null
   @column({ isPrimary: true })
   declare idZadania: number
   @column()
@@ -59,6 +59,25 @@ export class PoziomySchema extends BaseModel {
   declare nazwa: string
   @column()
   declare position: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class PoziomyTrudnosciSchema extends BaseModel {
+  static $columns = ['color', 'createdAt', 'idPoziomuTrudnosci', 'position', 'rozwiniecie', 'skrot', 'updatedAt'] as const
+  $columns = PoziomyTrudnosciSchema.$columns
+  @column()
+  declare color: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare idPoziomuTrudnosci: number
+  @column()
+  declare position: number
+  @column()
+  declare rozwiniecie: string
+  @column()
+  declare skrot: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

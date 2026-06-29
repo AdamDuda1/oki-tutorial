@@ -1,6 +1,4 @@
 @layout({ title: 'Lista zadań' })
-  @let(diffLabels = ['', 'Łatwe', 'Średnie', 'Trudne', 'Bardzo trudne'])
-
   <div class="lista-zadan-page">
     <div class="lista-header">
       <h1>Lista zadań</h1>
@@ -10,14 +8,14 @@
     <form class="filters" method="GET" action="/lista_zadan">
       <div class="filter-row">
         <div class="difficulty-pills">
-          <label class="pill {{ !filters.difficulty ? 'active' : '' }}">
-            <input type="radio" name="difficulty" value="">
+          <label class="pill {{ !filters.idPoziomuTrudnosci ? 'active' : '' }}">
+            <input type="radio" name="idPoziomuTrudnosci" value="">
             Wszystkie
           </label>
-          @each(d in [1, 2, 3, 4])
-            <label class="pill diff-{{ d }} {{ filters.difficulty === d ? 'active' : '' }}">
-              <input type="radio" name="difficulty" value="{{ d }}" {{ filters.difficulty === d ? 'checked' : '' }}>
-              {{ diffLabels[d] }}
+          @each(pt in poziomyTrudnosci)
+            <label class="pill diff-{{ pt.position }} {{ filters.idPoziomuTrudnosci === pt.idPoziomuTrudnosci ? 'active' : '' }}">
+              <input type="radio" name="idPoziomuTrudnosci" value="{{ pt.idPoziomuTrudnosci }}" {{ filters.idPoziomuTrudnosci === pt.idPoziomuTrudnosci ? 'checked' : '' }}>
+              {{ pt.rozwiniecie }}
             </label>
           @end
         </div>
@@ -30,7 +28,7 @@
         </select>
 
         <button type="submit" class="filter-btn">Filtruj</button>
-        @if(filters.difficulty || filters.zrodlo)
+        @if(filters.idPoziomuTrudnosci || filters.zrodlo)
           <a href="/lista_zadan" class="clear-link">Wyczyść</a>
         @end
       </div>
@@ -66,7 +64,7 @@
                 @end
               </td>
               <td class="col-difficulty">
-                <span class="diff-badge diff-{{ z.difficulty }}">{{ diffLabels[z.difficulty] }}</span>
+                <span class="diff-badge diff-{{ z.poziomuTrudnosci ? z.poziomuTrudnosci.position : '' }}">{{ z.poziomuTrudnosci ? z.poziomuTrudnosci.skrot : '—' }}</span>
               </td>
             </tr>
             <tr class="expand_row">

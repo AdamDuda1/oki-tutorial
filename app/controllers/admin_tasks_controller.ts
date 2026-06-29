@@ -1,10 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ListaZadan from '#models/lista_zadan'
+import PoziomTrudnosci from '#models/poziom_trudnosci'
 import { taskValidator } from '#validators/task'
 
 export default class AdminTasksController {
   async create({ view }: HttpContext) {
-    return view.render('pages/admin/edit_task', { task: null })
+    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci })
   }
 
   async store({ request, response, session }: HttpContext) {
@@ -18,7 +20,8 @@ export default class AdminTasksController {
 
   async edit({ params, view }: HttpContext) {
     const task = await ListaZadan.findOrFail(params.id)
-    return view.render('pages/admin/edit_task', { task })
+    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci })
   }
 
   async update({ params, request, response, session }: HttpContext) {
@@ -33,6 +36,7 @@ export default class AdminTasksController {
   }
 
   async difficulty_levels_create({ view }: HttpContext) {
-    return view.render('pages/admin/edit_difficulty_levels')
+    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    return view.render('pages/admin/edit_difficulty_levels', { poziomyTrudnosci })
   }
 }

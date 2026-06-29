@@ -1,4 +1,5 @@
 .alert {
+  z-index: 9999909;
   background: #fff;
   position: relative;
   padding: 12px 16px;
