@@ -1,4 +1,5 @@
 @layout({ title: task ? 'Edytuj zadanie' : 'Nowe zadanie' })
+@layout_admin_sidebar()
   @let(isNew = task === null)
   @let(formRoute = isNew ? 'admin.edit_task.store' : 'admin.edit_task.update')
   @let(formParams = isNew ? {} : { id: task.idZadania })
@@ -11,123 +12,123 @@
     { value: 4, name: 'Bardzo trudne (4)', isSelected: task && task.difficulty === 4 },
   ])
 
-  <div class="admin-edit-task">
-    <h1>{{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}</h1>
+<h1>{{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}</h1>
 
-    @form({ route: formRoute, routeParams: formParams, method: 'POST' })
+  @form({ route: formRoute, routeParams: formParams, method: 'POST' })
 
-      {{-- Basic info --}}
-      <div class="admin-form-section">
-        <h2>Podstawowe informacje</h2>
-        <div class="admin-form-grid">
-          <div>
-            @field.root({ name: 'nazwa' })
-              @!field.label({ text: 'Nazwa' })
-              @!input.control({ value: task ? task.nazwa : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'zrodlo' })
-              @!field.label({ text: 'Źródło' })
-              @!input.control({ value: task ? task.zrodlo : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'difficulty' })
-              @!field.label({ text: 'Trudność' })
-              @!select.control({ options: diffOptions })
-              @!field.error()
-            @end
-          </div>
-          <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
-            <input
-              type="checkbox"
-              name="published"
-              id="published"
-              style="width: auto; height: 18px; cursor: pointer;"
-              {{ task && task.published ? 'checked' : '' }}
-            />
-            <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
-          </div>
+    {{-- Basic info --}}
+    <div class="admin-form-section">
+      <h2>Podstawowe informacje</h2>
+      <div class="admin-form-grid">
+        <div>
+          @field.root({ name: 'nazwa' })
+            @!field.label({ text: 'Nazwa' })
+            @!input.control({ value: task ? task.nazwa : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'zrodlo' })
+            @!field.label({ text: 'Źródło' })
+            @!input.control({ value: task ? task.zrodlo : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'difficulty' })
+            @!field.label({ text: 'Trudność' })
+            @!select.control({ options: diffOptions })
+            @!field.error()
+          @end
+        </div>
+        <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
+          <input
+            type="checkbox"
+            name="published"
+            id="published"
+            style="width: auto; height: 18px; cursor: pointer;"
+            {{ task && task.published ? 'checked' : '' }}
+          />
+          <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
         </div>
       </div>
+    </div>
 
-      {{-- Links --}}
-      <div class="admin-form-section">
-        <h2>Linki</h2>
-        <div class="admin-form-grid">
-          <div>
-            @field.root({ name: 'linkTresc' })
-              @!field.label({ text: 'Treść zadania *' })
-              @!input.control({ type: 'url', value: task ? task.linkTresc : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'linkWyslij' })
-              @!field.label({ text: 'Link do wysłania' })
-              @!input.control({ type: 'url', value: task ? task.linkWyslij : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'linkZrodlo' })
-              @!field.label({ text: 'Link do źródła' })
-              @!input.control({ type: 'url', value: task ? task.linkZrodlo : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'linkOmowienieVid' })
-              @!field.label({ text: 'Omówienie – wideo' })
-              @!input.control({ type: 'url', value: task ? task.linkOmowienieVid : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'linkOmowienieText' })
-              @!field.label({ text: 'Omówienie – tekst' })
-              @!input.control({ type: 'url', value: task ? task.linkOmowienieText : '' })
-              @!field.error()
-            @end
-          </div>
+    {{-- Links --}}
+    <div class="admin-form-section">
+      <h2>Linki</h2>
+      <div class="admin-form-grid">
+        <div>
+          @field.root({ name: 'linkTresc' })
+            @!field.label({ text: 'Treść zadania *' })
+            @!input.control({ type: 'url', value: task ? task.linkTresc : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'linkWyslij' })
+            @!field.label({ text: 'Link do wysłania' })
+            @!input.control({ type: 'url', value: task ? task.linkWyslij : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'linkZrodlo' })
+            @!field.label({ text: 'Link do źródła' })
+            @!input.control({ type: 'url', value: task ? task.linkZrodlo : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'linkOmowienieVid' })
+            @!field.label({ text: 'Omówienie – wideo' })
+            @!input.control({ type: 'url', value: task ? task.linkOmowienieVid : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'linkOmowienieText' })
+            @!field.label({ text: 'Omówienie – tekst' })
+            @!input.control({ type: 'url', value: task ? task.linkOmowienieText : '' })
+            @!field.error()
+          @end
         </div>
       </div>
+    </div>
 
-      {{-- Content --}}
-      <div class="admin-form-section">
-        <h2>Treść i rozwiązania</h2>
-        <div class="admin-form-grid">
-          <div class="span-2">
-            @field.root({ name: 'hint' })
-              @!field.label({ text: 'Podpowiedź (hint)' })
-              @!textarea.control({ rows: 3, value: task ? task.hint : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'kodCpp' })
-              @!field.label({ text: 'Kod C++' })
-              @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodCpp : '' })
-              @!field.error()
-            @end
-          </div>
-          <div>
-            @field.root({ name: 'kodPython' })
-              @!field.label({ text: 'Kod Python' })
-              @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodPython : '' })
-              @!field.error()
-            @end
-          </div>
+    {{-- Content --}}
+    <div class="admin-form-section">
+      <h2>Treść i rozwiązania</h2>
+      <div class="admin-form-grid">
+        <div class="span-2">
+          @field.root({ name: 'hint' })
+            @!field.label({ text: 'Podpowiedź (hint)' })
+            @!textarea.control({ rows: 3, value: task ? task.hint : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'kodCpp' })
+            @!field.label({ text: 'Kod C++' })
+            @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodCpp : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'kodPython' })
+            @!field.label({ text: 'Kod Python' })
+            @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodPython : '' })
+            @!field.error()
+          @end
         </div>
       </div>
+    </div>
 
-      <div class="admin-form-actions">
-        @!button({ text: isNew ? 'Dodaj zadanie' : 'Zapisz zmiany', type: 'submit' })
-        <a href="/lista_zadan" class="medium">← Wróć do listy zadań</a>
-      </div>
-    @end
-  </div>
+    <div class="admin-form-actions">
+      @!button({ text: isNew ? 'Dodaj zadanie' : 'Zapisz zmiany', type: 'submit' })
+      <a href="/lista_zadan" class="medium">← Wróć do listy zadań</a>
+    </div>
+  @end
+</div>
+@end
 @end
