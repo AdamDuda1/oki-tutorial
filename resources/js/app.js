@@ -74,6 +74,17 @@ Alpine.data('levelEditor', () => ({
   _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
 }))
 
+Alpine.store('modal', {
+  open: false,
+  title: '',
+  body: '',
+  code: false,
+  show(title, body, code = false) {
+    this.title = title; this.body = body; this.code = code; this.open = true
+  },
+  hide() { this.open = false },
+})
+
 Alpine.data('materialyEditor', () => ({
   poziomy: [],
   dragging: null, over: null, insertPos: null,
