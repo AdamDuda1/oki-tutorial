@@ -39,4 +39,29 @@ export default class AdminTasksController {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     return view.render('pages/admin/edit_difficulty_levels', { poziomyTrudnosci })
   }
+
+  async difficulty_levels_update({ request, response, session }: HttpContext) {
+    const levels = request.input('levels') as Array<{
+      id: string
+      position: string
+      skrot: string
+      rozwiniecie: string
+      color: string
+    }>
+
+    if (Array.isArray(levels)) {
+      for (const data of levels) {
+        const level = await PoziomTrudnosci.find(Number(data.id))
+        if (!level) continue
+        level.skrot = data.skrot?.trim() ?? level.skrot
+        level.rozwiniecie = data.rozwiniecie?.trim() ?? level.rozwiniecie
+        level.color = data.color || null
+        level.position = Number(data.position)
+        await level.save()
+      }
+    }
+
+    session.flash('success', 'Poziomy trudności zostały zaktualizowane.')
+    return response.redirect().back()
+  }
 }

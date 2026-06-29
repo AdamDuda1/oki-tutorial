@@ -1,6 +1,51 @@
 @layout({ title: 'Edytuj poziomy trudności' })
 @layoutAdminSidebar({ page: 'Edytuj poziomy trudności' })
 
-asdasads
+<div class="admin-edit-task">
+  <h1>Poziomy trudności</h1>
+
+  <script id="levels-data" type="application/json">
+    {{{ JSON.stringify(poziomyTrudnosci.map(pt => ({
+      id: pt.idPoziomuTrudnosci,
+      skrot: pt.skrot,
+      rozwiniecie: pt.rozwiniecie,
+      color: pt.color,
+    }))) }}}
+  </script>
+
+  <form method="POST" action="{{ route('admin.difficulty_levels.update') }}" x-data="levelEditor">
+    {{ csrfField() }}
+
+    <div class="diff-level-list">
+      <template x-for="(level, i) in levels" :key="level.id">
+        <div
+          class="diff-level-row"
+          :class="{
+            'is-dragging': srcIdx === i,
+            'drop-above': targetIdx === i && insertPos === 'before' && srcIdx !== i,
+            'drop-below': targetIdx === i && insertPos === 'after' && srcIdx !== i,
+          }"
+          draggable="true"
+          @dragstart="dragStart(i)"
+          @dragover.prevent="dragOver($event, i)"
+          @drop.prevent="drop()"
+          @dragend="_clear()"
+        >
+          <span class="drag-handle">⠿</span>
+          <input type="hidden" :name="`levels[${i}][id]`"       :value="level.id">
+          <input type="hidden" :name="`levels[${i}][position]`"  :value="i + 1">
+          <input type="color"  :name="`levels[${i}][color]`"     x-model="level.color" class="diff-color-picker">
+          <input :name="`levels[${i}][skrot]`"       x-model="level.skrot"       placeholder="Skrót"       class="diff-input-skrot">
+          <input :name="`levels[${i}][rozwiniecie]`"  x-model="level.rozwiniecie"  placeholder="Rozwinięcie"  class="diff-input-rozwiniecie">
+        </div>
+      </template>
+    </div>
+
+    <div class="admin-form-actions">
+      @!button({ text: 'Zapisz', type: 'submit' })
+    </div>
+  </form>
+</div>
+
 @end
 @end

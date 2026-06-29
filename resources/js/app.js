@@ -42,6 +42,38 @@ function theme_update() {
 }
 
 
+Alpine.data('levelEditor', () => ({
+  levels: [],
+  srcIdx: null, targetIdx: null, insertPos: null,
+
+  init() {
+    const el = document.getElementById('levels-data')
+    if (el) this.levels = JSON.parse(el.textContent).map(l => ({ ...l, color: l.color || '#000000' }))
+  },
+
+  dragStart(idx) { this.srcIdx = idx },
+
+  dragOver(event, idx) {
+    const rect = event.currentTarget.getBoundingClientRect()
+    this.targetIdx = idx
+    this.insertPos = event.clientY < rect.top + rect.height / 2 ? 'before' : 'after'
+  },
+
+  drop() {
+    const { srcIdx: src, targetIdx: target, insertPos: pos } = this
+    if (src === null || target === null || src === target) { this._clear(); return }
+    const items = [...this.levels]
+    const [item] = items.splice(src, 1)
+    let at = pos === 'before' ? target : target + 1
+    if (target > src) at--
+    items.splice(at, 0, item)
+    this.levels = items
+    this._clear()
+  },
+
+  _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
+}))
+
 Alpine.data('alert', function () {
   return {
     isVisible: false,

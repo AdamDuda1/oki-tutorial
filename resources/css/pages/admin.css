@@ -98,3 +98,72 @@
   border-color: var(--brand);
   text-decoration: none;
 }
+
+.diff-level-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.diff-level-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--background-darker);
+  border: 1px solid var(--brand-lighter);
+  border-radius: 6px;
+  transition: opacity 0.15s;
+}
+
+.diff-level-row.is-dragging {
+  opacity: 0.35;
+}
+
+.diff-level-row.drop-above::before,
+.diff-level-row.drop-below::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--brand);
+  border-radius: 1px;
+}
+
+.diff-level-row.drop-above::before { top: -5px; }
+.diff-level-row.drop-below::after  { bottom: -5px; }
+
+.drag-handle {
+  cursor: grab;
+  color: var(--text-secondary);
+  font-size: 20px;
+  line-height: 1;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.diff-color-picker {
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--brand-lighter);
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+}
+
+.diff-input-skrot {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.diff-input-rozwiniecie {
+  flex: 1;
+}
