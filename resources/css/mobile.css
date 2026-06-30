@@ -1,5 +1,10 @@
 @media (max-width: 868px) {
+  nav {
+    overflow-wrap: anywhere;
+  }
+
   .sidenav {
+    z-index: 99;
     position: absolute;
     height: calc(100vh - 60px);
     left: clamp(-800px, -15vw, -350px);
@@ -9,22 +14,35 @@
 
     &.opened {
       transform: translate(clamp(350px, 15vw, 800px), 0);
+      box-shadow: rgb(0 0 0 / 0.67) 300px 0 104px 20000px;
 
       .mobile_menu_handle {
-        transform: rotate(90deg) translate(0, 40px);
+        transform: rotate(90deg) translate(20px, 50px);
+        color: white;
       }
     }
 
     .mobile_menu_handle {
       position: absolute;
-      transform: rotate(-90deg) translate(0, -50px);
+      transform: rotate(-90deg) translate(-20px, -60px);
+      padding: 20px;
       top: 49vh;
       left: 100%;
       cursor: pointer;
       width: max-content;
       text-align: center;
       display: flex !important;
+      transition: color 0s;
     }
+  }
+
+  .content {
+    position: absolute;
+    width: 94vw;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

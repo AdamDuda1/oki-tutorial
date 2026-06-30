@@ -1,5 +1,5 @@
 <div class="sciezka-app">
-  <nav class="sidenav">
+  <nav class="sidenav" id="collapsable-sidenav">
     <span class="admin-nav-separator">LISTA ZADAŃ</span>
     <a href="/admin/edit_task" class="{{ $props.get('page') === 'Wybierz zadanie do edycji' || $props.get('page') === 'Edytuj zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Edytuj zadanie</a>
     <a href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Nowe zadanie</a>
@@ -11,7 +11,7 @@
     <span class="admin-nav-separator" style="margin-top: 25px">ZARZĄDZANIE STRONĄ</span>
     <a href="/admin/flipper_features" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a>
     <a href="/admin/stats_and_audit_log" class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic">Statystyki i historia zmian</a>
-    <span class="mobile_menu_handle">Rozwiń menu v</span>
+    <span class="mobile_menu_handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń menu v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń menu v'; }">Rozwiń menu v</span>
   </nav>
 
   <div class="content" style="padding-left: 70px; padding-right: 70px;">
