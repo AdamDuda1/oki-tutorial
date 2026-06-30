@@ -163,3 +163,12 @@ Alpine.data('alert', function () {
 })
 
 Alpine.start()
+
+document.addEventListener('turbo:load', () => {
+  const input = document.querySelector('.search-input')
+  if (input && new URLSearchParams(location.search).has('q')) {
+    input.focus()
+    const len = input.value.length
+    input.setSelectionRange(len, len)
+  }
+})

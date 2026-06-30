@@ -18,6 +18,42 @@
   color: var(--text-secondary);
 }
 
+.search-bar {
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 300px;
+  max-width: 100%;
+  border: 1px solid var(--brand-lighter);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 0 8px;
+}
+
+.page-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--background-darker);
+  border: 1px solid var(--brand-lighter);
+  cursor: pointer;
+  &:hover { border-color: var(--brand); }
+  &.disabled { opacity: 0.35; pointer-events: none; }
+}
+
+.page-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
 form.filters {
   display: block;
   margin-bottom: 20px;

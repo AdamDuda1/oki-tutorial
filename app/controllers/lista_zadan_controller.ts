@@ -7,11 +7,27 @@ export default class ListaZadanController {
     const qs = request.qs()
     const idPoziomuTrudnosci = qs.idPoziomuTrudnosci ? Number(qs.idPoziomuTrudnosci) : null
     const zrodlo = qs.zrodlo || null
+    const q = qs.q ? String(qs.q) : null
+    const page = Math.max(1, Number(qs.page) || 1)
+    const perPage = 20
 
     const query = ListaZadan.query().orderBy('id_zadania').preload('poziomuTrudnosci')
     if (idPoziomuTrudnosci) query.where('id_poziomu_trudnosci', idPoziomuTrudnosci)
     if (zrodlo) query.where('zrodlo', zrodlo)
-    const zadania = await query
+    if (q) query.where('nazwa', 'like', `%${q}%`)
+
+    const paginator = await query.paginate(page, perPage)
+    const zadania = paginator.all()
+
+    const makePageUrl = (p: number) => {
+      const ps = new URLSearchParams()
+      if (q) ps.set('q', q)
+      if (idPoziomuTrudnosci) ps.set('idPoziomuTrudnosci', String(idPoziomuTrudnosci))
+      if (zrodlo) ps.set('zrodlo', zrodlo)
+      if (p > 1) ps.set('page', String(p))
+      const s = ps.toString()
+      return '/lista_zadan' + (s ? '?' + s : '')
+    }
 
     const zrodlaRows = await ListaZadan.query()
       .select('zrodlo')
@@ -30,9 +46,14 @@ export default class ListaZadanController {
 
     return view.render('pages/lista_zadan', {
       zadania,
+      totalCount: paginator.total,
+      currentPage: paginator.currentPage,
+      totalPages: paginator.lastPage,
+      prevUrl: paginator.currentPage > 1 ? makePageUrl(paginator.currentPage - 1) : null,
+      nextUrl: paginator.currentPage < paginator.lastPage ? makePageUrl(paginator.currentPage + 1) : null,
       zrodla,
       poziomyTrudnosci,
-      filters: { idPoziomuTrudnosci, zrodlo },
+      filters: { idPoziomuTrudnosci, zrodlo, q },
       withAlpha,
     })
   }

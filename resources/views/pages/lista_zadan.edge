@@ -2,7 +2,24 @@
   <div class="lista-zadan-page">
     <div class="lista-header">
       <h1>Lista zadań</h1>
-      <span class="task-count">{{ zadania.length }} zadań</span>
+      <span class="task-count">{{ totalCount }} zadań</span>
+    </div>
+
+    <div class="search-bar"
+      x-data="{
+        q: new URLSearchParams(location.search).get('q') || '',
+        timer: null,
+        search() {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            const url = new URL(location.href);
+            this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
+            url.searchParams.delete('page');
+            window.location = url.toString();
+          }, 300);
+        }
+      }">
+      <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
     </div>
 
     <!--form class="filters" method="GET" action="/lista_zadan">
@@ -107,5 +124,5 @@
       </table>
     @end
   </div>
-  @!pagination({ currentPage: currentPage, totalPages: totalPages, baseUrl: '/lista_zadan' })
+  @!pagination({ currentPage: currentPage, totalPages: totalPages, prevUrl: prevUrl, nextUrl: nextUrl })
 @end
