@@ -1,7 +1,4 @@
-@media (max-width: 868px) {
-  nav {
-    overflow-wrap: anywhere;
-  }
+@media (max-width: 900px) {
 
   .sidenav {
     z-index: 99;
@@ -9,7 +6,7 @@
     height: calc(100vh - 60px);
     left: clamp(-800px, -15vw, -350px);
     width: 0;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.15s ease-in-out;
     transform: translate(0, 0);
 
     &.opened {
@@ -43,11 +40,5 @@
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
-  }
-}
-
-@media (max-width: 480px ) {
-  .element {
-    font-size: 14px;
   }
 }
