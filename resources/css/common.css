@@ -82,7 +82,8 @@ header nav div img {
 }
 
 header nav div h1 {
-  font-family: var(--font-accent), serif;
+  /*font-family: var(--font-accent), serif;*/
+  font-family: var(--font-quicksand), sans-serif;
   font-size: 40px;
   letter-spacing: -0.5px;
   color: var(--oki-gray);
