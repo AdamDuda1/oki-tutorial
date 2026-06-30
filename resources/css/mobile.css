@@ -1,0 +1,35 @@
+@media (max-width: 868px) {
+  .sidenav {
+    position: absolute;
+    height: calc(100vh - 60px);
+    left: clamp(-800px, -15vw, -350px);
+    width: 0;
+    transition: transform 0.3s ease-in-out;
+    transform: translate(0, 0);
+
+    &.opened {
+      transform: translate(clamp(350px, 15vw, 800px), 0);
+
+      .mobile_menu_handle {
+        transform: rotate(90deg) translate(0, 40px);
+      }
+    }
+
+    .mobile_menu_handle {
+      position: absolute;
+      transform: rotate(-90deg) translate(0, -50px);
+      top: 49vh;
+      left: 100%;
+      cursor: pointer;
+      width: max-content;
+      text-align: center;
+      display: flex !important;
+    }
+  }
+}
+
+@media (max-width: 480px ) {
+  .element {
+    font-size: 14px;
+  }
+}

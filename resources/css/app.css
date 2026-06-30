@@ -1,5 +1,6 @@
 @import 'variables.css';
 @import 'common.css';
+@import 'mobile.css';
 @import 'forms.css';
 @import 'alerts.css';
 @import 'pages/lista_zadan.css';

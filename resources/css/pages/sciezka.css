@@ -11,6 +11,11 @@
   display: flex;
   flex-direction: column;
   font-weight: 700;
+  position: relative;
+
+  .mobile_menu_handle {
+    display: none;
+  }
 
   a:not(.category_header) {
     padding: 0 3px;

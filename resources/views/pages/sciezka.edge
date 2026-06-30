@@ -1,7 +1,7 @@
 @layout({ title: 'Materiały' })
 
   <div class="sciezka-app">
-    <nav class="sidenav">
+    <nav class="sidenav" id="collapsable-sidenav">
       @each (poziom in poziomy)
         @if (poziom.idPoziomu == params.id)
           <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category_header active">{{poziom.nazwa}}</a>
@@ -14,6 +14,7 @@
           <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category_header">{{poziom.nazwa}}</a>
         @endif
       @end
+      <span class="mobile_menu_handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń ścieżkę v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń ścieżkę v'; }">Rozwiń ścieżkę v</span>
     </nav>
 
     <div class="content">
