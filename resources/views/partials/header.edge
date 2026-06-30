@@ -1,22 +1,29 @@
 <header style="display: flex">
-  <nav x-data="{ open: false }" style="width: 100%">
-    <div>
+  <nav x-data="{ open: false }" style="width: 100%" @click.outside="open = false">
+    <div style="width: 100%">
       <a href="/" class="dont_underline">
         <img src="/logo.png" alt="Logo OKI" height="100%">
         <h1>branding tbd!</h1>
       </a>
-      <div class="nav-links" :class="{ open: open }">
-        @if(auth.user)
-          <a href="/moja_sciezka">Moja ścieżka</a>
-        @end
-        <a href="/">Materiały</a>
-        <a href="/lista_zadan">Lista zadań</a>
-        @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
-          <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
-        @end
-        @if(auth.user && auth.user.isAdmin)
-          <a href="/admin" style="color: var(--brand)">Admin</a>
-        @endif
+      <div class="nav-links" :class="{ open: open }" style="flex: 1; display: flex; justify-content: space-between;">
+        <div class="nav-content">
+          @if(auth.user)
+            <span class="nav-separator">/</span>
+            <a href="/moja_sciezka">Moja ścieżka</a>
+          @end
+            <span class="nav-separator">/</span>
+          <a href="/">Materiały</a>
+            <span class="nav-separator">/</span>
+          <a href="/lista_zadan">Lista zadań</a>
+          @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
+            <span class="nav-separator">/</span>
+            <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
+          @end
+          @if(auth.user && auth.user.isAdmin)
+            <span class="nav-separator">/</span>
+            <a href="/admin" style="color: var(--brand)">Admin</a>
+          @endif
+      </div>
 
         @if(auth.user)
           <div>
@@ -34,13 +41,7 @@
 
     <div>
       <button class="nav-hamburger" @click="open = !open" :aria-expanded="open.toString()" aria-label="Menu">
-        <span x-text="open ? '✕' : '☰'">
-          <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 7L4 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M20 12L4 12" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M20 17L4 17" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-      </span>
+        <span x-text="open ? '✕' : '☰'">☰</span>
       </button>
     </div>
   </nav>

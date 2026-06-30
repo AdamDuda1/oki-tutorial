@@ -34,12 +34,20 @@
     flex-direction: column;
     padding: 12px 20px 16px;
     gap: 12px;
-    display: none;
+    display: none !important;
     z-index: 99999;
   }
 
+  .nav-separator {
+    display: none;
+  }
+
+  .nav-content {
+    flex-direction: column;
+  }
+
   .nav-links.open {
-    display: flex;
+    display: flex !important;
   }
 
   .sidenav {
@@ -63,7 +71,7 @@
 
     .mobile_menu_handle {
       position: absolute;
-      transform: rotate(-90deg) translate(-20px, -60px);
+      transform: rotate(-90deg) translate(-20px, -65px);
       padding: 20px;
       top: 49vh;
       left: 100%;
