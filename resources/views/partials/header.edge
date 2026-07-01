@@ -7,27 +7,27 @@
       </a>
       <div class="nav-links" :class="{ open: open }" style="flex: 1; display: flex; justify-content: space-between;">
         <div class="nav-content">
-          @if(auth.user)
+          @if(auth?.user)
             <span class="nav-separator">/</span>
-            <a href="/moja_sciezka">Moja ścieżka</a>
+            <a class="{{ $props.get('title') === 'Moja ścieżka' ? 'bold' : '' }}" href="/moja_sciezka">Moja ścieżka</a>
           @end
             <span class="nav-separator">/</span>
-          <a href="/">Materiały</a>
+          <a class="{{ $props.get('title') === 'Materiały' ? 'bold' : '' }}"  href="/">Materiały</a>
             <span class="nav-separator">/</span>
-          <a href="/lista_zadan">Lista zadań</a>
+          <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}"  href="/lista_zadan">Lista zadań</a>
           @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
             <span class="nav-separator">/</span>
             <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
           @end
-          @if(auth.user && auth.user.isAdmin)
+          @if(auth?.user && auth?.user?.isAdmin)
             <span class="nav-separator">/</span>
-            <a href="/admin" style="color: var(--brand)">Admin</a>
+            <a class="{{ $props.get('title') === 'Admin' ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a>
           @endif
       </div>
 
-        @if(auth.user)
+        @if(auth?.user)
           <div>
-            @!avatar({ initials: auth.user.initials })
+            @!avatar({ initials: auth?.user?.initials })
               @form({ route: 'session.destroy', method: 'POST' })
               @!button({ text: 'Wyloguj' })
             @end

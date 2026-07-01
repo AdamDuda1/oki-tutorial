@@ -41,12 +41,12 @@ export default class AdminTasksController {
     return response.redirect().back()
   }
 
-  async difficulty_levels_create({ view }: HttpContext) {
+  async create_difficulty_levels({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     return view.render('pages/admin/edit_difficulty_levels', { poziomyTrudnosci })
   }
 
-  async difficulty_levels_update({ request, response, session }: HttpContext) {
+  async update_difficulty_levels({ request, response, session }: HttpContext) {
     const levels = request.input('levels') as Array<{
       id: string
       position: string
@@ -65,7 +65,7 @@ export default class AdminTasksController {
         level.position = Number(data.position)
         await level.save()
       }
-      const submittedIds = levels.map(d => Number(d.id))
+      const submittedIds = levels.map((d) => Number(d.id))
       await PoziomTrudnosci.query().whereNotIn('id_poziomu_trudnosci', submittedIds).delete()
     }
 
@@ -73,7 +73,7 @@ export default class AdminTasksController {
     return response.redirect().back()
   }
 
-  async difficulty_levels_store({ request, response, session }: HttpContext) {
+  async store_difficulty_levels({ request, response, session }: HttpContext) {
     const skrot = request.input('skrot', '').trim()
     const rozwiniecie = request.input('rozwiniecie', '').trim()
     const color = request.input('color') || null
