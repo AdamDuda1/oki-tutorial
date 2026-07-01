@@ -13,21 +13,23 @@
 
 .alert-destructive {
   color: #fb2c36;
-  background: #fb2c361a;
+  background: #fedddf;
   border-color: #fb2c36;
 }
 
 .alert-success {
   color: #00a63e;
-  background: #00a63e1a;
+  background: #e5f6eb;
   border-color: #00a63e;
 }
 
 .flash-container {
   position: fixed;
   top: 80px;
-  left: 0;
+  left: 50vw;
+  translate: -50% 0;
   right: 0;
+  width: max-content;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -76,10 +76,28 @@
   </div>
 
   <div class="admin-form-section">
+    @field.root({ name: 'customHtml' })
+      @!field.label({ text: 'Customowy HTML (opcjonalnie)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.customHtml ?? '') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @end
+
+    <a style="color: var(--brand); cursor: pointer;" x-data @click.stop="$store.modal.show('Formatowanie',
+    'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox({ title: \'tutaj idzie nagłówek sekcji\' })\n   tutaj idzie treść\n \@end ')">Pomoc z formatowaniem ></a>
+  </div>
+
+  <div class="admin-form-section">
     <h2>Zadania</h2>
-    @field.root({ name: 'zadania' })
-      @!field.label({ text: 'IDs zadań (każde ID w nowej linii)' })
-      @!textarea.control({ rows: 5, value: temat ? (temat.zadania ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @field.root({ name: 'zadaniaRozgrzewkowe' })
+      @!field.label({ text: 'IDs zadań rozgrzewkowych (każde ID w nowej linii)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaRozgrzewkowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @end
+    @field.root({ name: 'zadaniaNaPomysl' })
+      @!field.label({ text: 'IDs zadań na pomysł (każde ID w nowej linii)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaNaPomysl ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @end
+    @field.root({ name: 'zadaniaTreningowe' })
+      @!field.label({ text: 'IDs zadań treningowych (każde ID w nowej linii)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaTreningowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
     @end
   </div>
 

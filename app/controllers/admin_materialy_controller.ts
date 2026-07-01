@@ -60,9 +60,27 @@ export default class AdminMaterialyController {
       .first()
     const matUrls = (request.input('mat_url') ?? []) as string[]
     const matOpisy = (request.input('mat_opis') ?? []) as string[]
-    const zadaniaRaw = (request.input('zadania', '') as string).trim()
-    const zadania = zadaniaRaw
-      ? zadaniaRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
+    const customHtml = String(request.input('customHtml') ?? '').trim()
+    const zadaniaRozgrzewkoweRaw = String(request.input('zadaniaRozgrzewkowe') ?? '').trim()
+    const zadaniaRozgrzewkowe = zadaniaRozgrzewkoweRaw
+      ? zadaniaRozgrzewkoweRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
+      : null
+    const zadaniaNaPomyslRaw = String(request.input('zadaniaNaPomysl')).trim()
+    const zadaniaNaPomysl = zadaniaNaPomyslRaw
+      ? zadaniaNaPomyslRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
+      : null
+    const zadaniaTreningoweRaw = String(request.input('zadaniaTreningowe')).trim()
+    const zadaniaTreningowe = zadaniaTreningoweRaw
+      ? zadaniaTreningoweRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
       : null
     await Tematy.create({
       nazwa,
@@ -73,7 +91,10 @@ export default class AdminMaterialyController {
       published: request.input('published') === 'on',
       zewnetrzneMaterialy: matUrls.filter(Boolean),
       zewnetrzneMaterialyOpisy: matOpisy.filter(Boolean),
-      zadania,
+      customHtml,
+      zadaniaRozgrzewkowe,
+      zadaniaNaPomysl,
+      zadaniaTreningowe,
     })
     session.flash('success', 'Temat został dodany.')
     return response.redirect().toRoute('admin.materialy')
@@ -89,9 +110,18 @@ export default class AdminMaterialyController {
     const temat = await Tematy.findOrFail(params.id)
     const matUrls = (request.input('mat_url') ?? []) as string[]
     const matOpisy = (request.input('mat_opis') ?? []) as string[]
-    const zadaniaRaw = (request.input('zadania', '') as string).trim()
-    const zadania = zadaniaRaw
-      ? zadaniaRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
+    const customHtml = String(request.input('customHtml') ?? '').trim()
+    const zadaniaRozgrzewkoweRaw = (request.input('zadaniaRozgrzewkowe', '') as string).trim()
+    const zadaniaRozgrzewkowe = zadaniaRozgrzewkoweRaw
+      ? zadaniaRozgrzewkoweRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
+      : null
+    const zadaniaNaPomyslRaw = (request.input('zadaniaNaPomysl', '') as string).trim()
+    const zadaniaNaPomysl = zadaniaNaPomyslRaw
+      ? zadaniaNaPomyslRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
+      : null
+    const zadaniaTreningoweRaw = (request.input('zadaniaTreningowe', '') as string).trim()
+    const zadaniaTreningowe = zadaniaTreningoweRaw
+      ? zadaniaTreningoweRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
       : null
     temat.nazwa = request.input('nazwa', temat.nazwa).trim()
     temat.idPoziomu = Number(request.input('idPoziomu', temat.idPoziomu))
@@ -100,7 +130,10 @@ export default class AdminMaterialyController {
     temat.published = request.input('published') === 'on'
     temat.zewnetrzneMaterialy = matUrls.filter(Boolean)
     temat.zewnetrzneMaterialyOpisy = matOpisy.filter(Boolean)
-    temat.zadania = zadania
+    temat.zadaniaRozgrzewkowe = zadaniaRozgrzewkowe
+    temat.zadaniaNaPomysl = zadaniaNaPomysl
+    temat.zadaniaTreningowe = zadaniaTreningowe
+    temat.customHtml = customHtml
     await temat.save()
     session.flash('success', 'Temat został zaktualizowany.')
     return response.redirect().back()

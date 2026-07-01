@@ -35,7 +35,7 @@
                   @end
                 </div>
                 <div class="learning_materials">
-                  <h3>Materiały do nauki</h3>
+                  <!--h3>Materiały do nauki</h3-->
                   @each(material in temat.$extras.materialy)
                     <a href="{{ material.link }}" class="medium" target="_blank" rel="noopener">
                       {{ material.opis }}
@@ -47,59 +47,32 @@
 
               @if(temat.customHtml)
                 <div class="topic_html">
-                  {{{temat.customHtml}}}
+                  {{{ temat.$extras.customHTML }}}
+
                 </div>
               @end
 
-              @if(temat.$extras.tasks.length > 0)
-                <div class="tasks_box" x-data="{ open: false }">
-                  <button class="toggle" @click="open = !open">
-                    <span class="task_box_arrow" :class="{ open }">▶</span>
-                    <h3 class="bold">Zadania</h3>
-                  </button>
-                  <div class="box" :class="{ open }">
-                    <div class="box_inner">
-                      @each(zadanie in temat.$extras.tasks)
-                        <div class="task_box" x-data="{ open: false }">
-                          <button class="toggle" @click="open = !open">
-                            <div class="toggle_left">
-                              <span class="task_box_arrow" :class="{ open }">▶</span>
-                              <h3 class="medium">{{ zadanie.nazwa }}</h3>
-                            </div>
-                            <span class="toggle_right difficulty-{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.position : '' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
-                          </button>
-                          <div class="box" :class="{ open }">
-                            <div class="box_inner">
-                              <a href="{{ zadanie.linkTresc }}" class="task_action" target="_blank" rel="noopener">Treść</a>
-                              @if(zadanie.linkWyslij)
-                                <a href="{{ zadanie.linkWyslij }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij w konkursie</a>
-                              @end
-                              @if(zadanie.hint)
-                                <button class="task_action" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
-                                  data-hint="{{ zadanie.hint }}"><img src="/icons/i_hint.svg" alt=""> Hint</button>
-                              @end
-                              @if(zadanie.linkOmowienieVid)
-                                <a href="{{ zadanie.linkOmowienieVid }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
-                              @end
-                              @if(zadanie.linkOmowienieText)
-                                <a href="{{ zadanie.linkOmowienieText }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
-                              @end
-                              @if(zadanie.kodCpp)
-                                <button class="task_action" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
-                                  data-code="{{ zadanie.kodCpp }}"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
-                              @end
-                              @if(zadanie.kodPython)
-                                <button class="task_action" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
-                                  data-code="{{ zadanie.kodPython }}"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
-                              @end
-                            </div>
-                          </div>
-                        </div>
-                      @end
-                    </div>
-                  </div>
-                </div>
-              @end
+              @!custom.sciezka.grupaZadan({
+                zadanie: temat.$extras.zadaniaRozgrzewkowe,
+                header: 'Zadania rozgrzewkowe',
+                description: 'Zadania na rozgrzewkę. Pozwolą zapoznać Ci się konceptem i przygotują cię do kolejnych zadań.',
+                last: (temat.$extras.zadaniaNaPomysl.length === 0 && temat.$extras.zadaniaTreningowe.length === 0),
+                })
+
+              @!custom.sciezka.grupaZadan({
+                zadanie: temat.$extras.zadaniaNaPomysl,
+                header: 'Zadania na pomysł',
+                description: 'Zadania wymagające, czasami wręcz ostentacyjnie nietrywialnej, ilości pomyślunku, której skala pozostaje niewspółmierna do liczby linijek kodu prowadzących do rozwiązania.',
+                first: temat.$extras.zadaniaRozgrzewkowe.length === 0,
+                last: temat.$extras.zadaniaTreningowe.length === 0,
+                })
+
+              @!custom.sciezka.grupaZadan({
+                zadanie: temat.$extras.zadaniaTreningowe,
+                header: 'Zadania treningowe',
+                description: 'Zadania z materiału do tego tematu włącznie. Niekoniecznie muszą zawierać materiały z tego tematu, ale zalecamy zrobienie wszystkich dla powtórzenia i treningu!',
+                first: (temat.$extras.zadaniaRozgrzewkowe.length === 0 && temat.$extras.zadaniaNaPomysl.length === 0),
+                })
             </div>
           </div>
         </div>

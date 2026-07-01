@@ -18,7 +18,11 @@ export default class SciezkaController {
       }))
     }
 
-    const allTaskIds = tematy.flatMap((t) => t.zadania ?? [])
+    const allTaskIds = tematy.flatMap((t) => [
+      ...(t.zadaniaRozgrzewkowe ?? []),
+      ...(t.zadaniaNaPomysl ?? []),
+      ...(t.zadaniaTreningowe ?? []),
+    ])
     const taskMap = new Map<number, InstanceType<typeof ListaZadan>>()
 
     if (allTaskIds.length > 0) {
@@ -31,12 +35,26 @@ export default class SciezkaController {
       }
     }
 
-    for (const temat of tematy) {
-      temat.$extras.tasks = (temat.zadania ?? []).map((id) => taskMap.get(id)).filter(Boolean)
-    }
+    for (const temat of tematy)
+      temat.$extras.zadaniaRozgrzewkowe = (temat.zadaniaRozgrzewkowe ?? [])
+      .map((id) => taskMap.get(id))
+      .filter(Boolean)
+
+    for (const temat of tematy)
+      temat.$extras.zadaniaNaPomysl = (temat.zadaniaNaPomysl ?? [])
+        .map((id) => taskMap.get(id))
+        .filter(Boolean)
+
+    for (const temat of tematy)
+      temat.$extras.zadaniaTreningowe = (temat.zadaniaTreningowe ?? [])
+        .map((id) => taskMap.get(id))
+        .filter(Boolean)
+
+    for (const temat of tematy)
+      if (temat.customHtml) temat.$extras.customHTML = await view.renderRaw(temat.customHtml)
 
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
 
-    return view.render('pages/sciezka', { params, tematy, poziomy })
+    return view.render('pages/sciezka', { params, tematy, poziomy,  })
   }
 }

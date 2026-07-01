@@ -1,0 +1,22 @@
+@let(zadania = $props.get('zadanie'))
+@let(header = $props.get('header'))
+@let(description = $props.get('description'))
+@let(isFirst = $props.get('first', true))
+@let(isLast = $props.get('last', true))
+
+@if(zadania.length > 0)
+  <div class="tasks_box {{ isFirst ? 'first' : '' }} {{ isLast ? 'last' : '' }}" x-data="{ open: false }">
+    <button class="toggle" @click="open = !open">
+      <span class="task_box_arrow" :class="{ open }">▶</span>
+      <h3 class="bold">{{ header }} <span class="counter">({{ zadania.length }})</span></h3>
+    </button>
+    <div class="box" :class="{ open }">
+      <div class="box_inner">
+        <span style="font-size: 14px">{{ description }}</span>
+        @each(zadanie in zadania)
+          @!custom.sciezka.zadanie({ zadanie: zadanie })
+        @end
+      </div>
+    </div>
+  </div>
+@end

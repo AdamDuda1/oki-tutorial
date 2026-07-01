@@ -1,6 +1,5 @@
 :root {
   --font-brand: "JetBrains Mono"; /* font-family: var(--font-brand), monospace; */
-  --font-accent: "Purple Purse"; /* font-family: var(--font-accent), serif; */
   --font-quicksand: "Quicksand"; /* font-family: var(--font-quicksand), sans-serif; */
 
   --oki-gray: oklch(0.556 0 0);

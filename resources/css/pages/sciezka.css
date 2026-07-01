@@ -157,8 +157,23 @@
 
 .tasks_box {
   outline: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin: 0 -14px -14px;
+  margin: 0 -14px -9px;
+
+  &.first {
+    /*border-top-right-radius: 8px;*/
+    /*border-top-left-radius: 8px;*/
+  }
+
+  &.last {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    margin-bottom: -14px;
+  }
+
+  &.standalone {
+    border-radius: 8px;
+    margin: 0 !important;
+  }
 
   > .toggle {
     width: 100%;
@@ -170,6 +185,13 @@
     color: var(--text);
     align-items: center;
     gap: 7px;
+
+    .counter {
+      font-size: medium;
+      color: gray;
+      font-family: var(--font-quicksand), serif;
+      font-weight: 500;
+    }
 
     .task_box_arrow {
       display: inline-block;

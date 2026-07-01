@@ -44,7 +44,19 @@ export default class Tematy extends TematySchema {
     prepare: (value: number[] | null) => JSON.stringify(value),
     consume: (value: any) => (typeof value === 'string' ? JSON.parse(value) : value),
   })
-  declare zadania: number[] | null
+  declare zadaniaRozgrzewkowe: number[] | null
+
+  @column({
+    prepare: (value: number[] | null) => JSON.stringify(value),
+    consume: (value: any) => (typeof value === 'string' ? JSON.parse(value) : value),
+  })
+  declare zadaniaNaPomysl: number[] | null
+
+  @column({
+    prepare: (value: number[] | null) => JSON.stringify(value),
+    consume: (value: any) => (typeof value === 'string' ? JSON.parse(value) : value),
+  })
+  declare zadaniaTreningowe: number[] | null
 
   @column()
   declare published: boolean
