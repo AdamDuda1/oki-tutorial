@@ -1,0 +1,36 @@
+@layout({ title: 'Materiały' })
+@layoutAdminSidebar({ page: 'Edytuj tematy' })
+
+<table class="zadania-table">
+  <thead>
+    <tr>
+      <th class="col-id">#</th>
+      <th>Imię & Nazwisko</th>
+      <th>Email</th>
+      <th>Rola</th>
+      <th>co zrobić?</th>
+    </tr>
+  </thead>
+  @each(u in users)
+    <tbody class="task_row">
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.fullName }}</td>
+        <td>{{ u.email }}</td>
+        <td>
+          <select name="role" id="">
+            <option>{{ u.role }}</option>
+          </select>
+        </td>
+        <td>
+          <a style="color: var(--brand)" href="">resetuj hasło</a>
+          /
+          <a style="color: var(--brand)" href="/admin/users/edit/{{ u.id }}">edytuj</a>
+        </td>
+      </tr>
+    </tbody>
+  @end
+</table>
+
+@end
+@end

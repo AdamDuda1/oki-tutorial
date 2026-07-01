@@ -1,15 +1,12 @@
 @layout({ title: 'Rejestracja' })
   <div class="form-container">
-    <div>
-      <h1>Signup</h1>
-      <p>Enter your details below to create your account</p>
-    </div>
-
-    <div>
+    <h1>Rejestracja</h1>
+    <br>
+    <div style="max-width: 90vw; min-width: 50vw;">
       @form({ route: 'new_account.store', method: 'POST' })
         <div>
           @field.root({ name: 'fullName' })
-            @!field.label({ text: 'Full name' })
+            @!field.label({ text: 'Imię i nazwisko' })
             @!input.control()
             @!field.error()
           @end
@@ -25,7 +22,7 @@
 
         <div>
           @field.root({ name: 'password' })
-            @!field.label({ text: 'Password' })
+            @!field.label({ text: 'Hasło' })
             @!input.control({ type: 'password', autocomplete: 'new-password' })
             @!field.error()
           @end
@@ -33,16 +30,18 @@
 
         <div>
           @field.root({ name: 'passwordConfirmation' })
-            @!field.label({ text: 'Confirm password' })
+            @!field.label({ text: 'Potwierdź hasło' })
             @!input.control({ type: 'password', autocomplete: 'new-password' })
             @!field.error()
           @end
         </div>
 
         <div>
-          @!button({ text: 'Sign up', type: 'submit' })
+          @!button({ text: 'Zarejestruj się', type: 'submit' })
         </div>
       @end
     </div>
+    <br>
+    @!link({ text: "Zaloguj się", route: 'session.create' })
   </div>
 @end

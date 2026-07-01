@@ -28,6 +28,7 @@ export type ScannedRoutes = {
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -43,6 +44,7 @@ export type ScannedRoutes = {
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -58,6 +60,7 @@ export type ScannedRoutes = {
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }

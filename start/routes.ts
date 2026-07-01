@@ -35,15 +35,17 @@ router
 
 router
   .group(() => {
-    router.get('/', [AdminController, 'index']).as('admin')
+    router.get('/', async ({ view }) => view.render('pages/admin')).as('admin')
     router.get('edit_task', [AdminTasksController, 'index']).as('admin.edit_task.index')
     router.get('edit_task/new', [AdminTasksController, 'create']).as('admin.edit_task.create')
     router.post('edit_task/new', [AdminTasksController, 'store']).as('admin.edit_task.store')
     router.get('edit_task/:id', [AdminTasksController, 'edit']).as('admin.edit_task.edit')
     router.post('edit_task/:id', [AdminTasksController, 'update']).as('admin.edit_task.update')
-    router.get('edit_difficulty_levels', [AdminTasksController, 'difficulty_levels_create']).as('admin.difficulty_levels.create')
-    router.post('edit_difficulty_levels', [AdminTasksController, 'difficulty_levels_update']).as('admin.difficulty_levels.update')
-    router.post('edit_difficulty_levels/new', [AdminTasksController, 'difficulty_levels_store']).as('admin.difficulty_levels.store')
+    router
+      .get('edit_difficulty_levels', [AdminTasksController, 'create_difficulty_levels'])
+      .as('admin.difficulty_levels.create')
+    router.post('edit_difficulty_levels', [AdminTasksController, 'update_difficulty_levels']).as('admin.difficulty_levels.update')
+    router.post('edit_difficulty_levels/new', [AdminTasksController, 'store_difficulty_levels']).as('admin.difficulty_levels.store')
     router.get('materialy', [AdminMaterialyController, 'index']).as('admin.materialy')
     router.post('materialy/positions', [AdminMaterialyController, 'update_positions']).as('admin.materialy.update_positions')
     router.post('materialy/poziom/new', [AdminMaterialyController, 'store_poziom']).as('admin.materialy.store_poziom')
@@ -51,6 +53,7 @@ router
     router.post('materialy/temat/new', [AdminMaterialyController, 'store_temat']).as('admin.materialy.store_temat')
     router.get('materialy/temat/:id', [AdminMaterialyController, 'edit_temat']).as('admin.materialy.edit_temat')
     router.post('materialy/temat/:id', [AdminMaterialyController, 'update_temat']).as('admin.materialy.update_temat')
+    router.get('users', [AdminController, 'index_users']).as('admin.users')
   })
   .prefix('/admin')
   .use(middleware.admin())

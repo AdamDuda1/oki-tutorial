@@ -8,12 +8,14 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime()
   declare deletedAt: DateTime | null
+  @column()
+  declare difficulty: number | null
   @column()
   declare hint: string | null
   @column()
@@ -83,7 +85,7 @@ export class PoziomyTrudnosciSchema extends BaseModel {
 }
 
 export class TematySchema extends BaseModel {
-  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadania', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaNaPomysl', 'zadaniaRozgrzewkowe', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
   $columns = TematySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -108,7 +110,11 @@ export class TematySchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare zadania: any | null
+  declare zadaniaNaPomysl: any | null
+  @column()
+  declare zadaniaRozgrzewkowe: any | null
+  @column()
+  declare zadaniaTreningowe: any | null
   @column()
   declare zewnetrzneMaterialy: any | null
   @column()

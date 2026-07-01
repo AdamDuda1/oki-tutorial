@@ -1,11 +1,8 @@
 @layout({ title: 'Zaloguj' })
   <div class="form-container">
-    <div>
-      <h1>Login</h1>
-      <p>Enter your email and password below to log in</p>
-    </div>
-
-    <div>
+    <h1>Zaloguj się</h1>
+    <br>
+    <div style="max-width: 90vw; min-width: 50vw;">
       @form({ route: 'session.store', method: 'POST' })
         <div>
           @field.root({ name: 'email' })
@@ -17,17 +14,18 @@
 
         <div>
           @field.root({ name: 'password' })
-            @!field.label({ text: 'Password' })
+            @!field.label({ text: 'Hasło' })
             @!input.control({ type: 'password' })
             @!field.error()
           @end
         </div>
 
         <div>
-          @!button({ text: 'Login', type: 'submit' })
+          @!button({ text: 'Zaloguj się', type: 'submit' })
         </div>
       @end
     </div>
-    @!link({ text: "Don't have an account? Sign up", route: 'new_account.create' })
+    <br>
+    @!link({ text: "Nowe konto", route: 'new_account.create' })
   </div>
 @end
