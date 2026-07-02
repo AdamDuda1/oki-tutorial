@@ -235,7 +235,7 @@ form.filters {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    padding: 8px 12px 0;
+    padding: 0 12px;
     transition: padding-bottom 0.22s ease;
     justify-content: space-between;
 
@@ -244,12 +244,14 @@ form.filters {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
+      padding-top: 8px;
     }
 
     .tagi {
       display: flex;
       align-items: center;
       gap: 5px;
+      padding-top: 8px;
 
       .tag {
         display: none;
