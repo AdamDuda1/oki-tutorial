@@ -76,11 +76,6 @@ Alpine.data('levelEditor', () => ({
   _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
 }))
 
-Alpine.store('tagi', {
-  shown: false,
-  show() { this.shown = true },
-})
-
 Alpine.store('modal', {
   open: false,
   title: '',
@@ -171,14 +166,33 @@ Alpine.data('alert', function () {
 
 Alpine.start()
 
-document.addEventListener('turbo:load', () => {
-  if (document.querySelector('#zrodla-select')) {
-    new TomSelect('#zrodla-select', {
-      plugins: ['remove_button'],
-      maxOptions: null,
-    })
-  }
+function initZadaniaFilterSelect(selector, param) {
+  if (!document.querySelector(selector)) return
+  new TomSelect(selector, {
+    plugins: ['remove_button'],
+    maxOptions: null,
+    onChange(values) {
+      const url = new URL(location.href)
+      url.searchParams.delete(param)
+      for (const v of values) url.searchParams.append(param, v)
+      url.searchParams.delete('page')
+      history.replaceState(null, '', url)
+      fetch(url, { headers: { 'X-Requested-With': 'fetch' } })
+        .then((res) => res.text())
+        .then((html) => {
+          const table = document.querySelector('#zadania-table')
+          if (table) table.innerHTML = html
+        })
+    },
+  })
+}
 
+document.addEventListener('turbo:load', () => {
+  // /lista_zadan filters
+  initZadaniaFilterSelect('#zrodla-select', 'zrodlo[]')
+  initZadaniaFilterSelect('#tagi-filter-select', 'tagi[]')
+
+  // admin task form: tag picker that can create new tags
   if (document.querySelector('#tagi-select')) {
     new TomSelect('#tagi-select', {
       plugins: ['remove_button'],

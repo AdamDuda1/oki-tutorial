@@ -1,0 +1,55 @@
+@layout({ title: 'Edytuj tagi zadań' })
+@layoutAdminSidebar({ page: 'Edytuj tagi zadań' })
+
+<div class="admin-edit-task">
+  <h1>Tagi zadań</h1>
+
+  @if(tagi.length === 0)
+    <p class="empty-state">Brak tagów. Dodaj pierwszy poniżej. Nowe tagi można też tworzyć bezpośrednio przy edycji zadania.</p>
+  @else
+    <table class="zadania-table">
+      <thead>
+        <tr>
+          <th class="col-id">#</th>
+          <th>Nazwa</th>
+          <th>Ilość zadań</th>
+          <th>co zrobić?</th>
+        </tr>
+      </thead>
+      @each(t in tagi)
+        <tbody class="task_row">
+          <tr>
+            <td>{{ t.idTagu }}</td>
+            <td>{{ t.nazwa }}</td>
+            <td><span class="tag-usage">{{ uzycia[t.nazwa] || 0 }} zadań</span></td>
+            <td>
+              <form method="POST" action="{{ route('admin.tags.destroy', { id: t.idTagu }) }}"
+                onsubmit="return confirm('Usunąć tag „{{ t.nazwa }}”? Zostanie odpięty od wszystkich zadań.')">
+                {{ csrfField() }}
+                <button type="submit" style="background: transparent; padding: 0; width: max-content;"><a style="color: var(--brand)">usuń</a></button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      @end
+    </table>
+  @end
+</div>
+
+<div class="admin-edit-task" style="padding-top: 35px; margin-top: 25px; border-top: 1px solid black;">
+  <h1>Dodaj nowy</h1>
+  <span>Możesz to zrobić też podczas dodawania zadania.</span>
+
+  <form method="POST" action="{{ route('admin.tags.store') }}">
+    {{ csrfField() }}
+    <div class="tag-admin-row">
+      <input name="nazwa" placeholder="Nazwa tagu" required>
+    </div>
+    <div class="admin-form-actions">
+      @!button({ text: 'Dodaj', type: 'submit' })
+    </div>
+  </form>
+</div>
+
+@end
+@end

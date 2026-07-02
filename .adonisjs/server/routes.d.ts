@@ -21,6 +21,9 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
+    'admin.tags.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
@@ -41,6 +44,7 @@ export type ScannedRoutes = {
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -57,6 +61,7 @@ export type ScannedRoutes = {
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -70,6 +75,8 @@ export type ScannedRoutes = {
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }

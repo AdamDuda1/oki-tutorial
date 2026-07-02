@@ -59,8 +59,8 @@
             @end
           </div>
           @if(z.tagi && z.tagi.length)
-            <div class="tagi" x-data :class="{ shown: $store.tagi.shown }">
-              <a class="pokaz-tagi" x-show="!$store.tagi.shown" @click.stop="$store.tagi.show()">pokaż tagi</a>
+            <div class="tagi" x-data="{ shown: false }" :class="{ shown }">
+              <a class="pokaz-tagi" x-show="!shown" @click.stop="shown = true">pokaż tagi</a>
               @each(tag in z.tagi)
                 <span class="tag">{{ tag }}</span>
               @end

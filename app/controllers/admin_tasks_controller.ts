@@ -57,6 +57,46 @@ export default class AdminTasksController {
     return response.redirect().back()
   }
 
+  async create_tags({ view }: HttpContext) {
+    const tagi = await Tag.query().orderBy('nazwa')
+    const zadania = await ListaZadan.query().whereNotNull('tagi')
+
+    const uzycia: Record<string, number> = {}
+    for (const z of zadania) {
+      for (const t of z.tagi ?? []) uzycia[t] = (uzycia[t] ?? 0) + 1
+    }
+
+    return view.render('pages/admin/edit_tags', { tagi, uzycia })
+  }
+
+  async store_tags({ request, response, session }: HttpContext) {
+    const nazwa = String(request.input('nazwa', '')).trim()
+
+    if (!nazwa) {
+      session.flash('error', 'Nazwa tagu jest wymagana.')
+      return response.redirect().back()
+    }
+
+    await Tag.firstOrCreate({ nazwa })
+    session.flash('success', 'Tag został dodany.')
+    return response.redirect().back()
+  }
+
+  async destroy_tag({ params, response, session }: HttpContext) {
+    const tag = await Tag.findOrFail(params.id)
+
+    const zadania = await ListaZadan.query().where('tagi', 'like', `%"${tag.nazwa}"%`)
+    for (const z of zadania) {
+      const tagi = (z.tagi ?? []).filter((t) => t !== tag.nazwa)
+      z.tagi = tagi.length ? tagi : null
+      await z.save()
+    }
+
+    await tag.delete()
+    session.flash('success', 'Tag został usunięty.')
+    return response.redirect().back()
+  }
+
   async create_difficulty_levels({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     return view.render('pages/admin/edit_difficulty_levels', { poziomyTrudnosci })
