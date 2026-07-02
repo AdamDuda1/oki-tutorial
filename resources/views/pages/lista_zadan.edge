@@ -5,7 +5,7 @@
       <span class="task-count">{{ totalCount }} zadań</span>
     </div>
 
-    <div class="search-bar"
+    <!--div class="search-bar"
       x-data="{
         q: new URLSearchParams(location.search).get('q') || '',
         timer: null,
@@ -20,109 +20,31 @@
         }
       }">
       <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
+    </div-->
+
+    <div class="search-bar"
+      x-data="{
+        q: new URLSearchParams(location.search).get('q') || '',
+        timer: null,
+        search() {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(async () => {
+            const url = new URL(location.href);
+            this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
+            url.searchParams.delete('page');
+            history.replaceState(null, '', url);
+            const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+            document.querySelector('#zadania-table').innerHTML = await res.text();
+          }, 300);
+        }
+      }">
+      <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
     </div>
 
-    <form class="filters" method="GET" action="/lista_zadan">
-      <div class="filter-row">
-        <div class="difficulty-pills">
-          <label class="pill {{ !filters.idPoziomuTrudnosci ? 'active' : '' }}">
-            <input type="radio" name="idPoziomuTrudnosci" value="">
-            Wszystkie
-          </label>
-          @each(pt in poziomyTrudnosci)
-            <label class="pill diff-{{ pt.position }} {{ filters.idPoziomuTrudnosci === pt.idPoziomuTrudnosci ? 'active' : '' }}">
-              <input type="radio" name="idPoziomuTrudnosci" value="{{ pt.idPoziomuTrudnosci }}" {{ filters.idPoziomuTrudnosci === pt.idPoziomuTrudnosci ? 'checked' : '' }}>
-              {{ pt.rozwiniecie }}
-            </label>
-          @end
-        </div>
 
-        <select name="zrodlo" class="source-select">
-          <option value="">Wszystkie źródła</option>
-          @each(z in zrodla)
-            <option value="{{ z }}" {{ filters.zrodlo === z ? 'selected' : '' }}>{{ z }}</option>
-          @end
-        </select>
-
-        <button type="submit" class="filter-btn">Filtruj</button>
-        @if(filters.idPoziomuTrudnosci || filters.zrodlo)
-          <a href="/lista_zadan" class="clear-link">Wyczyść</a>
-        @end
-      </div>
-    </form>
-
-    @if(zadania.length === 0)
-      <p class="empty-state">Brak zadań dla wybranych filtrów.</p>
-    @else
-      <table class="zadania-table">
-        <thead>
-          <tr>
-            <th class="col-id">#</th>
-            <th>Nazwa</th>
-            <th>Źródło</th>
-            <th style="width: 200px;"><span style="float: right">Trudność</span></th>
-          </tr>
-        </thead>
-        @each(z in zadania)
-          <tbody x-data="{ open: false }" class="task_row">
-            <tr @click="open = !open">
-              <td class="col-id">{{ z.idZadania }}</td>
-              <td class="col-nazwa">
-                <div class="toggle_left">
-                  <span class="task_box_arrow" :class="{ open }">▶</span>
-                  {{ z.nazwa }}
-                </div>
-              </td>
-              <td class="col-zrodlo">
-                @if(z.linkZrodlo)
-                  <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener" @click.stop>{{ z.zrodlo }}</a>
-                @else
-                  {{ z.zrodlo }}
-                @end
-              </td>
-              <td class="col-difficulty">
-                <span class="diff-badge" style="
-                color: {{ poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color || '#000' }};
-                background-color: {{ withAlpha(poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color, 0.1) || '#ffffff' }};">
-                  {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.skrot : '??' }}
-                  <span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span>
-                </span>
-              </td>
-            </tr>
-            <tr class="expand_row">
-              <td colspan="4">
-                <div class="box" :class="{ open }">
-                  <div class="box_inner">
-                    <a href="{{ z.linkTresc }}" class="task_action" target="_blank" rel="noopener">Treść</a>
-                    <!--@if(z.linkWyslij)
-                      <a href="{{ z.linkWyslij }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
-                    @end-->
-                    @if(z.hint)
-                      <button class="task_action" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
-                        data-hint="{{ z.hint }}"><img src="/icons/i_hint.svg" alt=""> Hint</button>
-                    @end
-                    @if(z.linkOmowienieVid)
-                      <a href="{{ z.linkOmowienieVid }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
-                    @end
-                    @if(z.linkOmowienieText)
-                      <a href="{{ z.linkOmowienieText }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
-                    @end
-                    @if(z.kodCpp)
-                      <button class="task_action" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
-                        data-code="{{ z.kodCpp }}"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
-                    @end
-                    @if(z.kodPython)
-                      <button class="task_action" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
-                        data-code="{{ z.kodPython }}"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
-                    @end
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        @end
-      </table>
-    @end
+   <div id="zadania-table">
+     @include('pages/partials/zadania_table')
+  </div>
   </div>
   @!pagination({ currentPage: currentPage, totalPages: totalPages, prevUrl: prevUrl, nextUrl: nextUrl })
 @end

@@ -9,33 +9,22 @@ export default class ListaZadanController {
     const zrodlo = qs.zrodlo || null
     const q = qs.q ? String(qs.q) : null
     const page = Math.max(1, Number(qs.page) || 1)
-    const perPage = 20
 
     const query = ListaZadan.query().orderBy('id_zadania').preload('poziomuTrudnosci')
     if (idPoziomuTrudnosci) query.where('id_poziomu_trudnosci', idPoziomuTrudnosci)
     if (zrodlo) query.where('zrodlo', zrodlo)
     if (q) query.where('nazwa', 'like', `%${q}%`)
 
-    const paginator = await query.paginate(page, perPage)
-    const zadania = paginator.all()
+    const paginator = await query.paginate(page, 20)
+    paginator.baseUrl('/lista_zadan')
 
-    const makePageUrl = (p: number) => {
-      const ps = new URLSearchParams()
-      if (q) ps.set('q', q)
-      if (idPoziomuTrudnosci) ps.set('idPoziomuTrudnosci', String(idPoziomuTrudnosci))
-      if (zrodlo) ps.set('zrodlo', zrodlo)
-      if (p > 1) ps.set('page', String(p))
-      const s = ps.toString()
-      return '/lista_zadan' + (s ? '?' + s : '')
-    }
+    const activeFilters: Record<string, any> = {}
+    if (q) activeFilters.q = q
+    if (idPoziomuTrudnosci) activeFilters.idPoziomuTrudnosci = idPoziomuTrudnosci
+    if (zrodlo) activeFilters.zrodlo = zrodlo
+    paginator.queryString(activeFilters)
 
-    const zrodlaRows = await ListaZadan.query()
-      .select('zrodlo')
-      .distinct('zrodlo')
-      .orderBy('zrodlo')
-    const zrodla = zrodlaRows.map((r) => r.zrodlo)
-
-    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    const filters = { idPoziomuTrudnosci, zrodlo, q }
 
     const withAlpha: (hex: string, alpha: number) => string = (hex: string, alpha: number) => {
       const a = Math.round(alpha * 255)
@@ -44,17 +33,19 @@ export default class ListaZadanController {
       return hex + a
     }
 
-    return view.render('pages/lista_zadan', {
-      zadania,
-      totalCount: paginator.total,
-      currentPage: paginator.currentPage,
-      totalPages: paginator.lastPage,
-      prevUrl: paginator.currentPage > 1 ? makePageUrl(paginator.currentPage - 1) : null,
-      nextUrl: paginator.currentPage < paginator.lastPage ? makePageUrl(paginator.currentPage + 1) : null,
-      zrodla,
-      poziomyTrudnosci,
-      filters: { idPoziomuTrudnosci, zrodlo, q },
-      withAlpha,
-    })
+    const zrodlaRows = await ListaZadan.query().distinct('zrodlo').orderBy('zrodlo')
+    const zrodla = zrodlaRows.map((r) => r.zrodlo)
+    const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+
+    if (request.header('x-requested-with') === 'fetch') {
+      return view.render('pages/partials/zadania_table', {
+        paginator,
+        zrodla,
+        poziomyTrudnosci,
+        filters,
+        withAlpha,
+      })
+    }
+    return view.render('pages/lista_zadan', { paginator, zrodla, poziomyTrudnosci, filters, withAlpha })
   }
 }
