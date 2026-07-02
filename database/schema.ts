@@ -8,7 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -28,6 +28,8 @@ export class ListaZadanSchema extends BaseModel {
   declare kodCpp: string | null
   @column()
   declare kodPython: string | null
+  @column()
+  declare linkDodatkoweMaterialy: string | null
   @column()
   declare linkOmowienieText: string | null
   @column()
@@ -85,7 +87,7 @@ export class PoziomyTrudnosciSchema extends BaseModel {
 }
 
 export class TematySchema extends BaseModel {
-  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaNaPomysl', 'zadaniaRozgrzewkowe', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaCwiczeniowe', 'zadaniaNaPomysl', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
   $columns = TematySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -110,9 +112,9 @@ export class TematySchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare zadaniaNaPomysl: any | null
-  @column()
   declare zadaniaCwiczeniowe: any | null
+  @column()
+  declare zadaniaNaPomysl: any | null
   @column()
   declare zadaniaTreningowe: any | null
   @column()
