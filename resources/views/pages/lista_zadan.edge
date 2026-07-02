@@ -2,52 +2,39 @@
   <div class="lista-zadan-page">
     <div class="lista-header">
       <h1>Lista zadań</h1>
-      <span class="task-count">{{ totalCount }} zadań</span>
+      <!--span class="task-count">{{ paginator.total }} zadań</span-->
     </div>
 
-    <!--div class="search-bar"
-      x-data="{
-        q: new URLSearchParams(location.search).get('q') || '',
-        timer: null,
-        search() {
-          clearTimeout(this.timer);
-          this.timer = setTimeout(() => {
-            const url = new URL(location.href);
-            this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
-            url.searchParams.delete('page');
-            window.location = url.toString();
-          }, 300);
-        }
-      }">
-      <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
-    </div-->
+    <div class="filters">
+      <div class="search-bar"
+        x-data="{
+          q: new URLSearchParams(location.search).get('q') || '',
+          timer: null,
+          search() {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(async () => {
+              const url = new URL(location.href);
+              this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
+              url.searchParams.delete('page');
+              history.replaceState(null, '', url);
+              const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+              document.querySelector('#zadania-table').innerHTML = await res.text();
+            }, 100);
+          }
+        }">
+        <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
+      </div>
 
-    <div class="search-bar"
-      x-data="{
-        q: new URLSearchParams(location.search).get('q') || '',
-        timer: null,
-        search() {
-          clearTimeout(this.timer);
-          this.timer = setTimeout(async () => {
-            const url = new URL(location.href);
-            this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
-            url.searchParams.delete('page');
-            history.replaceState(null, '', url);
-            const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
-            document.querySelector('#zadania-table').innerHTML = await res.text();
-          }, 300);
-        }
-      }">
-      <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
+      <select id="zrodla-select" name="zrodlo[]" multiple>
+        @each(z in zrodla)
+          <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>{{ z }}</option>
+        @end
+      </select>
     </div>
 
-  <script type="javascript">
-
-  </script>
-
-   <div id="zadania-table">
-     @include('pages/partials/zadania_table')
-  </div>
+    <div id="zadania-table">
+      @include('pages/partials/zadania_table')
+    </div>
   </div>
   @!pagination({ currentPage: currentPage, totalPages: totalPages, prevUrl: prevUrl, nextUrl: nextUrl })
 @end

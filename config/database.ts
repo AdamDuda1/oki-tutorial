@@ -19,6 +19,7 @@ const dbConfig = defineConfig({
      */
     sqlite: {
       client: 'better-sqlite3',
+      debug: app.inDev,
       connection: {
         filename: app.tmpPath('db.sqlite3'),
       },
@@ -31,6 +32,7 @@ const dbConfig = defineConfig({
 
     mysql: {
       client: 'mysql2',
+      debug: app.inDev,
       connection: {
         host: env.get('DB_HOST'),
         port: Number(env.get('DB_PORT')),
@@ -38,11 +40,6 @@ const dbConfig = defineConfig({
         password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
       },
-
-      /**
-       * Emit SQL queries to the logger in development.
-       */
-      debug: app.inDev,
     },
 
     /**

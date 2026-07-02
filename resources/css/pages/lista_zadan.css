@@ -93,48 +93,19 @@ form.filters {
   height: 0;
 }
 
-.pill:hover {
-  border-color: var(--text);
-  color: var(--text);
+.filters {
+  display: flex;
 }
 
-.pill.active {
-  background: var(--text);
-  color: var(--text-inverted);
-  border-color: var(--text);
+.ts-wrapper .ts-control {      /* the input box */
+  border-radius: 8px;
+  border-color: #ccc;
 }
-
-.pill.diff-1 { border-color: var(--easy); color: var(--easy); }
-.pill.diff-1:hover { background: oklch(0.94 0.04 151); }
-.pill.diff-1.active { background: var(--easy); color: #fff; border-color: var(--easy); }
-
-.pill.diff-2 { border-color: var(--medium); color: var(--medium); }
-.pill.diff-2:hover { background: oklch(0.96 0.04 75); }
-.pill.diff-2.active { background: var(--medium); color: #fff; border-color: var(--medium); }
-
-.pill.diff-3 { border-color: var(--hard); color: var(--hard); }
-.pill.diff-3:hover { background: oklch(0.95 0.04 35); }
-.pill.diff-3.active { background: var(--hard); color: #fff; border-color: var(--hard); }
-
-.pill.diff-4 { border-color: oklch(0.42 0.18 35); color: oklch(0.42 0.18 35); }
-.pill.diff-4:hover { background: oklch(0.93 0.04 35); }
-.pill.diff-4.active { background: oklch(0.42 0.18 35); color: #fff; border-color: oklch(0.42 0.18 35); }
-
-.source-select {
-  height: 30px;
-  padding: 0 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font: inherit;
-  font-size: 13px;
+.ts-control > .item {          /* selected chips */
+  background: #eef;
 }
-
-.filter-btn {
-  height: 30px;
-  width: auto;
-  padding: 0 16px;
-  font-size: 13px;
-  border-radius: 4px;
+.ts-dropdown .option.active {  /* hovered option */
+  background: #dde;
 }
 
 .clear-link {

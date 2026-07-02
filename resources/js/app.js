@@ -1,5 +1,7 @@
 import '@hotwired/turbo'
 import Alpine from 'alpinejs'
+import TomSelect from 'tom-select'
+import 'tom-select/dist/css/tom-select.css'
 
 if (import.meta.env.VITE_FEATURE_ANIMATE_PATH_CHANGES === 'true') {
   const EXIT_MS = 130
@@ -165,10 +167,8 @@ Alpine.data('alert', function () {
 Alpine.start()
 
 document.addEventListener('turbo:load', () => {
-  const input = document.querySelector('.search-input')
-  if (input && new URLSearchParams(location.search).has('q')) {
-    input.focus()
-    const len = input.value.length
-    input.setSelectionRange(len, len)
-  }
+  new TomSelect('#zrodla-select', {
+    plugins: ['remove_button'],
+    maxOptions: null,
+  })
 })
