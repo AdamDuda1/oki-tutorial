@@ -6,7 +6,7 @@
       <span class="task_box_arrow" :class="{ open }">▶</span>
       <h3 class="medium">{{ zadanie.nazwa }}</h3>
     </div>
-    <span class="toggle_right difficulty-{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.position : '' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
+    <span class="toggle_right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'black' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
   </button>
   <div class="box" :class="{ open }">
     <div class="box_inner">

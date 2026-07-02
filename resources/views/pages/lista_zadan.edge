@@ -22,7 +22,7 @@
       <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
     </div>
 
-    <!--form class="filters" method="GET" action="/lista_zadan">
+    <form class="filters" method="GET" action="/lista_zadan">
       <div class="filter-row">
         <div class="difficulty-pills">
           <label class="pill {{ !filters.idPoziomuTrudnosci ? 'active' : '' }}">
@@ -49,7 +49,7 @@
           <a href="/lista_zadan" class="clear-link">Wyczyść</a>
         @end
       </div>
-    </form-->
+    </form>
 
     @if(zadania.length === 0)
       <p class="empty-state">Brak zadań dla wybranych filtrów.</p>

@@ -1,5 +1,7 @@
 .lista-zadan-page {
   padding: 24px 32px;
+  max-height: calc(100vh - 60px);
+  overflow: auto;
 }
 
 .lista-header {
