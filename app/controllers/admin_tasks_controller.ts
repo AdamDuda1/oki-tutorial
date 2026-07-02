@@ -1,7 +1,19 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ListaZadan from '#models/lista_zadan'
 import PoziomTrudnosci from '#models/poziom_trudnosci'
+import Tag from '#models/tag'
 import { taskValidator } from '#validators/task'
+
+async function normalizeTagi(tagi: string[] | undefined): Promise<string[] | null> {
+  const names = [...new Set((tagi ?? []).map((t) => t.trim()).filter(Boolean))]
+  if (names.length === 0) return null
+
+  await Tag.fetchOrCreateMany(
+    'nazwa',
+    names.map((nazwa) => ({ nazwa }))
+  )
+  return names
+}
 
 export default class AdminTasksController {
   async index({ view }: HttpContext) {
@@ -12,14 +24,16 @@ export default class AdminTasksController {
 
   async create({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
-    return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci })
+    const tagi = await Tag.query().orderBy('nazwa')
+    return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci, tagi })
   }
 
   async store({ request, response, session }: HttpContext) {
     const payload = await request.validateUsing(taskValidator)
     const published = request.input('published') === 'on'
+    const tagi = await normalizeTagi(payload.tagi)
 
-    await ListaZadan.create({ ...payload, published })
+    await ListaZadan.create({ ...payload, published, tagi })
     session.flash('success', 'Zadanie zostało dodane.')
     return response.redirect().toRoute('lista_zadan')
   }
@@ -27,15 +41,17 @@ export default class AdminTasksController {
   async edit({ params, view }: HttpContext) {
     const task = await ListaZadan.findOrFail(params.id)
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
-    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci })
+    const tagi = await Tag.query().orderBy('nazwa')
+    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi })
   }
 
   async update({ params, request, response, session }: HttpContext) {
     const task = await ListaZadan.findOrFail(params.id)
     const payload = await request.validateUsing(taskValidator)
     const published = request.input('published') === 'on'
+    const tagi = await normalizeTagi(payload.tagi)
 
-    task.merge({ ...payload, published })
+    task.merge({ ...payload, published, tagi })
     await task.save()
     session.flash('success', 'Zadanie zostało zaktualizowane.')
     return response.redirect().back()

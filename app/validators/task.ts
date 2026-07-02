@@ -15,4 +15,5 @@ export const taskValidator = vine.create({
   hint: optionalText(),
   kodCpp: optionalText(),
   kodPython: optionalText(),
+  tagi: vine.array(vine.string().trim().minLength(1)).optional(),
 })

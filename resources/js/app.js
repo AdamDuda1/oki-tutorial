@@ -76,6 +76,11 @@ Alpine.data('levelEditor', () => ({
   _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
 }))
 
+Alpine.store('tagi', {
+  shown: false,
+  show() { this.shown = true },
+})
+
 Alpine.store('modal', {
   open: false,
   title: '',
@@ -167,8 +172,20 @@ Alpine.data('alert', function () {
 Alpine.start()
 
 document.addEventListener('turbo:load', () => {
-  new TomSelect('#zrodla-select', {
-    plugins: ['remove_button'],
-    maxOptions: null,
-  })
+  if (document.querySelector('#zrodla-select')) {
+    new TomSelect('#zrodla-select', {
+      plugins: ['remove_button'],
+      maxOptions: null,
+    })
+  }
+
+  if (document.querySelector('#tagi-select')) {
+    new TomSelect('#tagi-select', {
+      plugins: ['remove_button'],
+      maxOptions: null,
+      create: true,
+      persist: false,
+      createOnBlur: true,
+    })
+  }
 })

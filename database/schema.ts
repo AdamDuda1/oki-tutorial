@@ -8,7 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -44,6 +44,8 @@ export class ListaZadanSchema extends BaseModel {
   declare nazwa: string
   @column()
   declare published: boolean
+  @column()
+  declare tagi: any | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
@@ -84,6 +86,15 @@ export class PoziomyTrudnosciSchema extends BaseModel {
   declare skrot: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+}
+
+export class TagiSchema extends BaseModel {
+  static $columns = ['idTagu', 'nazwa'] as const
+  $columns = TagiSchema.$columns
+  @column({ isPrimary: true })
+  declare idTagu: number
+  @column()
+  declare nazwa: string
 }
 
 export class TematySchema extends BaseModel {

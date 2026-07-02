@@ -45,6 +45,17 @@
             @!field.error()
           @end
         </div>
+        <div>
+          @field.root({ name: 'tagi' })
+            @!field.label({ text: 'Tagi' })
+            <select id="tagi-select" name="tagi[]" multiple placeholder="Wybierz lub dodaj tagi...">
+              @each(t in tagi)
+                <option value="{{ t.nazwa }}" {{ task && task.tagi?.includes(t.nazwa) ? 'selected' : '' }}>{{ t.nazwa }}</option>
+              @end
+            </select>
+            @!field.error()
+          @end
+        </div>
         <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
           <input
             type="checkbox"

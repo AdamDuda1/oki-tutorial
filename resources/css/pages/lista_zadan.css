@@ -250,17 +250,32 @@ form.filters {
     .tagi {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 5px;
       padding-top: 8px;
+
+      .pokaz-tagi {
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .pokaz-tagi:hover {
+        text-decoration: underline;
+      }
 
       .tag {
         display: none;
         font-family: var(--font-quicksand), sans-serif;
         font-size: 14px;
         background: #64bdff;
-        color: var(--text-inverted);
+        /*color: var(--text-inverted);*/
         padding: 1px 5px;
         border-radius: 5px;
+      }
+
+      &.shown .tag {
+        display: inline-block;
       }
     }
   }
