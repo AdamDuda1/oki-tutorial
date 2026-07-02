@@ -112,7 +112,7 @@ export class TematySchema extends BaseModel {
   @column()
   declare zadaniaNaPomysl: any | null
   @column()
-  declare zadaniaRozgrzewkowe: any | null
+  declare zadaniaCwiczeniowe: any | null
   @column()
   declare zadaniaTreningowe: any | null
   @column()

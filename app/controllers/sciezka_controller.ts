@@ -19,7 +19,7 @@ export default class SciezkaController {
     }
 
     const allTaskIds = tematy.flatMap((t) => [
-      ...(t.zadaniaRozgrzewkowe ?? []),
+      ...(t.zadaniaCwiczeniowe ?? []),
       ...(t.zadaniaNaPomysl ?? []),
       ...(t.zadaniaTreningowe ?? []),
     ])
@@ -36,9 +36,9 @@ export default class SciezkaController {
     }
 
     for (const temat of tematy)
-      temat.$extras.zadaniaRozgrzewkowe = (temat.zadaniaRozgrzewkowe ?? [])
-      .map((id) => taskMap.get(id))
-      .filter(Boolean)
+      temat.$extras.zadaniaCwiczeniowe = (temat.zadaniaCwiczeniowe ?? [])
+        .map((id) => taskMap.get(id))
+        .filter(Boolean)
 
     for (const temat of tematy)
       temat.$extras.zadaniaNaPomysl = (temat.zadaniaNaPomysl ?? [])

@@ -72,7 +72,8 @@
     "edge.js": "^6.5.1",
     "luxon": "^3.7.2",
     "mysql2": "^3.22.5",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "tom-select": "^2.6.1"
   },
   "hotHook": {
     "boundaries": [

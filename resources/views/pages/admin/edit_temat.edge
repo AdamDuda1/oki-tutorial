@@ -87,9 +87,9 @@
 
   <div class="admin-form-section">
     <h2>Zadania</h2>
-    @field.root({ name: 'zadaniaRozgrzewkowe' })
-      @!field.label({ text: 'IDs zadań rozgrzewkowych (każde ID w nowej linii)' })
-      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaRozgrzewkowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
+    @field.root({ name: 'zadaniaCwiczeniowe' })
+      @!field.label({ text: 'IDs zadań ćwiczeniowych (każde ID w nowej linii)' })
+      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaCwiczeniowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
     @end
     @field.root({ name: 'zadaniaNaPomysl' })
       @!field.label({ text: 'IDs zadań na pomysł (każde ID w nowej linii)' })

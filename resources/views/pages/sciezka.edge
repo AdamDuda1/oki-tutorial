@@ -53,8 +53,8 @@
               @end
 
               @!custom.sciezka.grupaZadan({
-                zadanie: temat.$extras.zadaniaRozgrzewkowe,
-                header: 'Zadania rozgrzewkowe',
+                zadanie: temat.$extras.zadaniaCwiczeniowe,
+                header: 'Zadania ćwiczeniowe',
                 description: 'Zadania na rozgrzewkę. Pozwolą zapoznać Ci się konceptem i przygotują cię do kolejnych zadań.',
                 last: (temat.$extras.zadaniaNaPomysl.length === 0 && temat.$extras.zadaniaTreningowe.length === 0),
                 })
@@ -63,7 +63,7 @@
                 zadanie: temat.$extras.zadaniaNaPomysl,
                 header: 'Zadania na pomysł',
                 description: 'Zadania wymagające, czasami wręcz ostentacyjnie nietrywialnej, ilości pomyślunku, której skala pozostaje niewspółmierna do liczby linijek kodu prowadzących do rozwiązania.',
-                first: temat.$extras.zadaniaRozgrzewkowe.length === 0,
+                first: temat.$extras.zadaniaCwiczeniowe.length === 0,
                 last: temat.$extras.zadaniaTreningowe.length === 0,
                 })
 
@@ -71,7 +71,7 @@
                 zadanie: temat.$extras.zadaniaTreningowe,
                 header: 'Zadania treningowe',
                 description: 'Zadania z materiału do tego tematu włącznie. Niekoniecznie muszą zawierać materiały z tego tematu, ale zalecamy zrobienie wszystkich dla powtórzenia i treningu!',
-                first: (temat.$extras.zadaniaRozgrzewkowe.length === 0 && temat.$extras.zadaniaNaPomysl.length === 0),
+                first: (temat.$extras.zadaniaCwiczeniowe.length === 0 && temat.$extras.zadaniaNaPomysl.length === 0),
                 })
             </div>
           </div>

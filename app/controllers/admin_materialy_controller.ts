@@ -61,9 +61,9 @@ export default class AdminMaterialyController {
     const matUrls = (request.input('mat_url') ?? []) as string[]
     const matOpisy = (request.input('mat_opis') ?? []) as string[]
     const customHtml = String(request.input('customHtml') ?? '').trim()
-    const zadaniaRozgrzewkoweRaw = String(request.input('zadaniaRozgrzewkowe') ?? '').trim()
-    const zadaniaRozgrzewkowe = zadaniaRozgrzewkoweRaw
-      ? zadaniaRozgrzewkoweRaw
+    const zadaniaCwiczenioweRaw = String(request.input('zadaniaCwiczeniowe') ?? '').trim()
+    const zadaniaCwiczeniowe = zadaniaCwiczenioweRaw
+      ? zadaniaCwiczenioweRaw
           .split('\n')
           .map((s) => Number(s.trim()))
           .filter((n) => n > 0)
@@ -92,7 +92,7 @@ export default class AdminMaterialyController {
       zewnetrzneMaterialy: matUrls.filter(Boolean),
       zewnetrzneMaterialyOpisy: matOpisy.filter(Boolean),
       customHtml,
-      zadaniaRozgrzewkowe,
+      zadaniaCwiczeniowe,
       zadaniaNaPomysl,
       zadaniaTreningowe,
     })
@@ -111,9 +111,12 @@ export default class AdminMaterialyController {
     const matUrls = (request.input('mat_url') ?? []) as string[]
     const matOpisy = (request.input('mat_opis') ?? []) as string[]
     const customHtml = String(request.input('customHtml') ?? '').trim()
-    const zadaniaRozgrzewkoweRaw = (request.input('zadaniaRozgrzewkowe', '') as string).trim()
-    const zadaniaRozgrzewkowe = zadaniaRozgrzewkoweRaw
-      ? zadaniaRozgrzewkoweRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
+    const zadaniaCwiczenioweRaw = (request.input('zadaniaCwiczeniowe', '') as string).trim()
+    const zadaniaCwiczeniowe = zadaniaCwiczenioweRaw
+      ? zadaniaCwiczenioweRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
       : null
     const zadaniaNaPomyslRaw = (request.input('zadaniaNaPomysl', '') as string).trim()
     const zadaniaNaPomysl = zadaniaNaPomyslRaw
@@ -130,7 +133,7 @@ export default class AdminMaterialyController {
     temat.published = request.input('published') === 'on'
     temat.zewnetrzneMaterialy = matUrls.filter(Boolean)
     temat.zewnetrzneMaterialyOpisy = matOpisy.filter(Boolean)
-    temat.zadaniaRozgrzewkowe = zadaniaRozgrzewkowe
+    temat.zadaniaCwiczeniowe = zadaniaCwiczeniowe
     temat.zadaniaNaPomysl = zadaniaNaPomysl
     temat.zadaniaTreningowe = zadaniaTreningowe
     temat.customHtml = customHtml
