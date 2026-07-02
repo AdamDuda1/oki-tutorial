@@ -32,6 +32,9 @@ a {
 a:not(.dont_underline):hover {
   text-decoration: underline;
 }
+.underlinable:hover {
+  text-decoration: underline;
+}
 
 .bold {
   font-weight: 750;
@@ -44,6 +47,7 @@ a:not(.dont_underline):hover {
 .no-animate-on-path-change {
   transition: opacity 0s ease !important;
 }
+
 
 header {
   background: var(--background-darker);
