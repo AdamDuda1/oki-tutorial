@@ -95,18 +95,38 @@ form.filters {
 
 .filters {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  div {
+    display: flex;
+
+    .search-input {
+      margin: 5px;
+      border-radius: 4px;
+      flex: 1;
+    }
+  }
+
+  .ts-wrapper {
+    flex: 1;
+    margin: 5px;
+    border-radius: 4px !important;
+    border-color: #ccc;
+  }
 }
 
-.ts-wrapper .ts-control {      /* the input box */
-  border-radius: 8px;
-  border-color: #ccc;
-}
-.ts-control > .item {          /* selected chips */
-  background: #eef;
-}
-.ts-dropdown .option.active {  /* hovered option */
-  background: #dde;
-}
+/*.ts-wrapper .ts-control {      !* the input box *!*/
+/*  border-radius: 8px;*/
+/*  border-color: #ccc;*/
+/*  flex: 1;*/
+/*}*/
+/*.ts-control > .item {          !* selected chips *!*/
+/*  background: #eef;*/
+/*}*/
+/*.ts-dropdown .option.active {  !* hovered option *!*/
+/*  background: #dde;*/
+/*}*/
 
 .clear-link {
   font-size: 13px;

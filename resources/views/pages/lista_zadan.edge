@@ -6,6 +6,25 @@
     </div>
 
     <div class="filters">
+      <div>
+        <select id="poziom-select" name="poziom[]" multiple placeholder="Filtruj po trudności...">
+          @each(pt in poziomyTrudnosci)
+            <option value="{{ pt.idPoziomuTrudnosci }}" {{ filters.poziom?.includes(pt.idPoziomuTrudnosci) ? 'selected' : '' }}>{{ pt.skrot }} – {{ pt.rozwiniecie }}</option>
+          @end
+        </select>
+
+        <select id="zrodla-select" name="zrodlo[]" multiple placeholder="Filtruj po źródle...">
+          @each(z in zrodla)
+            <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>{{ z }}</option>
+          @end
+        </select>
+
+        <select id="tagi-filter-select" name="tagi[]" multiple placeholder="Filtruj po tagach...">
+          @each(t in wszystkieTagi)
+            <option value="{{ t.nazwa }}" {{ filters.tagi?.includes(t.nazwa) ? 'selected' : '' }}>{{ t.nazwa }}</option>
+          @end
+        </select>
+      </div>
       <div class="search-bar"
         x-data="{
           q: new URLSearchParams(location.search).get('q') || '',
@@ -24,24 +43,6 @@
         }">
         <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
       </div>
-
-      <select id="poziom-select" name="poziom[]" multiple placeholder="Filtruj po trudności...">
-        @each(pt in poziomyTrudnosci)
-          <option value="{{ pt.idPoziomuTrudnosci }}" {{ filters.poziom?.includes(pt.idPoziomuTrudnosci) ? 'selected' : '' }}>{{ pt.skrot }} – {{ pt.rozwiniecie }}</option>
-        @end
-      </select>
-
-      <select id="zrodla-select" name="zrodlo[]" multiple placeholder="Filtruj po źródle...">
-        @each(z in zrodla)
-          <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>{{ z }}</option>
-        @end
-      </select>
-
-      <select id="tagi-filter-select" name="tagi[]" multiple placeholder="Filtruj po tagach...">
-        @each(t in wszystkieTagi)
-          <option value="{{ t.nazwa }}" {{ filters.tagi?.includes(t.nazwa) ? 'selected' : '' }}>{{ t.nazwa }}</option>
-        @end
-      </select>
     </div>
 
     <div id="zadania-table">
