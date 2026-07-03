@@ -7,12 +7,12 @@
       </a>
       <div class="nav-links" :class="{ open: open }" style="flex: 1; display: flex; justify-content: space-between;">
         <div class="nav-content">
-          @if(auth?.user)
+          <!--@if(auth?.user)
             <span class="nav-separator">/</span>
             <a class="{{ $props.get('title') === 'Moja ścieżka' ? 'bold' : '' }}" href="/moja_sciezka">Moja ścieżka</a>
-          @end
+          @end-->
             <span class="nav-separator">/</span>
-          <a class="{{ ($props.get('title') === 'Materiały' && !request.url().includes('/admin/')) ? 'bold' : '' }}"  href="/">Materiały</a>
+          <a class="{{ ($props.get('title') === 'Materiały' && !request.url().includes('/admin/')) ? 'bold' : '' }}"  href="/">Kurs</a>
             <span class="nav-separator">/</span>
           <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}"  href="/lista_zadan">Lista zadań</a>
           @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
