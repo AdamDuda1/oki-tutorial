@@ -7,9 +7,9 @@ export default class extends BaseSeeder {
     const now = DateTime.now().toSQL()!
     await db.table('poziomy').multiInsert([
       { position: 1, nazwa: 'Programowanie OD PODSTAW', created_at: now, updated_at: now },
-      { position: 2, nazwa: 'Olimpiada OD PODSTAW',    created_at: now, updated_at: now },
-      { position: 3, nazwa: 'Olimpiada POZIOM II',     created_at: now, updated_at: now },
-      { position: 4, nazwa: 'Olimpiada ZAAWANSOWANA',  created_at: now, updated_at: now },
+      { position: 2, nazwa: 'Olimpiada OD PODSTAW', created_at: now, updated_at: now },
+      { position: 3, nazwa: 'Olimpiada POZIOM II', created_at: now, updated_at: now },
+      { position: 4, nazwa: 'Olimpiada ZAAWANSOWANA', created_at: now, updated_at: now },
     ])
 
     const [p1, p2, p3] = await db.from('poziomy').orderBy('position').select('id_poziomu')
@@ -56,10 +56,7 @@ export default class extends BaseSeeder {
           'https://oki.org.pl/stos-kolejka-mapa/',
           'https://codeforces.com/edu/course/2',
         ]),
-        zewnetrzne_materialy_opisy: JSON.stringify([
-          'OKI – materiały ↗',
-          'Codeforces EDU ↗',
-        ]),
+        zewnetrzne_materialy_opisy: JSON.stringify(['OKI – materiały', 'Codeforces EDU']),
         custom_html: null,
         zadania: JSON.stringify([6]),
         published: true,
@@ -80,7 +77,8 @@ export default class extends BaseSeeder {
           'OKI p1 2025/26 ↗',
           'Omówienie Breed Counting ↗',
         ]),
-        custom_html: '<p>Suma prefiksowa tablicy <code>a[]</code> to tablica <code>p[]</code> gdzie <code>p[i] = a[0] + ... + a[i]</code>.</p>',
+        custom_html:
+          '<p>Suma prefiksowa tablicy <code>a[]</code> to tablica <code>p[]</code> gdzie <code>p[i] = a[0] + ... + a[i]</code>.</p>',
         zadania: JSON.stringify([84, 7, 10]),
         published: true,
         created_at: now,

@@ -19,7 +19,8 @@ router
 router.get('/sciezka/:id', [SciezkaController, 'index']).as('sciezka')
 router.get('/lista_zadan', [ListaZadanController, 'index']).as('lista_zadan')
 
-router.get('/moja_sciezka', async ({ view }) => view.render('pages/moja_sciezka'))
+router
+  .get('/moja_sciezka', async ({ view }) => view.render('pages/moja_sciezka'))
   .as('moja_sciezka')
   .use(middleware.auth())
 
@@ -47,20 +48,53 @@ router
     router.post('edit_task/new', [AdminTasksController, 'store']).as('admin.edit_task.store')
     router.get('edit_task/:id', [AdminTasksController, 'edit']).as('admin.edit_task.edit')
     router.post('edit_task/:id', [AdminTasksController, 'update']).as('admin.edit_task.update')
-    router.get('edit_difficulty_levels', [AdminTasksController, 'create_difficulty_levels']).as('admin.difficulty_levels.create')
-    router.post('edit_difficulty_levels', [AdminTasksController, 'update_difficulty_levels']).as('admin.difficulty_levels.update')
-    router.post('edit_difficulty_levels/new', [AdminTasksController, 'store_difficulty_levels']).as('admin.difficulty_levels.store')
+    router.get('materialy', [AdminMaterialyController, 'index']).as('admin.materialy')
+    router
+      .get('materialy/temat/new', [AdminMaterialyController, 'create_temat'])
+      .as('admin.materialy.create_temat')
+    router
+      .post('materialy/temat/new', [AdminMaterialyController, 'store_temat'])
+      .as('admin.materialy.store_temat')
+    router
+      .get('materialy/temat/:id', [AdminMaterialyController, 'edit_temat'])
+      .as('admin.materialy.edit_temat')
+    router
+      .post('materialy/temat/:id', [AdminMaterialyController, 'update_temat'])
+      .as('admin.materialy.update_temat')
+  })
+  .prefix('/admin')
+  .use(middleware.admin({ roles: ['admin', 'editor1', 'editor2'] }))
+
+router
+  .group(() => {
+    router
+      .get('edit_difficulty_levels', [AdminTasksController, 'create_difficulty_levels'])
+      .as('admin.difficulty_levels.create')
+    router
+      .post('edit_difficulty_levels', [AdminTasksController, 'update_difficulty_levels'])
+      .as('admin.difficulty_levels.update')
+    router
+      .post('edit_difficulty_levels/new', [AdminTasksController, 'store_difficulty_levels'])
+      .as('admin.difficulty_levels.store')
     router.get('edit_tags', [AdminTasksController, 'create_tags']).as('admin.tags.create')
     router.post('edit_tags/new', [AdminTasksController, 'store_tags']).as('admin.tags.store')
-    router.post('edit_tags/:id/delete', [AdminTasksController, 'destroy_tag']).as('admin.tags.destroy')
-    router.get('materialy', [AdminMaterialyController, 'index']).as('admin.materialy')
-    router.post('materialy/positions', [AdminMaterialyController, 'update_positions']).as('admin.materialy.update_positions')
-    router.post('materialy/poziom/new', [AdminMaterialyController, 'store_poziom']).as('admin.materialy.store_poziom')
-    router.get('materialy/temat/new', [AdminMaterialyController, 'create_temat']).as('admin.materialy.create_temat')
-    router.post('materialy/temat/new', [AdminMaterialyController, 'store_temat']).as('admin.materialy.store_temat')
-    router.get('materialy/temat/:id', [AdminMaterialyController, 'edit_temat']).as('admin.materialy.edit_temat')
-    router.post('materialy/temat/:id', [AdminMaterialyController, 'update_temat']).as('admin.materialy.update_temat')
+    router
+      .post('edit_tags/:id/delete', [AdminTasksController, 'destroy_tag'])
+      .as('admin.tags.destroy')
+    router
+      .post('materialy/positions', [AdminMaterialyController, 'update_positions'])
+      .as('admin.materialy.update_positions')
+    router
+      .post('materialy/poziom/new', [AdminMaterialyController, 'store_poziom'])
+      .as('admin.materialy.store_poziom')
+  })
+  .prefix('/admin')
+  .use(middleware.admin({ roles: ['admin', 'editor2'] }))
+
+router
+  .group(() => {
     router.get('users', [AdminController, 'index_users']).as('admin.users')
+    router.post('users/:id/role', [AdminController, 'update_role']).as('admin.users.update_role')
   })
   .prefix('/admin')
   .use(middleware.admin())

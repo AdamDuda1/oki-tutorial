@@ -18,9 +18,19 @@
         <td>{{ u.fullName }}</td>
         <td>{{ u.email }}</td>
         <td>
-          <select name="role" id="">
-            <option>{{ u.role }}</option>
-          </select>
+          @if(u.id === auth.user.id)
+            {{ u.role }} <span style="color: var(--text-secondary)">(ty)</span>
+          @else
+            @form({ route: 'admin.users.update_role', routeParams: { id: u.id }, method: 'POST', style: 'display: flex; gap: 6px; align-items: center; flex-direction: row;' })
+              <select name="role">
+                @each(r in roles)
+                  <option value="{{ r }}" {{ u.role === r ? 'selected' : '' }}>{{ r }}</option>
+                @end
+              </select>
+              <!--@!button({ text: '">Zapisz</a>', type: 'submit' })-->
+              <button type="submit" style="background: transparent; color: var(--brand); padding: 0;"><a>Zapisz</a></button>
+            @end
+          @end
         </td>
         <td>
           <a style="color: var(--brand)" href="">resetuj hasło</a>

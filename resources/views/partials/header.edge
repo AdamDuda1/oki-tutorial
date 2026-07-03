@@ -19,7 +19,7 @@
             <span class="nav-separator">/</span>
             <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
           @end
-          @if(auth?.user && auth?.user?.isAdmin)
+          @if(auth?.user && auth?.user?.canAccessAdmin)
             <span class="nav-separator">/</span>
             <!--a class="{{ $props.get('title') === 'Admin' ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a-->
             <a class="{{ request.url().includes('/admin/') ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a>

@@ -8,7 +8,12 @@
     {{{ JSON.stringify(poziomy.map(p => ({
       id: p.idPoziomu,
       nazwa: p.nazwa,
-      tematy: p.tematy.map(t => ({ id: t.idTematu, nazwa: t.nazwa, published: t.published })),
+      tematy: p.tematy.map(t => ({
+        id: t.idTematu,
+        nazwa: t.nazwa,
+        published: t.published,
+        canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
+      })),
     }))) }}}
   </script>
 
@@ -42,7 +47,9 @@
         @mouseup="$el.draggable = false"
       >
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
+          @if(auth.user.canEditAllContent)
+            <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
+          @end
           <strong x-text="p.nazwa"></strong>
           <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" style="margin-left: auto; font-size: 13px; color: var(--brand);">+ Nowy temat</a>
         </div>
@@ -63,8 +70,11 @@
               @dragend="$el.draggable = false; _clear()"
               @mouseup.stop="$el.draggable = false"
             >
-              <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">⠿</span>
-              <a :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa"></a>
+              @if(auth.user.canEditAllContent)
+                <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">⠿</span>
+              @end
+              <a x-show="t.canEdit" :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa"></a>
+              <span x-show="!t.canEdit" x-text="t.nazwa"></span>
               <span x-show="!t.published" style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
             </div>
           </template>
@@ -72,22 +82,26 @@
       </div>
     </template>
 
-    <div class="admin-form-actions" style="margin-top: 8px;">
-      @!button({ text: 'Zapisz kolejność', type: 'submit' })
-    </div>
+    @if(auth.user.canEditAllContent)
+      <div class="admin-form-actions" style="margin-top: 8px;">
+        @!button({ text: 'Zapisz kolejność', type: 'submit' })
+      </div>
+    @end
   </form>
 
   {{-- Add poziom --}}
-  <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
-    <h2>Dodaj nowy poziom</h2>
-    <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
-      {{ csrfField() }}
-      <div style="display: flex; gap: 12px; align-items: flex-end;">
-        <input name="nazwa" placeholder="Nazwa poziomu" required>
-        @!button({ text: 'Dodaj', type: 'submit', style: 'flex: 1' })
-      </div>
-    </form>
-  </div>
+  @if(auth.user.canEditAllContent)
+    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+      <h2>Dodaj nowy poziom</h2>
+      <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
+        {{ csrfField() }}
+        <div style="display: flex; gap: 12px; align-items: flex-end;">
+          <input name="nazwa" placeholder="Nazwa poziomu" required>
+          @!button({ text: 'Dodaj', type: 'submit', style: 'flex: 1' })
+        </div>
+      </form>
+    </div>
+  @end
 
   {{-- Uncategorised --}}
   @if(uncategorised.length > 0)
@@ -96,7 +110,11 @@
       <div class="diff-level-list">
         @each(temat in uncategorised)
           <div class="diff-level-row">
-            <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" style="flex: 1;">{{ temat.nazwa }}</a>
+            @if(auth.user.canEditAllContent || temat.idAutora === auth.user.id)
+              <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" style="flex: 1;">{{ temat.nazwa }}</a>
+            @else
+              <span style="flex: 1;">{{ temat.nazwa }}</span>
+            @end
           </div>
         @end
       </div>

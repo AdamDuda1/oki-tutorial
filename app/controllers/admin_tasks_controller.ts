@@ -28,27 +28,38 @@ export default class AdminTasksController {
     return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci, tagi })
   }
 
-  async store({ request, response, session }: HttpContext) {
+  async store({ request, response, session, auth }: HttpContext) {
+    const user = auth.user!
     const payload = await request.validateUsing(taskValidator)
-    const published = request.input('published') === 'on'
+    const published = user.canEditAllContent && request.input('published') === 'on'
     const tagi = await normalizeTagi(payload.tagi)
 
-    await ListaZadan.create({ ...payload, published, tagi })
+    await ListaZadan.create({ ...payload, published, tagi, idAutora: user.id })
     session.flash('success', 'Zadanie zostało dodane.')
     return response.redirect().toRoute('lista_zadan')
   }
 
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, response, session, auth }: HttpContext) {
+    const user = auth.user!
     const task = await ListaZadan.findOrFail(params.id)
+    if (!user.canEditAllContent && task.idAutora !== user.id) {
+      session.flash('error', 'Brak dostępu.')
+      return response.redirect().toRoute('admin.edit_task.index')
+    }
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
     return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi })
   }
 
-  async update({ params, request, response, session }: HttpContext) {
+  async update({ params, request, response, session, auth }: HttpContext) {
+    const user = auth.user!
     const task = await ListaZadan.findOrFail(params.id)
+    if (!user.canEditAllContent && task.idAutora !== user.id) {
+      session.flash('error', 'Brak dostępu!!1!')
+      return response.redirect().toRoute('admin.edit_task.index')
+    }
     const payload = await request.validateUsing(taskValidator)
-    const published = request.input('published') === 'on'
+    const published = user.canEditAllContent ? request.input('published') === 'on' : task.published
     const tagi = await normalizeTagi(payload.tagi)
 
     task.merge({ ...payload, published, tagi })

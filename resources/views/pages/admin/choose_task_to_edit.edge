@@ -15,9 +15,13 @@
         <td>{{ z.idZadania }}</td>
         <td>{{ z.nazwa }}</td>
         <td>
-          <a style="color: var(--brand)" href="">usuń</a>
-          /
-          <a style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj</a>
+          @if(auth.user.canEditAllContent || z.idAutora === auth.user.id)
+            <a style="color: var(--brand)" href="">usuń</a>
+            /
+            <a style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj</a>
+          @else
+            —
+          @end
         </td>
       </tr>
     </tbody>
