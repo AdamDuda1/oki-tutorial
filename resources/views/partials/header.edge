@@ -14,11 +14,11 @@
             <span class="nav-separator">/</span>
           <a class="{{ ($props.get('title') === 'Materiały' && !request.url().includes('/admin/')) ? 'bold' : '' }}"  href="/">Kurs</a>
             <span class="nav-separator">/</span>
-          <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}"  href="/lista_zadan">Lista zadań</a>
-          @if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')
-            <span class="nav-separator">/</span>
-            <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
-          @end
+          <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}"  href="/lista_zadan">Zadania</a>
+          <!--@if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')-->
+          <span class="nav-separator">/</span>
+          <a href="https://zajecia.oki.org.pl">Zajęcia OKI</a>
+          <!--@end-->
           @if(auth?.user && auth?.user?.canAccessAdmin)
             <span class="nav-separator">/</span>
             <!--a class="{{ $props.get('title') === 'Admin' ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a-->
