@@ -6,7 +6,7 @@ import Tag from '#models/tag'
 export default class ListaZadanController {
   async index({ view, request }: HttpContext) {
     const qs = request.qs()
-    const idPoziomuTrudnosci = qs.idPoziomuTrudnosci ? Number(qs.idPoziomuTrudnosci) : null
+    const poziomFilter = [qs.poziom].flat().filter(Boolean).map(Number).filter(Number.isFinite)
     const zrodloFilter = [qs.zrodlo].flat().filter(Boolean).map(String)
     const tagiFilter = [qs.tagi].flat().filter(Boolean).map(String)
     const q = qs.q ? String(qs.q) : null
@@ -17,7 +17,7 @@ export default class ListaZadanController {
     const wybraneTagi = tagiFilter.filter((t) => znaneTagi.includes(t))
 
     const query = ListaZadan.query().orderBy('id_zadania').preload('poziomuTrudnosci')
-    if (idPoziomuTrudnosci) query.where('id_poziomu_trudnosci', idPoziomuTrudnosci)
+    if (poziomFilter.length) query.whereIn('id_poziomu_trudnosci', poziomFilter)
     if (zrodloFilter.length) query.whereIn('zrodlo', zrodloFilter)
     for (const tag of wybraneTagi) {
       query.where('tagi', 'like', `%"${tag}"%`)
@@ -29,12 +29,12 @@ export default class ListaZadanController {
 
     const activeFilters: Record<string, any> = {}
     if (q) activeFilters.q = q
-    if (idPoziomuTrudnosci) activeFilters.idPoziomuTrudnosci = idPoziomuTrudnosci
+    if (poziomFilter.length) activeFilters.poziom = poziomFilter
     if (zrodloFilter.length) activeFilters.zrodlo = zrodloFilter
     if (wybraneTagi.length) activeFilters.tagi = wybraneTagi
     paginator.queryString(activeFilters)
 
-    const filters = { idPoziomuTrudnosci, zrodlo: zrodloFilter, tagi: wybraneTagi, q }
+    const filters = { poziom: poziomFilter, zrodlo: zrodloFilter, tagi: wybraneTagi, q }
 
     const withAlpha: (hex: string, alpha: number) => string = (hex: string, alpha: number) => {
       const a = Math.round(alpha * 255)

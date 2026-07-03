@@ -189,6 +189,7 @@ function initZadaniaFilterSelect(selector, param) {
 
 document.addEventListener('turbo:load', () => {
   // /lista_zadan filters
+  initZadaniaFilterSelect('#poziom-select', 'poziom[]')
   initZadaniaFilterSelect('#zrodla-select', 'zrodlo[]')
   initZadaniaFilterSelect('#tagi-filter-select', 'tagi[]')
 

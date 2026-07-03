@@ -25,6 +25,12 @@
         <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
       </div>
 
+      <select id="poziom-select" name="poziom[]" multiple placeholder="Filtruj po trudności...">
+        @each(pt in poziomyTrudnosci)
+          <option value="{{ pt.idPoziomuTrudnosci }}" {{ filters.poziom?.includes(pt.idPoziomuTrudnosci) ? 'selected' : '' }}>{{ pt.skrot }} – {{ pt.rozwiniecie }}</option>
+        @end
+      </select>
+
       <select id="zrodla-select" name="zrodlo[]" multiple placeholder="Filtruj po źródle...">
         @each(z in zrodla)
           <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>{{ z }}</option>
