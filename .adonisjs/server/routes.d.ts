@@ -4,6 +4,7 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
+    'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }
@@ -34,6 +35,7 @@ export type ScannedRoutes = {
     'admin.users': { paramsTuple?: []; params?: {} }
   }
   GET: {
+    'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }
@@ -51,6 +53,7 @@ export type ScannedRoutes = {
     'admin.users': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
+    'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }

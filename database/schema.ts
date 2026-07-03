@@ -107,7 +107,7 @@ export class TematySchema extends BaseModel {
   @column.dateTime()
   declare deletedAt: DateTime | null
   @column()
-  declare idPoziomu: number
+  declare idPoziomu: number | null
   @column({ isPrimary: true })
   declare idTematu: number
   @column()

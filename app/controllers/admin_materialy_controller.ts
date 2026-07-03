@@ -9,9 +9,10 @@ export default class AdminMaterialyController {
       .orderBy('position')
       .preload('tematy', q => q.whereNull('deleted_at').orderBy('position'))
     const allIds = poziomy.map(p => p.idPoziomu)
-    const uncategorised = allIds.length
-      ? await Tematy.query().whereNull('deleted_at').whereNotIn('id_poziomu', allIds).orderBy('id_tematu')
-      : await Tematy.query().whereNull('deleted_at').orderBy('id_tematu')
+    const wszystkie = await Tematy.query().whereNull('deleted_at').orderBy('position')
+    const uncategorised = wszystkie.filter(
+      (t) => t.idPoziomu === null || !allIds.includes(t.idPoziomu)
+    )
     return view.render('pages/admin/materialy', { poziomy, uncategorised })
   }
 
@@ -111,23 +112,23 @@ export default class AdminMaterialyController {
     const matUrls = (request.input('mat_url') ?? []) as string[]
     const matOpisy = (request.input('mat_opis') ?? []) as string[]
     const customHtml = String(request.input('customHtml') ?? '').trim()
-    const zadaniaCwiczenioweRaw = (request.input('zadaniaCwiczeniowe', '') as string).trim()
+    const zadaniaCwiczenioweRaw = String(request.input('zadaniaCwiczeniowe')).trim()
     const zadaniaCwiczeniowe = zadaniaCwiczenioweRaw
       ? zadaniaCwiczenioweRaw
           .split('\n')
           .map((s) => Number(s.trim()))
           .filter((n) => n > 0)
       : null
-    const zadaniaNaPomyslRaw = (request.input('zadaniaNaPomysl', '') as string).trim()
+    const zadaniaNaPomyslRaw = String(request.input('zadaniaNaPomysl')).trim()
     const zadaniaNaPomysl = zadaniaNaPomyslRaw
       ? zadaniaNaPomyslRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
       : null
-    const zadaniaTreningoweRaw = (request.input('zadaniaTreningowe', '') as string).trim()
+    const zadaniaTreningoweRaw = String(request.input('zadaniaTreningowe')).trim()
     const zadaniaTreningowe = zadaniaTreningoweRaw
       ? zadaniaTreningoweRaw.split('\n').map(s => Number(s.trim())).filter(n => n > 0)
       : null
     temat.nazwa = request.input('nazwa', temat.nazwa).trim()
-    temat.idPoziomu = Number(request.input('idPoziomu', temat.idPoziomu))
+    temat.idPoziomu = Number(request.input('idPoziomu', temat.idPoziomu)) || temat.idPoziomu
     temat.krotkiOpis = request.input('krotkiOpis') || null
     temat.linkYt = request.input('linkYt') || null
     temat.published = request.input('published') === 'on'

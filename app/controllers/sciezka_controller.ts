@@ -4,7 +4,14 @@ import Poziomy from '#models/poziomy'
 import ListaZadan from '#models/lista_zadan'
 
 export default class SciezkaController {
-  async index({ params, view }: HttpContext) {
+  async index({ params, view, response }: HttpContext) {
+    const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
+
+    /* fallback to the first non-deleted level by position, not by id */
+    if (!poziomy.some((p) => p.idPoziomu === Number(params.id)) && poziomy.length > 0) {
+      return response.redirect().toRoute('sciezka', { id: poziomy[0].idPoziomu })
+    }
+
     const tematy = await Tematy.query()
       .where('published', true)
       .whereNull('deleted_at')
@@ -53,8 +60,8 @@ export default class SciezkaController {
     for (const temat of tematy)
       if (temat.customHtml) temat.$extras.customHTML = await view.renderRaw(temat.customHtml)
 
-    const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
+    const autoOpenId = tematy[0]?.idTematu ?? null // refer to line 11 as the time of writing
 
-    return view.render('pages/sciezka', { params, tematy, poziomy,  })
+    return view.render('pages/sciezka', { params, tematy, poziomy, autoOpenId })
   }
 }
