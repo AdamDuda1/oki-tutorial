@@ -44,4 +44,11 @@
     <br>
     @!link({ text: "Zaloguj się", route: 'session.create' })
   </div>
+
+  <div style="background: #efefef; text-align: center; font-size: 12px; padding: 3px;">
+    wersja <code>{{ appVersion }}</code>
+    @if(appVersionAge())
+      ({{ appVersionAge() }})
+    @end
+  </div>
 @end

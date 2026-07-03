@@ -8,28 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'deletedAt',
-    'difficulty',
-    'hint',
-    'idAutora',
-    'idPoziomuTrudnosci',
-    'idZadania',
-    'kodCpp',
-    'kodPython',
-    'linkDodatkoweMaterialy',
-    'linkOmowienieText',
-    'linkOmowienieVid',
-    'linkTresc',
-    'linkWyslij',
-    'linkZrodlo',
-    'nazwa',
-    'published',
-    'tagi',
-    'updatedAt',
-    'zrodlo',
-  ] as const
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -74,14 +53,7 @@ export class ListaZadanSchema extends BaseModel {
 }
 
 export class PoziomySchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'deletedAt',
-    'idPoziomu',
-    'nazwa',
-    'position',
-    'updatedAt',
-  ] as const
+  static $columns = ['createdAt', 'deletedAt', 'idPoziomu', 'nazwa', 'position', 'updatedAt'] as const
   $columns = PoziomySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -98,15 +70,7 @@ export class PoziomySchema extends BaseModel {
 }
 
 export class PoziomyTrudnosciSchema extends BaseModel {
-  static $columns = [
-    'color',
-    'createdAt',
-    'idPoziomuTrudnosci',
-    'position',
-    'rozwiniecie',
-    'skrot',
-    'updatedAt',
-  ] as const
+  static $columns = ['color', 'createdAt', 'idPoziomuTrudnosci', 'position', 'rozwiniecie', 'skrot', 'updatedAt'] as const
   $columns = PoziomyTrudnosciSchema.$columns
   @column()
   declare color: string | null
@@ -134,25 +98,7 @@ export class TagiSchema extends BaseModel {
 }
 
 export class TematySchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'customHtml',
-    'deletedAt',
-    'idAutora',
-    'idPoziomu',
-    'idTematu',
-    'krotkiOpis',
-    'linkYt',
-    'nazwa',
-    'position',
-    'published',
-    'updatedAt',
-    'zadaniaCwiczeniowe',
-    'zadaniaNaPomysl',
-    'zadaniaTreningowe',
-    'zewnetrzneMaterialy',
-    'zewnetrzneMaterialyOpisy',
-  ] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idAutora', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaCwiczeniowe', 'zadaniaNaPomysl', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
   $columns = TematySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -163,7 +109,7 @@ export class TematySchema extends BaseModel {
   @column()
   declare idAutora: number | null
   @column()
-  declare idPoziomu: number | null
+  declare idPoziomu: number
   @column({ isPrimary: true })
   declare idTematu: number
   @column()
@@ -191,15 +137,7 @@ export class TematySchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'email',
-    'fullName',
-    'id',
-    'password',
-    'role',
-    'updatedAt',
-  ] as const
+  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'role', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
