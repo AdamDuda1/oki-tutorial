@@ -5,7 +5,7 @@
   @let(formParams = isNew ? {} : { id: task.idZadania })
 
   @let(diffOptions = [
-    { value: '', name: '— brak —', isSelected: !task || task.idPoziomuTrudnosci === null },
+    { value: '', name: '- brak -', isSelected: !task || task.idPoziomuTrudnosci === null },
     ...poziomyTrudnosci.map(pt => ({
       value: pt.idPoziomuTrudnosci,
       name: pt.rozwiniecie,
@@ -107,6 +107,13 @@
           @field.root({ name: 'linkOmowienieText' })
             @!field.label({ text: 'Omówienie – tekst' })
             @!input.control({ type: 'url', value: task ? task.linkOmowienieText : '' })
+            @!field.error()
+          @end
+        </div>
+        <div>
+          @field.root({ name: 'linkDodatkoweMaterialy' })
+            @!field.label({ text: 'Dodatkowe materiały' })
+            @!input.control({ type: 'url', value: task ? task.linkDodatkoweMaterialy : '' })
             @!field.error()
           @end
         </div>
