@@ -13,7 +13,7 @@
     }))) }}}
   </script>
 
-  <form method="POST" action="{{ route('admin.difficulty_levels.update') }}" x-data="{ ...levelEditor(), deleted: false }">
+  <form method="POST" action="{{ route('admin.difficulty_levels.update') }}" x-data="{ ...levelEditor(), deleted: false }" data-save-shortcut>
     {{ csrfField() }}
 
     <div class="diff-level-list">

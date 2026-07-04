@@ -23,7 +23,7 @@
   })) : []) }}}
 </script>
 
-@form({ route: formRoute, routeParams: formParams, method: 'POST' })
+@form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
 
   <div class="admin-form-section">
     <h2>Podstawowe informacje</h2>
@@ -126,7 +126,7 @@
               <span class="task-picker-hint" x-text="'#' + id"></span>
               <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
               <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
-              <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" :title="gdzieUzyte(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
+              <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" :title="gdzieUzyte(id)" @click="pokazUzycia(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
               <span class="task-picker-actions">
                 <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>
                 <button type="button" @click="przesun(sekcja.klucz, i, 1)" :disabled="i === listy[sekcja.klucz].length - 1">↓</button>
@@ -153,7 +153,7 @@
                 <span class="task-picker-nazwa" x-text="z.nazwa"></span>
                 <span class="task-picker-hint" x-show="z.zrodlo" x-text="z.zrodlo"></span>
                 <span x-show="!z.published" class="task-picker-hint">(ukryte)</span>
-                <span x-show="liczbaUzyc(z.id) > 0" class="task-picker-warn" :title="gdzieUzyte(z.id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
+                <span x-show="liczbaUzyc(z.id) > 0" class="task-picker-warn" :title="gdzieUzyte(z.id)" @click.stop="pokazUzycia(z.id)" x-text="'Użyte już ' + liczbaUzyc(z.id) + ' raz(y)!'"></span>
               </button>
             </template>
             <p class="task-picker-hint" x-show="wyniki(sekcja.klucz).length === 0" style="margin: 6px 10px;">Brak wyników.</p>

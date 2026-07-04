@@ -216,7 +216,11 @@
   font-size: 12px;
   white-space: nowrap;
   flex-shrink: 0;
-  cursor: help;
+  cursor: pointer;
+}
+
+.task-picker-warn:hover {
+  text-decoration: underline;
 }
 
 .task-picker-actions {

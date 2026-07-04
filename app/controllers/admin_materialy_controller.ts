@@ -11,7 +11,7 @@ async function zadaniaPickerData(currentTematId: number | null) {
     .preload('poziomuTrudnosci')
     .orderBy('id_zadania')
   const tematy = await Tematy.query().whereNull('deleted_at')
-  const uzycia: Record<number, { ile: number; gdzie: string[] }> = {}
+  const uzycia: Record<number, { ile: number; gdzie: { id: number; nazwa: string }[] }> = {}
   for (const t of tematy) {
     if (t.idTematu === currentTematId) continue
     const ids = new Set([
@@ -22,7 +22,7 @@ async function zadaniaPickerData(currentTematId: number | null) {
     for (const id of ids) {
       uzycia[id] ??= { ile: 0, gdzie: [] }
       uzycia[id].ile++
-      uzycia[id].gdzie.push(t.nazwa)
+      uzycia[id].gdzie.push({ id: t.idTematu, nazwa: t.nazwa })
     }
   }
   return { zadania, uzycia }

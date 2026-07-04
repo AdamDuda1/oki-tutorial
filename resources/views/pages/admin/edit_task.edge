@@ -19,7 +19,7 @@
 
 <h1>{{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}</h1>
 
-  @form({ route: formRoute, routeParams: formParams, method: 'POST' })
+  @form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
 
     <div class="admin-form-section">
       <h2>Podstawowe informacje</h2>
