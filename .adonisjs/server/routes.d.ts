@@ -34,6 +34,7 @@ export type ScannedRoutes = {
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -52,6 +53,7 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -70,6 +72,7 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }

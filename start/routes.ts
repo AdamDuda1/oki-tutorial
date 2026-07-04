@@ -95,6 +95,9 @@ router
   .group(() => {
     router.get('users', [AdminController, 'index_users']).as('admin.users')
     router.post('users/:id/role', [AdminController, 'update_role']).as('admin.users.update_role')
+    router
+      .get('stats_and_audit_log', [AdminController, 'stats_and_audit_log'])
+      .as('admin.stats_and_audit_log')
   })
   .prefix('/admin')
   .use(middleware.admin())

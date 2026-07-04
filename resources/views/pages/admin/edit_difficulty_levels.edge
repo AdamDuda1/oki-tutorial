@@ -26,7 +26,7 @@
             'drop-below': targetIdx === i && insertPos === 'after' && srcIdx !== i,
           }"
           draggable="false"
-          @dragstart="dragStart(i)"
+          @dragstart="dragStart(i, $event)"
           @dragover.prevent="dragOver($event, i)"
           @drop.prevent="drop()"
           @dragend="$el.draggable = false; _clear()"

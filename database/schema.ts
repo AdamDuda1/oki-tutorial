@@ -7,6 +7,29 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AuditLogSchema extends BaseModel {
+  static $columns = ['akcja', 'createdAt', 'id', 'idObiektu', 'idUzytkownika', 'opis', 'typObiektu', 'uzytkownik', 'zmiany'] as const
+  $columns = AuditLogSchema.$columns
+  @column()
+  declare akcja: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare idObiektu: number | null
+  @column()
+  declare idUzytkownika: number | null
+  @column()
+  declare opis: string
+  @column()
+  declare typObiektu: string
+  @column()
+  declare uzytkownik: string
+  @column()
+  declare zmiany: any | null
+}
+
 export class ListaZadanSchema extends BaseModel {
   static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
@@ -109,7 +132,7 @@ export class TematySchema extends BaseModel {
   @column()
   declare idAutora: number | null
   @column()
-  declare idPoziomu: number
+  declare idPoziomu: number | null
   @column({ isPrimary: true })
   declare idTematu: number
   @column()

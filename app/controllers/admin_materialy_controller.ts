@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Poziomy from '#models/poziomy'
 import Tematy from '#models/tematy'
+import AuditLog from '#models/audit_log'
 
 export default class AdminMaterialyController {
   async index({ view }: HttpContext) {
@@ -16,31 +17,45 @@ export default class AdminMaterialyController {
     return view.render('pages/admin/materialy', { poziomy, uncategorised })
   }
 
-  async update_positions({ request, response, session }: HttpContext) {
+  async update_positions({ request, response, session, auth }: HttpContext) {
     const pPos = (request.input('p') ?? {}) as Record<string, string>
     const tPos = (request.input('t') ?? {}) as Record<string, string>
+    const tPoziom = (request.input('tp') ?? {}) as Record<string, string>
     for (const [id, pos] of Object.entries(pPos)) {
       await Poziomy.query()
         .where('id_poziomu', Number(id))
         .update({ position: Number(pos) })
     }
     for (const [id, pos] of Object.entries(tPos)) {
-      await Tematy.query()
-        .where('id_tematu', Number(id))
-        .update({ position: Number(pos) })
+      const data: Record<string, number> = { position: Number(pos) }
+      if (Number(tPoziom[id])) data.id_poziomu = Number(tPoziom[id])
+      await Tematy.query().where('id_tematu', Number(id)).update(data)
     }
+    await AuditLog.record({
+      user: auth.user!,
+      akcja: 'zaktualizowano',
+      typObiektu: 'kolejność',
+      opis: 'kolejność poziomów i tematów',
+    })
     session.flash('success', 'Kolejność została zaktualizowana.')
     return response.redirect().back()
   }
 
-  async store_poziom({ request, response, session }: HttpContext) {
+  async store_poziom({ request, response, session, auth }: HttpContext) {
     const nazwa = request.input('nazwa', '').trim()
     if (!nazwa) {
       session.flash('error', 'Nazwa jest wymagana.')
       return response.redirect().back()
     }
     const last = await Poziomy.query().whereNull('deleted_at').orderBy('position', 'desc').first()
-    await Poziomy.create({ nazwa, position: (last?.position ?? 0) + 1 })
+    const poziom = await Poziomy.create({ nazwa, position: (last?.position ?? 0) + 1 })
+    await AuditLog.record({
+      user: auth.user!,
+      akcja: 'utworzono',
+      typObiektu: 'poziom',
+      idObiektu: poziom.idPoziomu,
+      opis: `poziom „${poziom.nazwa}”`,
+    })
     session.flash('success', 'Poziom został dodany.')
     return response.redirect().back()
   }
@@ -88,7 +103,7 @@ export default class AdminMaterialyController {
           .map((s) => Number(s.trim()))
           .filter((n) => n > 0)
       : null
-    await Tematy.create({
+    const temat = await Tematy.create({
       nazwa,
       idPoziomu,
       position: (last?.position ?? 0) + 1,
@@ -102,6 +117,13 @@ export default class AdminMaterialyController {
       zadaniaCwiczeniowe,
       zadaniaNaPomysl,
       zadaniaTreningowe,
+    })
+    await AuditLog.record({
+      user,
+      akcja: 'utworzono',
+      typObiektu: 'temat',
+      idObiektu: temat.idTematu,
+      opis: `temat „${temat.nazwa}”`,
     })
     session.flash('success', 'Temat został dodany.')
     return response.redirect().toRoute('admin.materialy')
@@ -162,7 +184,18 @@ export default class AdminMaterialyController {
       temat.published = request.input('published') === 'on'
       temat.customHtml = customHtml
     }
+    const zmiany = AuditLog.diff(temat)
     await temat.save()
+    if (zmiany) {
+      await AuditLog.record({
+        user,
+        akcja: 'zaktualizowano',
+        typObiektu: 'temat',
+        idObiektu: temat.idTematu,
+        opis: `temat „${temat.nazwa}”`,
+        zmiany,
+      })
+    }
     session.flash('success', 'Temat został zaktualizowany.')
     return response.redirect().back()
   }

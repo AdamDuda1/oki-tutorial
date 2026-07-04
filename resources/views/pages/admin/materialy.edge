@@ -25,7 +25,10 @@
       <div style="display: contents;">
         <input type="hidden" :name="`p[${p.id}]`" :value="pi + 1">
         <template x-for="(t, ti) in p.tematy" :key="t.id">
-          <input type="hidden" :name="`t[${t.id}]`" :value="ti + 1">
+          <div style="display: contents;">
+            <input type="hidden" :name="`t[${t.id}]`" :value="ti + 1">
+            <input type="hidden" :name="`tp[${t.id}]`" :value="p.id">
+          </div>
         </template>
       </div>
     </template>
@@ -38,9 +41,10 @@
           'is-dragging': dragging?.type === 'poziom' && dragging.pi === pi,
           'drop-above': over?.type === 'poziom' && over.pi === pi && insertPos === 'before' && dragging?.pi !== pi,
           'drop-below': over?.type === 'poziom' && over.pi === pi && insertPos === 'after' && dragging?.pi !== pi,
+          'drop-into': over?.type === 'poziom' && over.pi === pi && insertPos === 'into',
         }"
         draggable="false"
-        @dragstart="startPoziom(pi)"
+        @dragstart="startPoziom(pi, $event)"
         @dragover.prevent="overPoziom(pi, $event)"
         @drop.prevent="drop()"
         @dragend="$el.draggable = false; _clear()"
@@ -60,13 +64,13 @@
               class="diff-level-row"
               :class="{
                 'is-dragging': dragging?.type === 'temat' && dragging.pi === pi && dragging.ti === ti,
-                'drop-above': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'before' && dragging?.ti !== ti,
-                'drop-below': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'after' && dragging?.ti !== ti,
+                'drop-above': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'before' && !(dragging?.pi === pi && dragging?.ti === ti),
+                'drop-below': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'after' && !(dragging?.pi === pi && dragging?.ti === ti),
               }"
               draggable="false"
-              @dragstart.stop="startTemat(pi, ti)"
+              @dragstart.stop="startTemat(pi, ti, $event)"
               @dragover.prevent="overTemat(pi, ti, $event)"
-              @drop.prevent="drop()"
+              @drop.prevent.stop="drop()"
               @dragend="$el.draggable = false; _clear()"
               @mouseup.stop="$el.draggable = false"
             >

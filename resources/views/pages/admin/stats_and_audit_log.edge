@@ -1,0 +1,60 @@
+@layout({ title: 'Statystyki i historia zmian' })
+@layoutAdminSidebar({ page: 'Statystyki i historia zmian' })
+
+<div class="admin-edit-task" style="margin-bottom: 24px;">
+  <h1>Statystyki</h1>
+  <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;">
+    <li><strong>Zadania:</strong> {{ stats.zadania }} (opublikowane: {{ stats.zadaniaOpublikowane }})</li>
+    <li><strong>Tematy:</strong> {{ stats.tematy }} (opublikowane: {{ stats.tematyOpublikowane }})</li>
+    <li><strong>Konta:</strong> {{ stats.uzytkownicy }}</li>
+  </ul>
+</div>
+
+<div class="admin-edit-task">
+  <h1>Audit log</h1>
+
+  @if(paginator.total === 0)
+    <p class="empty-state">Brak wpisów.</p>
+  @else
+    <table class="zadania-table">
+      <thead>
+        <tr>
+          <th>Kiedy</th>
+          <th>Kto</th>
+          <th>Akcja</th>
+          <th>Co</th>
+          <th>Zmiany</th>
+        </tr>
+      </thead>
+      @each(wpis in paginator)
+        <tbody class="task_row">
+          <tr>
+            <td style="white-space: nowrap;">{{ wpis.createdAt.toFormat('dd.MM.yyyy HH:mm') }}</td>
+            <td>{{ wpis.uzytkownik }}</td>
+            <td>{{ wpis.akcja }}</td>
+            <td>{{ wpis.opis }}</td>
+            <td>
+              @if(wpis.zmiany)
+                <form method="POST" action="https://text-compare.com/" target="_blank" data-turbo="false" style="display: inline;">
+                  <input type="hidden" name="text1" value="{{ wpis.zmianyTeksty.przed }}">
+                  <input type="hidden" name="text2" value="{{ wpis.zmianyTeksty.po }}">
+                  <button type="submit" style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; color: var(--brand);" class="underlinable">zmiany</button>
+                </form>
+              @end
+            </td>
+          </tr>
+        </tbody>
+      @end
+    </table>
+
+    @!pagination({
+      currentPage: paginator.currentPage,
+      totalPages: paginator.lastPage,
+      prevUrl: paginator.getPreviousPageUrl(),
+      nextUrl: paginator.getNextPageUrl()
+    })
+  @end
+</div>
+
+@end
+@end

@@ -1,5 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User, { USER_ROLES } from '#models/user'
+import AuditLog from '#models/audit_log'
+import ListaZadan from '#models/lista_zadan'
+import Tematy from '#models/tematy'
+
+async function countRows(query: { count: (c: string) => any }): Promise<number> {
+  const row = await query.count('* as total').first()
+  return Number(row?.$extras.total ?? 0)
+}
 
 export default class AdminController {
   async index_users({ view }: HttpContext) {
@@ -21,8 +29,37 @@ export default class AdminController {
     }
 
     user.role = role
+    const zmiany = AuditLog.diff(user)
     await user.save()
+    if (zmiany) {
+      await AuditLog.record({
+        user: auth.user!,
+        akcja: 'zaktualizowano',
+        typObiektu: 'użytkownik',
+        idObiektu: user.id,
+        opis: `rola użytkownika ${user.email}`,
+        zmiany,
+      })
+    }
     session.flash('success', `Użytkownik ${user.email} jest teraz ${role}.`)
     return response.redirect().back()
+  }
+
+  async stats_and_audit_log({ view, request }: HttpContext) {
+    const page = Math.max(1, Number(request.qs().page) || 1)
+    const paginator = await AuditLog.query().orderBy('id', 'desc').paginate(page, 50)
+    paginator.baseUrl('/admin/stats_and_audit_log')
+
+    const stats = {
+      zadania: await countRows(ListaZadan.query()),
+      zadaniaOpublikowane: await countRows(ListaZadan.query().where('published', true)),
+      tematy: await countRows(Tematy.query().whereNull('deleted_at')),
+      tematyOpublikowane: await countRows(
+        Tematy.query().whereNull('deleted_at').where('published', true)
+      ),
+      uzytkownicy: await countRows(User.query()),
+    }
+
+    return view.render('pages/admin/stats_and_audit_log', { paginator, stats })
   }
 }

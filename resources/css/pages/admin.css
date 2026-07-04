@@ -188,6 +188,11 @@
 
 .materialy-poziom-block.is-dragging { opacity: 0.35; }
 
+.materialy-poziom-block.drop-into {
+  border-color: var(--brand);
+  background: var(--brand-lighter);
+}
+
 .materialy-poziom-block.drop-above::before,
 .materialy-poziom-block.drop-below::after {
   content: '';

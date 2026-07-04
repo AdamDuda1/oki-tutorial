@@ -53,9 +53,15 @@ Alpine.data('levelEditor', () => ({
     if (el) this.levels = JSON.parse(el.textContent).map(l => ({ ...l, color: l.color || '#000000' }))
   },
 
-  dragStart(idx) { this.srcIdx = idx },
+  dragStart(idx, event) {
+    // Firefox won't start a drag unless dataTransfer has data
+    event.dataTransfer.setData('text/plain', '')
+    event.dataTransfer.effectAllowed = 'move'
+    this.srcIdx = idx
+  },
 
   dragOver(event, idx) {
+    event.dataTransfer.dropEffect = 'move'
     const rect = event.currentTarget.getBoundingClientRect()
     this.targetIdx = idx
     this.insertPos = event.clientY < rect.top + rect.height / 2 ? 'before' : 'after'
@@ -96,18 +102,36 @@ Alpine.data('materialyEditor', () => ({
     if (el) this.poziomy = JSON.parse(el.textContent)
   },
 
-  startPoziom(pi) { this.dragging = { type: 'poziom', pi } },
-  startTemat(pi, ti) { this.dragging = { type: 'temat', pi, ti } },
+  startPoziom(pi, event) {
+    // Firefox won't start a drag unless dataTransfer has data
+    event.dataTransfer.setData('text/plain', '')
+    event.dataTransfer.effectAllowed = 'move'
+    this.dragging = { type: 'poziom', pi }
+  },
+  startTemat(pi, ti, event) {
+    event.dataTransfer.setData('text/plain', '')
+    event.dataTransfer.effectAllowed = 'move'
+    this.dragging = { type: 'temat', pi, ti }
+  },
 
   overPoziom(pi, event) {
-    if (this.dragging?.type !== 'poziom') return
-    const r = event.currentTarget.getBoundingClientRect()
-    this.over = { type: 'poziom', pi }
-    this.insertPos = event.clientY < r.top + r.height / 2 ? 'before' : 'after'
+    if (!this.dragging) return
+    event.dataTransfer.dropEffect = 'move'
+    if (this.dragging.type === 'poziom') {
+      const r = event.currentTarget.getBoundingClientRect()
+      this.over = { type: 'poziom', pi }
+      this.insertPos = event.clientY < r.top + r.height / 2 ? 'before' : 'after'
+    } else {
+      // temat dragged over a poziom block (not over one of its rows) -> drop appends
+      this.over = { type: 'poziom', pi }
+      this.insertPos = 'into'
+    }
   },
 
   overTemat(pi, ti, event) {
-    if (this.dragging?.type !== 'temat' || this.dragging.pi !== pi) return
+    if (this.dragging?.type !== 'temat') return
+    event.stopPropagation()
+    event.dataTransfer.dropEffect = 'move'
     const r = event.currentTarget.getBoundingClientRect()
     this.over = { type: 'temat', pi, ti }
     this.insertPos = event.clientY < r.top + r.height / 2 ? 'before' : 'after'
@@ -123,13 +147,15 @@ Alpine.data('materialyEditor', () => ({
       if (o.pi > d.pi) at--
       items.splice(at, 0, item)
       this.poziomy = items
-    } else if (d.type === 'temat' && o.type === 'temat' && d.pi === o.pi && d.ti !== o.ti) {
-      const items = [...this.poziomy[d.pi].tematy]
-      const [item] = items.splice(d.ti, 1)
+    } else if (d.type === 'temat' && o.type === 'temat') {
+      if (d.pi === o.pi && d.ti === o.ti) { this._clear(); return }
+      const [item] = this.poziomy[d.pi].tematy.splice(d.ti, 1)
       let at = this.insertPos === 'before' ? o.ti : o.ti + 1
-      if (o.ti > d.ti) at--
-      items.splice(at, 0, item)
-      this.poziomy[d.pi].tematy = items
+      if (d.pi === o.pi && o.ti > d.ti) at--
+      this.poziomy[o.pi].tematy.splice(at, 0, item)
+    } else if (d.type === 'temat' && o.type === 'poziom') {
+      const [item] = this.poziomy[d.pi].tematy.splice(d.ti, 1)
+      this.poziomy[o.pi].tematy.push(item)
     }
     this._clear()
   },
