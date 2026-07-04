@@ -11,7 +11,7 @@ export default class Tematy extends TematySchema {
   declare idTematu: number
 
   @column()
-  declare idPoziomu: number
+  declare idPoziomu: number | null
 
   @column()
   declare position: number
