@@ -5,7 +5,7 @@ import type User from '#models/user'
 export type Zmiany = Record<string, { przed: unknown; po: unknown }>
 
 function formatValue(value: unknown): string {
-  if (value === null || value === undefined || value === '') return '—'
+  if (value === null || value === undefined || value === '') return '-'
   if (typeof value === 'boolean') return value ? 'tak' : 'nie'
   return typeof value === 'string' ? value : JSON.stringify(value, null, 2)
 }

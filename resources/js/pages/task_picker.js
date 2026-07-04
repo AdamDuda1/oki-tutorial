@@ -53,8 +53,8 @@ Alpine.data('taskPicker', () => ({
   },
 
   pokazUzycia(id) {
-    const linie = (this.uzycia[id]?.gdzie ?? []).map((t) => `#${t.id} — ${t.nazwa}`)
-    if (this.wTychListach(id)) linie.push('— ten temat (edytowany formularz)')
+    const linie = (this.uzycia[id]?.gdzie ?? []).map((t) => `* ${t.nazwa} (#${t.id})`)
+    if (this.wTychListach(id)) linie.push('* ten temat')
     Alpine.store('modal').show(`Zadanie #${id} użyte w tematach:`, linie.join('\n'))
   },
 
