@@ -1,7 +1,32 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Poziomy from '#models/poziomy'
 import Tematy from '#models/tematy'
+import ListaZadan from '#models/lista_zadan'
 import AuditLog from '#models/audit_log'
+
+/* zadania do wyszukiwarki + licznik użyć każdego zadania w innych tematach */
+async function zadaniaPickerData(currentTematId: number | null) {
+  const zadania = await ListaZadan.query()
+    .whereNull('deleted_at')
+    .preload('poziomuTrudnosci')
+    .orderBy('id_zadania')
+  const tematy = await Tematy.query().whereNull('deleted_at')
+  const uzycia: Record<number, { ile: number; gdzie: string[] }> = {}
+  for (const t of tematy) {
+    if (t.idTematu === currentTematId) continue
+    const ids = new Set([
+      ...(t.zadaniaCwiczeniowe ?? []),
+      ...(t.zadaniaNaPomysl ?? []),
+      ...(t.zadaniaTreningowe ?? []),
+    ])
+    for (const id of ids) {
+      uzycia[id] ??= { ile: 0, gdzie: [] }
+      uzycia[id].ile++
+      uzycia[id].gdzie.push(t.nazwa)
+    }
+  }
+  return { zadania, uzycia }
+}
 
 export default class AdminMaterialyController {
   async index({ view }: HttpContext) {
@@ -63,7 +88,14 @@ export default class AdminMaterialyController {
   async create_temat({ request, view }: HttpContext) {
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
     const selectedPoziomu = request.input('poziom') ? Number(request.input('poziom')) : null
-    return view.render('pages/admin/edit_temat', { temat: null, poziomy, selectedPoziomu })
+    const { zadania, uzycia } = await zadaniaPickerData(null)
+    return view.render('pages/admin/edit_temat', {
+      temat: null,
+      poziomy,
+      selectedPoziomu,
+      zadania,
+      uzycia,
+    })
   }
 
   async store_temat({ request, response, session, auth }: HttpContext) {
@@ -137,7 +169,14 @@ export default class AdminMaterialyController {
       return response.redirect().toRoute('admin.materialy')
     }
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
-    return view.render('pages/admin/edit_temat', { temat, poziomy, selectedPoziomu: null })
+    const { zadania, uzycia } = await zadaniaPickerData(temat.idTematu)
+    return view.render('pages/admin/edit_temat', {
+      temat,
+      poziomy,
+      selectedPoziomu: null,
+      zadania,
+      uzycia,
+    })
   }
 
   async update_temat({ params, request, response, session, auth }: HttpContext) {

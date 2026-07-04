@@ -89,20 +89,78 @@
     </div>
   @end
 
-  <div class="admin-form-section">
+  <div class="admin-form-section" x-data="taskPicker">
     <h2>Zadania</h2>
-    @field.root({ name: 'zadaniaCwiczeniowe' })
-      @!field.label({ text: 'IDs zadań ćwiczeniowych (każde ID w nowej linii)' })
-      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaCwiczeniowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
-    @end
-    @field.root({ name: 'zadaniaNaPomysl' })
-      @!field.label({ text: 'IDs zadań na pomysł (każde ID w nowej linii)' })
-      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaNaPomysl ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
-    @end
-    @field.root({ name: 'zadaniaTreningowe' })
-      @!field.label({ text: 'IDs zadań treningowych (każde ID w nowej linii)' })
-      @!textarea.control({ rows: 5, value: temat ? (temat.zadaniaTreningowe ?? []).join('\n') : '', style: 'font-family: monospace; font-size: 13px;' })
-    @end
+
+    <script id="zadania-picker-data" type="application/json">
+      {{{ JSON.stringify({
+        zadania: zadania.map(z => ({
+          id: z.idZadania,
+          nazwa: z.nazwa,
+          zrodlo: z.zrodlo,
+          published: z.published,
+          skrot: z.poziomuTrudnosci?.skrot ?? '?',
+          kolor: z.poziomuTrudnosci?.color ?? 'var(--text-secondary)',
+        })),
+        uzycia,
+        wybrane: {
+          zadaniaCwiczeniowe: temat ? (temat.zadaniaCwiczeniowe ?? []) : [],
+          zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
+          zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
+        },
+      }) }}}
+    </script>
+
+    <input type="hidden" name="zadaniaCwiczeniowe" :value="listy.zadaniaCwiczeniowe.join('\n')">
+    <input type="hidden" name="zadaniaNaPomysl" :value="listy.zadaniaNaPomysl.join('\n')">
+    <input type="hidden" name="zadaniaTreningowe" :value="listy.zadaniaTreningowe.join('\n')">
+
+    <template x-for="sekcja in sekcje" :key="sekcja.klucz">
+      <div style="margin-bottom: 24px;">
+        <label style="font-weight: 600;" x-text="sekcja.nazwa"></label>
+
+        <div class="task-picker-list">
+          <template x-for="(id, i) in listy[sekcja.klucz]" :key="id">
+            <div class="task-picker-row">
+              <span class="diff-badge" :style="badgeStyle(id)" x-text="zadanie(id).skrot"></span>
+              <span class="task-picker-hint" x-text="'#' + id"></span>
+              <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
+              <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
+              <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" :title="gdzieUzyte(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
+              <span class="task-picker-actions">
+                <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>
+                <button type="button" @click="przesun(sekcja.klucz, i, 1)" :disabled="i === listy[sekcja.klucz].length - 1">↓</button>
+                <button type="button" class="diff-btn-delete" @click="usun(sekcja.klucz, i)">✕</button>
+              </span>
+            </div>
+          </template>
+          <p class="task-picker-hint" x-show="listy[sekcja.klucz].length === 0" style="margin: 2px 0;">Brak zadań. Wyszukaj poniżej, żeby dodać.</p>
+        </div>
+
+        <div class="task-picker-search" @click.outside="szukaj[sekcja.klucz] = ''">
+          <input
+            type="text"
+            x-model="szukaj[sekcja.klucz]"
+            placeholder="Szukaj zadania po nazwie lub ID..."
+            @keydown.escape.prevent="szukaj[sekcja.klucz] = ''"
+            @keydown.enter.prevent="dodajPierwsze(sekcja.klucz)"
+          >
+          <div class="task-picker-results" x-show="szukaj[sekcja.klucz].trim() !== ''">
+            <template x-for="z in wyniki(sekcja.klucz)" :key="z.id">
+              <button type="button" class="task-picker-result" @click="dodaj(sekcja.klucz, z.id)">
+                <span class="diff-badge" :style="badgeStyle(z.id)" x-text="z.skrot"></span>
+                <span class="task-picker-hint" x-text="'#' + z.id"></span>
+                <span class="task-picker-nazwa" x-text="z.nazwa"></span>
+                <span class="task-picker-hint" x-show="z.zrodlo" x-text="z.zrodlo"></span>
+                <span x-show="!z.published" class="task-picker-hint">(ukryte)</span>
+                <span x-show="liczbaUzyc(z.id) > 0" class="task-picker-warn" :title="gdzieUzyte(z.id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
+              </button>
+            </template>
+            <p class="task-picker-hint" x-show="wyniki(sekcja.klucz).length === 0" style="margin: 6px 10px;">Brak wyników.</p>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 
   <div class="admin-form-actions">
