@@ -76,7 +76,7 @@ export class ListaZadanSchema extends BaseModel {
 }
 
 export class PoziomySchema extends BaseModel {
-  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'nazwa', 'position', 'updatedAt'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'nazwa', 'poboczny', 'position', 'updatedAt'] as const
   $columns = PoziomySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -88,6 +88,8 @@ export class PoziomySchema extends BaseModel {
   declare idPoziomu: number
   @column()
   declare nazwa: string
+  @column()
+  declare poboczny: boolean
   @column()
   declare position: number
   @column.dateTime({ autoCreate: true, autoUpdate: true })

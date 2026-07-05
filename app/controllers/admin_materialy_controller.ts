@@ -128,6 +128,7 @@ export default class AdminMaterialyController {
     }
     poziom.nazwa = nazwa
     poziom.customHtml = String(request.input('customHtml') ?? '').trim() || null
+    poziom.poboczny = request.input('poboczny') === 'on'
     await AuditLog.recordUpdate({
       user: auth.user!,
       typObiektu: 'poziom',

@@ -93,6 +93,8 @@
 
     .topic-header {
       flex-direction: column;
+
+      iframe { width: 100%; }
     }
   }
 }

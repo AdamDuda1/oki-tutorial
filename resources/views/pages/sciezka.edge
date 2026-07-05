@@ -3,7 +3,9 @@
   <div class="sciezka-app">
     <nav class="sidenav" id="collapsable-sidenav" x-data>
       @each (poziom in poziomy)
-        @if (poziom.idPoziomu == params.id)
+        @if (poziom.poboczny)
+          <a href="/sciezka/{{poziom.idPoziomu}}" class="medium topic {{ poziom.idPoziomu == params.id ? 'active' : '' }}">{{poziom.nazwa}}</a>
+        @elseif (poziom.idPoziomu == params.id)
           <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category-header active">{{poziom.nazwa}}</a>
           <nav class="topic-list">
             @each (temat in tematy)
