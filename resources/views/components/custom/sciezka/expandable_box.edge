@@ -1,13 +1,13 @@
 @let(content = await $slots.main())
 @let(title = $props.get('title'))
 
-<div class="tasks_box standalone" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
+<div class="tasks-box standalone" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
   <button class="toggle" data-toggle @click="open = !open">
-    <span class="task_box_arrow" :class="{ open }">▶</span>
+    <span class="task-box-arrow" :class="{ open }">▶</span>
     <h3 class="bold">{{{ title }}}</h3>
   </button>
   <div class="box" :class="{ open }">
-    <div class="box_inner">
+    <div class="box-inner">
       {{{ content }}}
     </div>
   </div>

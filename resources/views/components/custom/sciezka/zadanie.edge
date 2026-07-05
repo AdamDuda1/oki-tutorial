@@ -1,35 +1,35 @@
 @let(zadanie = $props.get('zadanie'))
 
-<div class="task_box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
+<div class="task-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
   <button class="toggle" data-toggle @click="open = !open">
-    <div class="toggle_left">
-      <span class="task_box_arrow" :class="{ open }">▶</span>
+    <div class="toggle-left">
+      <span class="task-box-arrow" :class="{ open }">▶</span>
       <h3 class="medium">{{ zadanie.nazwa }}</h3>
     </div>
-    <span class="toggle_right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'black' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
+    <span class="toggle-right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'black' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
   </button>
   <div class="box" :class="{ open }">
-    <div class="box_inner">
-      <a href="{{ zadanie.linkTresc }}" class="task_action" target="_blank" rel="noopener">Treść</a>
+    <div class="box-inner">
+      <a href="{{ zadanie.linkTresc }}" class="task-action" target="_blank" rel="noopener">Treść</a>
       @if(zadanie.linkWyslij)
-        <a href="{{ zadanie.linkWyslij }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij w konkursie</a>
+        <a href="{{ zadanie.linkWyslij }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij w konkursie</a>
       @end
       @if(zadanie.hint)
-        <button class="task_action underlinable" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
           data-hint="{{ zadanie.hint }}"><img src="/icons/i_hint.svg" alt=""> Hint</button>
       @end
       @if(zadanie.linkOmowienieVid)
-        <a href="{{ zadanie.linkOmowienieVid }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
+        <a href="{{ zadanie.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
       @end
       @if(zadanie.linkOmowienieText)
-        <a href="{{ zadanie.linkOmowienieText }}" class="task_action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
+        <a href="{{ zadanie.linkOmowienieText }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
       @end
       @if(zadanie.kodCpp)
-        <button class="task_action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
           data-code="{{ zadanie.kodCpp }}"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
       @end
       @if(zadanie.kodPython)
-        <button class="task_action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
           data-code="{{ zadanie.kodPython }}"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
       @end
     </div>

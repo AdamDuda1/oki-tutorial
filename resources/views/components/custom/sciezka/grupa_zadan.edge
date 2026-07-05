@@ -5,13 +5,13 @@
 @let(isLast = $props.get('last', true))
 
 @if(zadania.length > 0)
-  <div class="tasks_box {{ isFirst ? 'first' : '' }} {{ isLast ? 'last' : '' }}" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
+  <div class="tasks-box {{ isFirst ? 'first' : '' }} {{ isLast ? 'last' : '' }}" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
     <button class="toggle" data-toggle @click="open = !open">
-      <span class="task_box_arrow" :class="{ open }">▶</span>
+      <span class="task-box-arrow" :class="{ open }">▶</span>
       <h3 class="bold">{{ header }} <span class="counter">({{ zadania.length }})</span></h3>
     </button>
     <div class="box" :class="{ open }">
-      <div class="box_inner">
+      <div class="box-inner">
         <span style="font-size: 14px">{{ description }}</span>
         @each(zadanie in zadania)
           @!custom.sciezka.zadanie({ zadanie: zadanie })

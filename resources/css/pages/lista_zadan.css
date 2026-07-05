@@ -207,7 +207,7 @@ form.filters {
   font-weight: 500;
 }
 
-.task_row {
+.task-row {
   > tr {
     cursor: pointer;
   }
@@ -216,7 +216,7 @@ form.filters {
     background: var(--background-darker);
   }
 
-  > .expand_row td {
+  > .expand-row td {
     padding: 0;
     border-bottom: none;
   }
@@ -225,17 +225,17 @@ form.filters {
     border-bottom: none;
   }
 
-  &:not(:last-child) > .expand_row td {
+  &:not(:last-child) > .expand-row td {
     border-bottom: 1px solid var(--brand-lighter);
   }
 
-  .toggle_left {
+  .toggle-left {
     display: flex;
     align-items: center;
     gap: 7px;
   }
 
-  .task_box_arrow {
+  .task-box-arrow {
     display: inline-block;
     font-size: 10px;
     transition: transform 0.2s ease;
@@ -250,7 +250,7 @@ form.filters {
     &.open { grid-template-rows: 1fr; }
   }
 
-  .box > .box_inner {
+  .box > .box-inner {
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
@@ -300,11 +300,11 @@ form.filters {
     }
   }
 
-  .box.open > .box_inner {
+  .box.open > .box-inner {
     padding-bottom: 12px;
   }
 
-  .task_action {
+  .task-action {
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -321,7 +321,7 @@ form.filters {
     }
   }
 
-  a.task_action {
+  a.task-action {
     background: var(--brand);
     color: white;
     border: none;

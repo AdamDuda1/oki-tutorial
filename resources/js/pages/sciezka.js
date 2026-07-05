@@ -4,7 +4,7 @@ import Alpine from 'alpinejs'
 Alpine.store('topic', { current: null })
 
 function initSciezkaUrlSync() {
-  const boxes = [...document.querySelectorAll('.topic_box')]
+  const boxes = [...document.querySelectorAll('.topic-box')]
   if (boxes.length === 0) return
 
   const visible = new Set()

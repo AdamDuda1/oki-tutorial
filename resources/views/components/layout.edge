@@ -23,7 +23,7 @@
           if (interactive && interactive !== trigger) return
           const root = trigger.closest('[x-data]')
           if (!root) return
-          const selector = trigger.getAttribute('data-toggle') || '.box, .box_arrow, .task_box_arrow'
+          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow, .task-box-arrow'
           for (const el of root.querySelectorAll(selector)) {
             if (el.closest('[x-data]') === root) el.classList.toggle('open')
           }

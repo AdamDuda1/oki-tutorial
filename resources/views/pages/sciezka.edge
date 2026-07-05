@@ -4,8 +4,8 @@
     <nav class="sidenav" id="collapsable-sidenav" x-data>
       @each (poziom in poziomy)
         @if (poziom.idPoziomu == params.id)
-          <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category_header active">{{poziom.nazwa}}</a>
-          <nav class="topic_list">
+          <a href="/sciezka/{{poziom.idPoziomu}}" class="bold category-header active">{{poziom.nazwa}}</a>
+          <nav class="topic-list">
             @each (temat in tematy)
               <a href="#{{temat.idTematu}}" class="medium topic"
                 :class="{ active: $store.topic.current === {{temat.idTematu}} }"
@@ -13,37 +13,37 @@
             @end
           </nav>
         @else
-          <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category_header">{{poziom.nazwa}}</a>
+          <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category-header">{{poziom.nazwa}}</a>
         @endif
       @end
-      <span class="mobile_menu_handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń ścieżkę v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń ścieżkę v'; }">Rozwiń ścieżkę v</span>
+      <span class="mobile-menu-handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń ścieżkę v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń ścieżkę v'; }">Rozwiń ścieżkę v</span>
     </nav>
 
     <div class="content">
       @if(poziomHtml)
-        <div class="level_html">
+        <div class="level-html">
           {{{ poziomHtml }}}
         </div>
       @end
 
       @each (temat in tematy)
-        <div class="topic_box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
+        <div class="topic-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
         x-effect="if ($store.topic.current === {{temat.idTematu}}) open = true"
         x-init="if (window.location.hash === '#{{temat.idTematu}}') { open = true; $el.scrollIntoView(); }{{{ temat.idTematu === autoOpenId ? ' else if (!window.location.hash) { open = true; }' : '' }}}; if (open) $store.topic.current = {{temat.idTematu}}">
 
           <button class="toggle" data-toggle @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
-            <span class="box_arrow" :class="{ open }">▶</span>
+            <span class="box-arrow" :class="{ open }">▶</span>
             <h2 class="bold">{{temat.nazwa}}</h2>
           </button>
           <div class="box" :class="{ open }">
-            <div class="box_inner">
-              <div class="topic_header">
+            <div class="box-inner">
+              <div class="topic-header">
                 <div>
                   @if (temat.linkYt)
                     <iframe src="{{temat.linkYt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                   @end
                 </div>
-                <div class="learning_materials">
+                <div class="learning-materials">
                   <!--h3>Materiały do nauki</h3-->
                   @each(material in temat.$extras.materialy)
                     <a href="{{ material.link }}" class="medium" target="_blank" rel="noopener">
@@ -55,7 +55,7 @@
               </div>
 
               @if(temat.customHtml)
-                <div class="topic_html">
+                <div class="topic-html">
                   {{{ temat.$extras.customHTML }}}
 
                 </div>

@@ -29,7 +29,7 @@ a {
   text-decoration: none;
 }
 
-a:not(.dont_underline):hover {
+a:not(.dont-underline):hover {
   text-decoration: underline;
 }
 .underlinable:hover {
@@ -71,7 +71,7 @@ header nav div {
   gap: 14px;
 }
 
-header nav div a:not(.dont_underline):hover {
+header nav div a:not(.dont-underline):hover {
   text-decoration: underline;
 }
 

@@ -63,13 +63,13 @@
       transform: translate(clamp(350px, 15vw, 800px), 0);
       box-shadow: rgb(0 0 0 / 0.67) 300px 0 104px 20000px;
 
-      .mobile_menu_handle {
+      .mobile-menu-handle {
         transform: rotate(90deg) translate(20px, 50px);
         color: white;
       }
     }
 
-    .mobile_menu_handle {
+    .mobile-menu-handle {
       position: absolute;
       transform: rotate(-90deg) translate(-20px, -65px);
       padding: 20px;

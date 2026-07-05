@@ -22,7 +22,7 @@
     </tr>
   </thead>
   @each(u in users)
-    <tbody class="task_row">
+    <tbody class="task-row">
       <tr>
         <td>{{ u.id }}</td>
         <td>{{ u.fullName }}</td>
@@ -45,7 +45,7 @@
         <td>
           <a style="color: var(--brand)" href="">resetuj hasło</a>
           /
-          <a style="color: var(--brand)" href="/admin/users/edit/{{ u.id }}">edytuj</a>
+          <a style="color: var(--brand)" href="{ u.id }}">usuń</a>
         </td>
       </tr>
     </tbody>
