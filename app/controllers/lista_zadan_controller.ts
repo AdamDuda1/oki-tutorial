@@ -16,7 +16,11 @@ export default class ListaZadanController {
     const znaneTagi = wszystkieTagi.map((t) => t.nazwa)
     const wybraneTagi = tagiFilter.filter((t) => znaneTagi.includes(t))
 
-    const query = ListaZadan.query().orderBy('id_zadania').preload('poziomuTrudnosci')
+    const query = ListaZadan.query()
+      .whereNull('deleted_at')
+      .where('published', true)
+      .orderBy('id_zadania')
+      .preload('poziomuTrudnosci')
     if (poziomFilter.length) query.whereIn('id_poziomu_trudnosci', poziomFilter)
     if (zrodloFilter.length) query.whereIn('zrodlo', zrodloFilter)
     for (const tag of wybraneTagi) {
@@ -43,7 +47,11 @@ export default class ListaZadanController {
       return hex + a
     }
 
-    const zrodlaRows = await ListaZadan.query().distinct('zrodlo').orderBy('zrodlo')
+    const zrodlaRows = await ListaZadan.query()
+      .whereNull('deleted_at')
+      .where('published', true)
+      .distinct('zrodlo')
+      .orderBy('zrodlo')
     const zrodla = zrodlaRows.map((r) => r.zrodlo)
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
 

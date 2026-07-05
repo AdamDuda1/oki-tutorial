@@ -13,12 +13,30 @@
     <tbody class="task-row">
       <tr>
         <td>{{ z.idZadania }}</td>
-        <td>{{ z.nazwa }}</td>
+        <td>
+          {{ z.nazwa }}
+          @if(!z.published)
+            <span style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
+          @end
+        </td>
         <td>
           @if(auth.user.canEditAllContent || z.idAutora === auth.user.id)
-            <a style="color: var(--brand)" href="">usuń</a>
-            /
-            <a style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj</a>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <a class="underlinable" style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj</a>
+              @if(auth.user.canEditAllContent)
+                /
+                <form method="POST" action="{{ route('admin.edit_task.toggle_published', { id: z.idZadania }) }}" data-turbo="false">
+                  {{ csrfField() }}
+                  <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">{{ z.published ? 'ukryj' : 'pokaż' }}</button>
+                </form>
+              @end
+              /
+              <form method="POST" action="{{ route('admin.edit_task.destroy', { id: z.idZadania }) }}" data-turbo="false"
+                onsubmit="return confirm('Usunąć zadanie „{{ z.nazwa }}”? Zniknie z listy zadań i ze ścieżek.')">
+                {{ csrfField() }}
+                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">usuń</button>
+              </form>
+            </div>
           @else
             -
           @end

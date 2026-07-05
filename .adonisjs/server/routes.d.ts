@@ -19,6 +19,7 @@ export type ScannedRoutes = {
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.edit_task.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }
@@ -27,6 +28,7 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.toggle_published': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.tags.store': { paramsTuple?: []; params?: {} }
     'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -87,10 +89,12 @@ export type ScannedRoutes = {
     'session.destroy': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.edit_task.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.update_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.toggle_published': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.tags.store': { paramsTuple?: []; params?: {} }
     'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }

@@ -128,6 +128,7 @@
               <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
               <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" @click="pokazUzycia(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
               <span class="task-picker-actions">
+                <a :href="`/admin/edit_task/${id}`" target="_blank" title="Edytuj zadanie" class="dont-underline">✎</a>
                 <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>
                 <button type="button" @click="przesun(sekcja.klucz, i, 1)" :disabled="i === listy[sekcja.klucz].length - 1">↓</button>
                 <button type="button" class="diff-btn-delete" @click="usun(sekcja.klucz, i)">✕</button>

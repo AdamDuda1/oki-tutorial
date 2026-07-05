@@ -229,7 +229,8 @@
   flex-shrink: 0;
 }
 
-.task-picker-actions button {
+.task-picker-actions button,
+.task-picker-actions a {
   background: none;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -240,7 +241,8 @@
   width: auto;
 }
 
-.task-picker-actions button:hover:not(:disabled) {
+.task-picker-actions button:hover:not(:disabled),
+.task-picker-actions a:hover {
   background: var(--brand-lighter);
   color: var(--text);
 }

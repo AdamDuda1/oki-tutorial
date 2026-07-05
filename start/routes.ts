@@ -48,6 +48,9 @@ router
     router.post('edit_task/new', [AdminTasksController, 'store']).as('admin.edit_task.store')
     router.get('edit_task/:id', [AdminTasksController, 'edit']).as('admin.edit_task.edit')
     router.post('edit_task/:id', [AdminTasksController, 'update']).as('admin.edit_task.update')
+    router
+      .post('edit_task/:id/delete', [AdminTasksController, 'destroy'])
+      .as('admin.edit_task.destroy')
     router.get('materialy', [AdminMaterialyController, 'index']).as('admin.materialy')
     router
       .get('materialy/temat/new', [AdminMaterialyController, 'create_temat'])
@@ -76,6 +79,9 @@ router
     router
       .post('edit_difficulty_levels/new', [AdminTasksController, 'store_difficulty_levels'])
       .as('admin.difficulty_levels.store')
+    router
+      .post('edit_task/:id/toggle_published', [AdminTasksController, 'toggle_published'])
+      .as('admin.edit_task.toggle_published')
     router.get('edit_tags', [AdminTasksController, 'create_tags']).as('admin.tags.create')
     router.post('edit_tags/new', [AdminTasksController, 'store_tags']).as('admin.tags.store')
     router

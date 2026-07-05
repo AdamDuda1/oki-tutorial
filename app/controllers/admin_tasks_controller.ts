@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import ListaZadan from '#models/lista_zadan'
@@ -34,7 +35,7 @@ async function normalizeTagi(tagi: string[] | undefined, user: User): Promise<st
 export default class AdminTasksController {
   async index({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
-    const zadania = await ListaZadan.query().orderBy('id_zadania')
+    const zadania = await ListaZadan.query().whereNull('deleted_at').orderBy('id_zadania')
     return view.render('pages/admin/choose_task_to_edit', { poziomyTrudnosci, zadania })
   }
 
@@ -94,6 +95,45 @@ export default class AdminTasksController {
       model: task,
     })
     session.flash('success', 'Zadanie zostało zaktualizowane.')
+    return response.redirect().back()
+  }
+
+  async toggle_published({ params, response, session, auth }: HttpContext) {
+    const task = await ListaZadan.findOrFail(params.id)
+    task.published = !task.published
+    await AuditLog.recordUpdate({
+      user: auth.user!,
+      typObiektu: 'zadanie',
+      idObiektu: task.idZadania,
+      opis: `zadanie „${task.nazwa}”`,
+      model: task,
+    })
+    session.flash(
+      'success',
+      task.published
+        ? `Zadanie „${task.nazwa}” jest teraz widoczne.`
+        : `Zadanie „${task.nazwa}” zostało ukryte.`
+    )
+    return response.redirect().back()
+  }
+
+  async destroy({ params, response, session, auth }: HttpContext) {
+    const user = auth.user!
+    const task = await ListaZadan.findOrFail(params.id)
+    if (!user.canEditAllContent && task.idAutora !== user.id) {
+      session.flash('error', 'Brak dostępu.')
+      return response.redirect().toRoute('admin.edit_task.index')
+    }
+    task.deletedAt = DateTime.now()
+    await task.save()
+    await AuditLog.record({
+      user,
+      akcja: 'usunięto',
+      typObiektu: 'zadanie',
+      idObiektu: task.idZadania,
+      opis: `zadanie „${task.nazwa}”`,
+    })
+    session.flash('success', `Zadanie „${task.nazwa}” zostało usunięte.`)
     return response.redirect().back()
   }
 

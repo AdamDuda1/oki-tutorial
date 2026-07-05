@@ -36,6 +36,7 @@ export default class SciezkaController {
       const tasks = await ListaZadan.query()
         .whereIn('id_zadania', allTaskIds)
         .where('published', true)
+        .whereNull('deleted_at')
         .preload('poziomuTrudnosci')
       for (const task of tasks) {
         taskMap.set(task.idZadania, task)
