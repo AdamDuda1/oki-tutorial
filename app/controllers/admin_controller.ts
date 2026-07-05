@@ -29,18 +29,13 @@ export default class AdminController {
     }
 
     user.role = role
-    const zmiany = AuditLog.diff(user)
-    await user.save()
-    if (zmiany) {
-      await AuditLog.record({
-        user: auth.user!,
-        akcja: 'zaktualizowano',
-        typObiektu: 'użytkownik',
-        idObiektu: user.id,
-        opis: `rola użytkownika ${user.email}`,
-        zmiany,
-      })
-    }
+    await AuditLog.recordUpdate({
+      user: auth.user!,
+      typObiektu: 'użytkownik',
+      idObiektu: user.id,
+      opis: `rola użytkownika ${user.email}`,
+      model: user,
+    })
     session.flash('success', `Użytkownik ${user.email} jest teraz ${role}.`)
     return response.redirect().back()
   }
@@ -51,8 +46,10 @@ export default class AdminController {
     paginator.baseUrl('/admin/stats_and_audit_log')
 
     const stats = {
-      zadania: await countRows(ListaZadan.query()),
-      zadaniaOpublikowane: await countRows(ListaZadan.query().where('published', true)),
+      zadania: await countRows(ListaZadan.query().whereNull('deleted_at')),
+      zadaniaOpublikowane: await countRows(
+        ListaZadan.query().whereNull('deleted_at').where('published', true)
+      ),
       tematy: await countRows(Tematy.query().whereNull('deleted_at')),
       tematyOpublikowane: await countRows(
         Tematy.query().whereNull('deleted_at').where('published', true)

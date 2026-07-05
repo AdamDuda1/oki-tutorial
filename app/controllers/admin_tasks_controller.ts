@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 import ListaZadan from '#models/lista_zadan'
 import PoziomTrudnosci from '#models/poziom_trudnosci'
 import Tag from '#models/tag'
@@ -10,19 +11,23 @@ async function normalizeTagi(tagi: string[] | undefined, user: User): Promise<st
   const names = [...new Set((tagi ?? []).map((t) => t.trim()).filter(Boolean))]
   if (names.length === 0) return null
 
-  const rows = await Tag.fetchOrCreateMany(
-    'nazwa',
-    names.map((nazwa) => ({ nazwa }))
-  )
-  for (const tag of rows.filter((t) => t.$isLocal)) {
-    await AuditLog.record({
-      user,
-      akcja: 'utworzono',
-      typObiektu: 'tag',
-      idObiektu: tag.idTagu,
-      opis: `tag „${tag.nazwa}” (przy edycji zadania)`,
-    })
-  }
+  await db.transaction(async (trx) => {
+    const rows = await Tag.fetchOrCreateMany(
+      'nazwa',
+      names.map((nazwa) => ({ nazwa })),
+      { client: trx }
+    )
+    for (const tag of rows.filter((t) => t.$isLocal)) {
+      await AuditLog.record({
+        user,
+        akcja: 'utworzono',
+        typObiektu: 'tag',
+        idObiektu: tag.idTagu,
+        opis: `tag „${tag.nazwa}” (przy edycji zadania)`,
+        trx,
+      })
+    }
+  })
   return names
 }
 
@@ -81,18 +86,13 @@ export default class AdminTasksController {
     const tagi = await normalizeTagi(payload.tagi, user)
 
     task.merge({ ...payload, published, tagi })
-    const zmiany = AuditLog.diff(task)
-    await task.save()
-    if (zmiany) {
-      await AuditLog.record({
-        user,
-        akcja: 'zaktualizowano',
-        typObiektu: 'zadanie',
-        idObiektu: task.idZadania,
-        opis: `zadanie „${task.nazwa}”`,
-        zmiany,
-      })
-    }
+    await AuditLog.recordUpdate({
+      user,
+      typObiektu: 'zadanie',
+      idObiektu: task.idZadania,
+      opis: `zadanie „${task.nazwa}”`,
+      model: task,
+    })
     session.flash('success', 'Zadanie zostało zaktualizowane.')
     return response.redirect().back()
   }
@@ -169,41 +169,42 @@ export default class AdminTasksController {
     }>
 
     if (Array.isArray(levels)) {
-      for (const data of levels) {
-        const level = await PoziomTrudnosci.find(Number(data.id))
-        if (!level) continue
-        level.skrot = data.skrot?.trim() ?? level.skrot
-        level.rozwiniecie = data.rozwiniecie?.trim() ?? level.rozwiniecie
-        level.color = data.color || null
-        level.position = Number(data.position)
-        const zmiany = AuditLog.diff(level)
-        await level.save()
-        if (zmiany) {
-          await AuditLog.record({
+      await db.transaction(async (trx) => {
+        for (const data of levels) {
+          const level = await PoziomTrudnosci.find(Number(data.id), { client: trx })
+          if (!level) continue
+          level.skrot = data.skrot?.trim() ?? level.skrot
+          level.rozwiniecie = data.rozwiniecie?.trim() ?? level.rozwiniecie
+          level.color = data.color || null
+          const position = Number(data.position)
+          if (Number.isInteger(position)) level.position = position
+          await AuditLog.recordUpdate({
             user,
-            akcja: 'zaktualizowano',
             typObiektu: 'poziom trudności',
             idObiektu: level.idPoziomuTrudnosci,
             opis: `poziom trudności „${level.skrot}”`,
-            zmiany,
+            model: level,
+            trx,
           })
         }
-      }
-      const submittedIds = levels.map((d) => Number(d.id))
-      const doUsuniecia = await PoziomTrudnosci.query().whereNotIn(
-        'id_poziomu_trudnosci',
-        submittedIds
-      )
-      for (const level of doUsuniecia) {
-        await level.delete()
-        await AuditLog.record({
-          user,
-          akcja: 'usunięto',
-          typObiektu: 'poziom trudności',
-          idObiektu: level.idPoziomuTrudnosci,
-          opis: `poziom trudności „${level.skrot}”`,
-        })
-      }
+        const submittedIds = levels.map((d) => Number(d.id)).filter((n) => Number.isInteger(n))
+        if (submittedIds.length === 0) return
+        const doUsuniecia = await PoziomTrudnosci.query({ client: trx }).whereNotIn(
+          'id_poziomu_trudnosci',
+          submittedIds
+        )
+        for (const level of doUsuniecia) {
+          await level.delete()
+          await AuditLog.record({
+            user,
+            akcja: 'usunięto',
+            typObiektu: 'poziom trudności',
+            idObiektu: level.idPoziomuTrudnosci,
+            opis: `poziom trudności „${level.skrot}”`,
+            trx,
+          })
+        }
+      })
     }
 
     session.flash('success', 'Poziomy trudności zostały zaktualizowane.')

@@ -99,7 +99,7 @@ Alpine.data('materialyEditor', () => ({
       let at = this.insertPos === 'before' ? o.ti : o.ti + 1
       if (d.pi === o.pi && o.ti > d.ti) at--
       this.poziomy[o.pi].tematy.splice(at, 0, item)
-    } else if (d.type === 'temat' && o.type === 'poziom') {
+    } else if (d.type === 'temat' && o.type === 'poziom' && d.pi !== o.pi) {
       const [item] = this.poziomy[d.pi].tematy.splice(d.ti, 1)
       this.poziomy[o.pi].tematy.push(item)
     }

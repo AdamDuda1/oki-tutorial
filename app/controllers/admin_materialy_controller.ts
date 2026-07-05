@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 import Poziomy from '#models/poziomy'
 import Tematy from '#models/tematy'
 import ListaZadan from '#models/lista_zadan'
@@ -46,21 +47,48 @@ export default class AdminMaterialyController {
     const pPos = (request.input('p') ?? {}) as Record<string, string>
     const tPos = (request.input('t') ?? {}) as Record<string, string>
     const tPoziom = (request.input('tp') ?? {}) as Record<string, string>
-    for (const [id, pos] of Object.entries(pPos)) {
-      await Poziomy.query()
-        .where('id_poziomu', Number(id))
-        .update({ position: Number(pos) })
-    }
-    for (const [id, pos] of Object.entries(tPos)) {
-      const data: Record<string, number> = { position: Number(pos) }
-      if (Number(tPoziom[id])) data.id_poziomu = Number(tPoziom[id])
-      await Tematy.query().where('id_tematu', Number(id)).update(data)
-    }
-    await AuditLog.record({
-      user: auth.user!,
-      akcja: 'zaktualizowano',
-      typObiektu: 'kolejność',
-      opis: 'kolejność poziomów i tematów',
+
+    const poziomy = await Poziomy.query().whereNull('deleted_at')
+    const tematy = await Tematy.query().whereNull('deleted_at')
+    const poziomyById = new Map(poziomy.map((p) => [p.idPoziomu, p]))
+    const tematyById = new Map(tematy.map((t) => [t.idTematu, t]))
+
+    let zmienione = 0
+    await db.transaction(async (trx) => {
+      for (const [id, pos] of Object.entries(pPos)) {
+        const poziom = poziomyById.get(Number(id))
+        const position = Number(pos)
+        if (!poziom || !Number.isInteger(position)) continue
+        poziom.position = position
+        if (!poziom.$isDirty) continue
+        poziom.useTransaction(trx)
+        await poziom.save()
+        zmienione++
+      }
+      for (const [id, pos] of Object.entries(tPos)) {
+        const temat = tematyById.get(Number(id))
+        const position = Number(pos)
+        if (!temat || !Number.isInteger(position)) continue
+        if (Number(tPoziom[id])) {
+          const nowyPoziom = poziomyById.get(Number(tPoziom[id]))
+          if (!nowyPoziom) continue
+          temat.idPoziomu = nowyPoziom.idPoziomu
+        }
+        temat.position = position
+        if (!temat.$isDirty) continue
+        temat.useTransaction(trx)
+        await temat.save()
+        zmienione++
+      }
+      if (zmienione > 0) {
+        await AuditLog.record({
+          user: auth.user!,
+          akcja: 'zaktualizowano',
+          typObiektu: 'kolejność',
+          opis: 'kolejność poziomów i tematów',
+          trx,
+        })
+      }
     })
     session.flash('success', 'Kolejność została zaktualizowana.')
     return response.redirect().back()
@@ -223,18 +251,13 @@ export default class AdminMaterialyController {
       temat.published = request.input('published') === 'on'
       temat.customHtml = customHtml
     }
-    const zmiany = AuditLog.diff(temat)
-    await temat.save()
-    if (zmiany) {
-      await AuditLog.record({
-        user,
-        akcja: 'zaktualizowano',
-        typObiektu: 'temat',
-        idObiektu: temat.idTematu,
-        opis: `temat „${temat.nazwa}”`,
-        zmiany,
-      })
-    }
+    await AuditLog.recordUpdate({
+      user,
+      typObiektu: 'temat',
+      idObiektu: temat.idTematu,
+      opis: `temat „${temat.nazwa}”`,
+      model: temat,
+    })
     session.flash('success', 'Temat został zaktualizowany.')
     return response.redirect().back()
   }
