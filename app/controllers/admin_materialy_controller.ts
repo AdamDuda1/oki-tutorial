@@ -54,10 +54,11 @@ export default class AdminMaterialyController {
     const poziomyById = new Map(poziomy.map((p) => [p.idPoziomu, p]))
     const tematyById = new Map(tematy.map((t) => [t.idTematu, t]))
 
+    /* keys are "i<id>" — see the hidden inputs in materialy.edge */
     let zmienione = 0
     await db.transaction(async (trx) => {
-      for (const [id, pos] of Object.entries(pPos)) {
-        const poziom = poziomyById.get(Number(id))
+      for (const [key, pos] of Object.entries(pPos)) {
+        const poziom = poziomyById.get(Number(key.slice(1)))
         const position = Number(pos)
         if (!poziom || !Number.isInteger(position)) continue
         poziom.position = position
@@ -66,12 +67,12 @@ export default class AdminMaterialyController {
         await poziom.save()
         zmienione++
       }
-      for (const [id, pos] of Object.entries(tPos)) {
-        const temat = tematyById.get(Number(id))
+      for (const [key, pos] of Object.entries(tPos)) {
+        const temat = tematyById.get(Number(key.slice(1)))
         const position = Number(pos)
         if (!temat || !Number.isInteger(position)) continue
-        if (Number(tPoziom[id])) {
-          const nowyPoziom = poziomyById.get(Number(tPoziom[id]))
+        if (Number(tPoziom[key])) {
+          const nowyPoziom = poziomyById.get(Number(tPoziom[key]))
           if (!nowyPoziom) continue
           temat.idPoziomu = nowyPoziom.idPoziomu
         }

@@ -28,6 +28,7 @@
 }
 
 .flash-container {
+  z-index: 9999909;
   position: fixed;
   top: 80px;
   left: 50vw;

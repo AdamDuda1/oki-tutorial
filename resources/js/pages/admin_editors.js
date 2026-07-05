@@ -49,12 +49,14 @@ Alpine.data('materialyEditor', () => ({
   },
 
   startPoziom(pi, event) {
+    if (event.target !== event.currentTarget) return
     // Firefox won't start a drag unless dataTransfer has data
     event.dataTransfer.setData('text/plain', '')
     event.dataTransfer.effectAllowed = 'move'
     this.dragging = { type: 'poziom', pi }
   },
   startTemat(pi, ti, event) {
+    if (event.target !== event.currentTarget) return
     event.dataTransfer.setData('text/plain', '')
     event.dataTransfer.effectAllowed = 'move'
     this.dragging = { type: 'temat', pi, ti }
