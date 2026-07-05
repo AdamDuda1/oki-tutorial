@@ -22,4 +22,13 @@ export default defineConfig({
       ignored: ['**/storage/**', '**/tmp/**'],
     },
   },
+
+  optimizeDeps: {
+    /**
+     * Pre-bundle these upfront so the dev server doesn't re-optimize
+     * mid-session and invalidate modules browsers already cached
+     * as immutable (stale cache = dead page until a hard refresh).
+     */
+    include: ['alpinejs', '@hotwired/turbo'],
+  },
 })

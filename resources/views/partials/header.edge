@@ -1,5 +1,5 @@
 <header style="display: flex">
-  <nav x-data="{ open: false }" style="width: 100%" @click.outside="open = false">
+  <nav x-data="{ open: !!$el.querySelector('.nav-links')?.classList.contains('open') }" style="width: 100%" @click.outside="open = false">
     <div style="width: 100%">
       <a href="/" class="dont_underline">
         <img src="/logo.png" alt="Logo OKI" height="100%">
@@ -41,7 +41,7 @@
     </div>
 
     <div>
-      <button class="nav-hamburger" @click="open = !open" :aria-expanded="open.toString()" aria-label="Menu">
+      <button class="nav-hamburger" data-toggle=".nav-links" @click="open = !open" :aria-expanded="open.toString()" aria-label="Menu">
         <span x-text="open ? '✕' : '☰'">☰</span>
       </button>
     </div>

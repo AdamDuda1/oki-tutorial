@@ -1,7 +1,7 @@
 @let(zadanie = $props.get('zadanie'))
 
-<div class="task_box" x-data="{ open: false }">
-  <button class="toggle" @click="open = !open">
+<div class="task_box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
+  <button class="toggle" data-toggle @click="open = !open">
     <div class="toggle_left">
       <span class="task_box_arrow" :class="{ open }">▶</span>
       <h3 class="medium">{{ zadanie.nazwa }}</h3>

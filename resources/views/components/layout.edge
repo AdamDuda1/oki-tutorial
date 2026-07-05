@@ -10,6 +10,26 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Quicksand:wght@300..700&display=swap" />
     @vite(['resources/css/app.css?v=' + appVersion, 'resources/js/app.js'])
     @stack('dumper')
+    <script>
+      /* Awaryjne otwieranie boxów/menu zanim załaduje się bundle z Alpine */
+      (() => {
+        let alpineUp = false
+        document.addEventListener('alpine:init', () => { alpineUp = true })
+        document.addEventListener('click', (e) => {
+          if (alpineUp) return
+          const trigger = e.target.closest('[data-toggle]')
+          if (!trigger) return
+          const interactive = e.target.closest('a, button')
+          if (interactive && interactive !== trigger) return
+          const root = trigger.closest('[x-data]')
+          if (!root) return
+          const selector = trigger.getAttribute('data-toggle') || '.box, .box_arrow, .task_box_arrow'
+          for (const el of root.querySelectorAll(selector)) {
+            if (el.closest('[x-data]') === root) el.classList.toggle('open')
+          }
+        })
+      })()
+    </script>
   </head>
   <body>
     @include('partials/header')

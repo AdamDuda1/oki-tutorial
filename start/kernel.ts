@@ -26,6 +26,7 @@ server.use([
   () => import('#middleware/container_bindings_middleware'),
   () => import('@adonisjs/static/static_middleware'),
   () => import('@adonisjs/vite/vite_middleware'),
+  () => import('#middleware/cache_control_middleware'),
   () => import('#middleware/log_load_times_middleware'),
 ])
 

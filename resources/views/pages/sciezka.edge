@@ -21,11 +21,11 @@
 
     <div class="content">
       @each (temat in tematy)
-        <div class="topic_box" x-data="{ open: false }" id="{{temat.idTematu}}"
+        <div class="topic_box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
         x-effect="if ($store.topic.current === {{temat.idTematu}}) open = true"
         x-init="if (window.location.hash === '#{{temat.idTematu}}') { open = true; $el.scrollIntoView(); }{{{ temat.idTematu === autoOpenId ? ' else if (!window.location.hash) { open = true; }' : '' }}}; if (open) $store.topic.current = {{temat.idTematu}}">
 
-          <button class="toggle" @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
+          <button class="toggle" data-toggle @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
             <span class="box_arrow" :class="{ open }">▶</span>
             <h2 class="bold">{{temat.nazwa}}</h2>
           </button>

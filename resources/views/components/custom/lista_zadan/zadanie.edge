@@ -2,8 +2,8 @@
 @let(poziomyTrudnosci = $props.get('poziomyTrudnosci'))
 @let(withAlpha = $props.get('withAlpha'))
 
-<tbody x-data="{ open: false }" class="task_row">
-  <tr @click="open = !open">
+<tbody x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" class="task_row">
+  <tr data-toggle @click="open = !open">
     <td class="col-id">{{ z.idZadania }}</td>
     <td class="col-nazwa">
       <div class="toggle_left">

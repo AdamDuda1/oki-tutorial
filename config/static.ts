@@ -33,6 +33,17 @@ const staticServerConfig = defineConfig({
    * Reject access to dotfiles with deny mode (403).
    */
   dotFiles: 'ignore',
+
+  /**
+   * Vite build output uses hashed filenames (content change = new URL),
+   * so those files can be cached forever without revalidation.
+   */
+  headers: (path) => {
+    if (path.includes('/public/assets/')) {
+      return { 'Cache-Control': 'public, max-age=31536000, immutable' }
+    }
+    return {}
+  },
 })
 
 export default staticServerConfig
