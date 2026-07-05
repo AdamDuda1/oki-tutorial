@@ -20,6 +20,12 @@
     </nav>
 
     <div class="content">
+      @if(poziomHtml)
+        <div class="level_html">
+          {{{ poziomHtml }}}
+        </div>
+      @end
+
       @each (temat in tematy)
         <div class="topic_box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
         x-effect="if ($store.topic.current === {{temat.idTematu}}) open = true"

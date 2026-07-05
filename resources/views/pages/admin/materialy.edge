@@ -54,7 +54,11 @@
           @if(auth.user.canEditAllContent)
             <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
           @end
-          <strong x-text="p.nazwa"></strong>
+          @if(auth.user.canEditAllContent)
+            <a :href="`/admin/materialy/poziom/${p.id}`" x-text="p.nazwa" style="font-weight: 700;"></a>
+          @else
+            <strong x-text="p.nazwa"></strong>
+          @end
           <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" style="margin-left: auto; font-size: 13px; color: var(--brand);">+ Nowy temat</a>
         </div>
 

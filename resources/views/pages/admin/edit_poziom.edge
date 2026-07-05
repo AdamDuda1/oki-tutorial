@@ -1,0 +1,46 @@
+@layout({ title: 'Edytuj poziom' })
+@layoutAdminSidebar({ page: 'Edytuj tematy' })
+
+<a href="{{ route('admin.materialy') }}" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
+
+<h1>Edytuj: {{ poziom.nazwa }}</h1>
+
+@form({ route: 'admin.materialy.update_poziom', routeParams: { id: poziom.idPoziomu }, method: 'POST', 'data-save-shortcut': true })
+
+  <div class="admin-form-section">
+    <h2>Podstawowe informacje</h2>
+    @field.root({ name: 'nazwa' })
+      @!field.label({ text: 'Nazwa' })
+      @!input.control({ value: poziom.nazwa })
+      @!field.error()
+    @end
+  </div>
+
+  <div class="admin-form-section">
+    @field.root({ name: 'customHtml' })
+      @!field.label({ text: 'Customowy HTML nad tematami (opcjonalnie)' })
+      @!textarea.control({ rows: 10, value: poziom.customHtml ?? '', style: 'font-family: monospace; font-size: 13px;' })
+    @end
+
+    <a style="color: var(--brand); cursor: pointer;" x-data @click.stop="$store.modal.show('Formatowanie',
+    'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox({ title: \'tutaj idzie nagłówek sekcji\' })\n   tutaj idzie treść\n \@end ')">Pomoc z formatowaniem ></a>
+  </div>
+
+  <div class="admin-form-actions">
+    @!button({ text: 'Zapisz zmiany', type: 'submit' })
+  </div>
+
+@end
+
+<div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+  <h2>Usuń poziom</h2>
+  <p style="font-size: 14px; color: var(--text-secondary); margin: 8px 0 12px;">Poziom zniknie ze ścieżki, a jego tematy zostaną odpięte i trafią do sekcji „Bez przypisanego poziomu” (nie zostaną usunięte).</p>
+  <form method="POST" action="{{ route('admin.materialy.destroy_poziom', { id: poziom.idPoziomu }) }}" data-turbo="false"
+    onsubmit="return confirm('Usunąć poziom „{{ poziom.nazwa }}”? Jego tematy zostaną odpięte.')">
+    {{ csrfField() }}
+    @!button({ text: 'Usuń poziom', type: 'submit' })
+  </form>
+</div>
+
+@end
+@end

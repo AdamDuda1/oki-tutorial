@@ -62,6 +62,9 @@ export default class SciezkaController {
 
     const autoOpenId = tematy[0]?.idTematu ?? null // refer to line 11 as the time of writing
 
-    return view.render('pages/sciezka', { params, tematy, poziomy, autoOpenId })
+    const poziom = poziomy.find((p) => p.idPoziomu === Number(params.id))
+    const poziomHtml = poziom?.customHtml ? await view.renderRaw(poziom.customHtml) : null
+
+    return view.render('pages/sciezka', { params, tematy, poziomy, autoOpenId, poziomHtml })
   }
 }

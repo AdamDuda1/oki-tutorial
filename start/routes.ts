@@ -87,6 +87,15 @@ router
     router
       .post('materialy/poziom/new', [AdminMaterialyController, 'store_poziom'])
       .as('admin.materialy.store_poziom')
+    router
+      .get('materialy/poziom/:id', [AdminMaterialyController, 'edit_poziom'])
+      .as('admin.materialy.edit_poziom')
+    router
+      .post('materialy/poziom/:id', [AdminMaterialyController, 'update_poziom'])
+      .as('admin.materialy.update_poziom')
+    router
+      .post('materialy/poziom/:id/delete', [AdminMaterialyController, 'destroy_poziom'])
+      .as('admin.materialy.destroy_poziom')
   })
   .prefix('/admin')
   .use(middleware.admin({ roles: ['admin', 'editor2'] }))

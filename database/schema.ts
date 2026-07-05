@@ -76,10 +76,12 @@ export class ListaZadanSchema extends BaseModel {
 }
 
 export class PoziomySchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'idPoziomu', 'nazwa', 'position', 'updatedAt'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idPoziomu', 'nazwa', 'position', 'updatedAt'] as const
   $columns = PoziomySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare customHtml: string | null
   @column.dateTime()
   declare deletedAt: DateTime | null
   @column({ isPrimary: true })

@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import Poziomy from '#models/poziomy'
 import Tematy from '#models/tematy'
@@ -111,6 +112,56 @@ export default class AdminMaterialyController {
     })
     session.flash('success', 'Poziom został dodany.')
     return response.redirect().back()
+  }
+
+  async edit_poziom({ params, view }: HttpContext) {
+    const poziom = await Poziomy.findOrFail(params.id)
+    return view.render('pages/admin/edit_poziom', { poziom })
+  }
+
+  async update_poziom({ params, request, response, session, auth }: HttpContext) {
+    const poziom = await Poziomy.findOrFail(params.id)
+    const nazwa = request.input('nazwa', '').trim()
+    if (!nazwa) {
+      session.flash('error', 'Nazwa jest wymagana.')
+      return response.redirect().back()
+    }
+    poziom.nazwa = nazwa
+    poziom.customHtml = String(request.input('customHtml') ?? '').trim() || null
+    await AuditLog.recordUpdate({
+      user: auth.user!,
+      typObiektu: 'poziom',
+      idObiektu: poziom.idPoziomu,
+      opis: `poziom „${poziom.nazwa}”`,
+      model: poziom,
+    })
+    session.flash('success', 'Poziom został zaktualizowany.')
+    return response.redirect().back()
+  }
+
+  async destroy_poziom({ params, response, session, auth }: HttpContext) {
+    const poziom = await Poziomy.findOrFail(params.id)
+    const tematy = await Tematy.query().where('id_poziomu', poziom.idPoziomu)
+    await db.transaction(async (trx) => {
+      for (const temat of tematy) {
+        temat.idPoziomu = null
+        temat.useTransaction(trx)
+        await temat.save()
+      }
+      poziom.deletedAt = DateTime.now()
+      poziom.useTransaction(trx)
+      await poziom.save()
+      await AuditLog.record({
+        user: auth.user!,
+        akcja: 'usunięto',
+        typObiektu: 'poziom',
+        idObiektu: poziom.idPoziomu,
+        opis: `poziom „${poziom.nazwa}” (odpięto ${tematy.length} tematów)`,
+        trx,
+      })
+    })
+    session.flash('success', 'Poziom usunięty.')
+    return response.redirect().toRoute('admin.materialy')
   }
 
   async create_temat({ request, view }: HttpContext) {

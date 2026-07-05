@@ -81,7 +81,7 @@
     <div class="admin-form-section">
       @field.root({ name: 'customHtml' })
         @!field.label({ text: 'Customowy HTML (opcjonalnie)' })
-        @!textarea.control({ rows: 5, value: temat ? (temat.customHtml ?? '') : '', style: 'font-family: monospace; font-size: 13px;' })
+        @!textarea.control({ rows: 15, value: temat ? (temat.customHtml ?? '') : '', style: 'font-family: monospace; font-size: 13px;' })
       @end
 
       <a style="color: var(--brand); cursor: pointer;" x-data @click.stop="$store.modal.show('Formatowanie',

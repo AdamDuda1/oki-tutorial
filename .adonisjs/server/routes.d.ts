@@ -32,6 +32,9 @@ export type ScannedRoutes = {
     'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
+    'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.materialy.update_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
@@ -52,6 +55,7 @@ export type ScannedRoutes = {
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
+    'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
@@ -71,6 +75,7 @@ export type ScannedRoutes = {
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
+    'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
@@ -88,6 +93,8 @@ export type ScannedRoutes = {
     'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
+    'admin.materialy.update_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }

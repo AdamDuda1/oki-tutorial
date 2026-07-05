@@ -16,6 +16,9 @@ export default class Poziomy extends PoziomySchema {
   @column()
   declare nazwa: string
 
+  @column()
+  declare customHtml: string | null
+
   @column.dateTime()
   declare deletedAt: DateTime | null
 
