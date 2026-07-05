@@ -43,9 +43,23 @@
           @end
         </td>
         <td>
-          <a style="color: var(--brand)" href="">resetuj hasło</a>
-          /
-          <a style="color: var(--brand)" href="{ u.id }}">usuń</a>
+          @if(u.id === auth.user.id)
+            —
+          @else
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <form method="POST" action="{{ route('admin.users.reset_password', { id: u.id }) }}" data-turbo="false"
+                onsubmit="return confirm('Zresetować hasło użytkownika {{ u.email }}? Nowe hasło zostanie pokazane tylko raz.')">
+                {{ csrfField() }}
+                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">resetuj hasło</button>
+              </form>
+              /
+              <form method="POST" action="{{ route('admin.users.destroy', { id: u.id }) }}" data-turbo="false"
+                onsubmit="return confirm('Usunąć konto {{ u.email }}? Tej operacji nie można cofnąć.')">
+                {{ csrfField() }}
+                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">usuń</button>
+              </form>
+            </div>
+          @end
         </td>
       </tr>
     </tbody>

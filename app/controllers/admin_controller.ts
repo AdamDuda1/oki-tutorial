@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto'
 import type { HttpContext } from '@adonisjs/core/http'
 import User, { USER_ROLES } from '#models/user'
 import AuditLog from '#models/audit_log'
@@ -37,6 +38,51 @@ export default class AdminController {
       model: user,
     })
     session.flash('success', `Użytkownik ${user.email} jest teraz ${role}.`)
+    return response.redirect().back()
+  }
+
+  async reset_password({ params, response, session, auth }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    if (user.id === auth.user!.id) {
+      session.flash('error', 'Nie możesz zresetować własnego hasła.')
+      return response.redirect().back()
+    }
+    const tempPassword = randomBytes(9).toString('base64url')
+    user.password = tempPassword
+    await user.save()
+    await AuditLog.record({
+      user: auth.user!,
+      akcja: 'zaktualizowano',
+      typObiektu: 'użytkownik',
+      idObiektu: user.id,
+      opis: `zresetowano hasło użytkownika ${user.email}`,
+    })
+    session.flash(
+      'success',
+      `Nowe hasło dla ${user.email}: ${tempPassword} — zapisz je teraz, nie zostanie pokazane ponownie.`
+    )
+    session.flash(
+      'successNext',
+      'Mam nadzieję że zapisałeś hasło. Jeśli nie, możesz wygenerować nowe ponownie.'
+    )
+    return response.redirect().back()
+  }
+
+  async destroy_user({ params, response, session, auth }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    if (user.id === auth.user!.id) {
+      session.flash('error', 'Nie możesz usunąć własnego konta.')
+      return response.redirect().back()
+    }
+    await user.delete()
+    await AuditLog.record({
+      user: auth.user!,
+      akcja: 'usunięto',
+      typObiektu: 'użytkownik',
+      idObiektu: user.id,
+      opis: `użytkownik ${user.email} (rola: ${user.role})`,
+    })
+    session.flash('success', `Użytkownik ${user.email} został usunięty.`)
     return response.redirect().back()
   }
 

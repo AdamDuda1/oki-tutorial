@@ -37,6 +37,8 @@ export type ScannedRoutes = {
     'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
   }
   GET: {
@@ -96,6 +98,8 @@ export type ScannedRoutes = {
     'admin.materialy.update_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

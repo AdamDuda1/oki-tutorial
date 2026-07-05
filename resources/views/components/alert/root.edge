@@ -4,11 +4,11 @@
 
 <div {{
   $props
-    .except(['variant', 'autoDismiss'])
+    .except(['variant', 'autoDismiss', 'duration', 'delay'])
     .merge({
       role: 'alert',
       class: classes,
-      'x-data': 'alert',
+      'x-data': `alert(${$props.get('duration') ?? 5000}, ${$props.get('delay') ?? 80})`,
       'x-show': 'isVisible',
       'x-cloak': true,
     })

@@ -13,7 +13,7 @@
     @if(auth.user.isAdmin)
       <span class="admin-nav-separator" style="margin-top: 25px">ZARZĄDZANIE STRONĄ</span>
       <a href="/admin/users" class="{{ $props.get('page') === 'Zalogowani użytkownicy' ? 'bold' : 'medium' }} admin-nav-topic">Zalogowani użytkownicy</a>
-      <a href="/admin/flipper_features" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a>
+      <!--a href="/admin/flipper_features" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a-->
       <a href="/admin/stats_and_audit_log" class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic">Statystyki i historia zmian</a>
     @end
     <span class="mobile-menu-handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń menu v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń menu v'; }">Rozwiń menu v</span>

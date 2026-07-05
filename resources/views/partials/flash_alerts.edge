@@ -4,9 +4,15 @@
       @!alert.description({ text: flashMessages.get('error') })
     @end
   @end
+  @let(firstDuration = 15000)
   @if(flashMessages.has('success'))
-    @alert.root({ variant: 'success', autoDismiss: true })
+    @alert.root({ variant: 'success', autoDismiss: true, duration: flashMessages.has('successNext') ? firstDuration : 5000 })
       @!alert.description({ text: flashMessages.get('success') })
+    @end
+  @end
+  @if(flashMessages.has('successNext'))
+    @alert.root({ variant: 'success', autoDismiss: true, delay: firstDuration + 400 })
+      @!alert.description({ text: flashMessages.get('successNext') })
     @end
   @end
 </div>

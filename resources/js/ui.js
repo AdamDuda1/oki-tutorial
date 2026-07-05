@@ -11,7 +11,7 @@ Alpine.store('modal', {
   hide() { this.open = false },
 })
 
-Alpine.data('alert', function () {
+Alpine.data('alert', function (duration = 5000, delay = 80) {
   return {
     isVisible: false,
     dismiss() {
@@ -20,10 +20,10 @@ Alpine.data('alert', function () {
     init() {
       setTimeout(() => {
         this.isVisible = true
-      }, 80)
+      }, delay)
       setTimeout(() => {
         this.dismiss()
-      }, 5000)
+      }, delay + duration)
     },
   }
 })
