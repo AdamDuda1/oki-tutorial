@@ -1,3 +1,7 @@
+[x-cloak] {
+  display: none !important;
+}
+
 .alert {
   z-index: 9999909;
   background: #fff;

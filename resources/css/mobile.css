@@ -86,9 +86,13 @@
   .content {
     position: absolute;
     width: 94vw;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
     margin-left: auto;
     margin-right: auto;
+
+    .topic-header {
+      flex-direction: column;
+    }
   }
 }
