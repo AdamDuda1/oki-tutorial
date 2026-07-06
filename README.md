@@ -1,6 +1,5 @@
 OKI-tutorial!
 
-
 ## For horizons:
 This is an website proposal for OKI's (Polish *olympiad-oriented computer science club*) tutorial, a website that collects all the materials created by and used by OKI in a nice course format :))
 
@@ -20,3 +19,5 @@ This is an website proposal for OKI's (Polish *olympiad-oriented computer scienc
 <img width="1919" height="945" alt="image" src="https://github.com/user-attachments/assets/410ba491-2ff7-4a4b-ab78-1c3776d0b07a" />
 
 <img width="1919" height="942" alt="image" src="https://github.com/user-attachments/assets/fdebf0f7-1fdf-4383-970e-74f136338cdf" />
+
+No AI was used to generate code for the submission. I fixed some bugs with AI after, this time was not logged.

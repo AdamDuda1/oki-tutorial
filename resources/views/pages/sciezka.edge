@@ -31,7 +31,7 @@
       @each (temat in tematy)
         <div class="topic-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
         x-effect="if ($store.topic.current === {{temat.idTematu}}) open = true"
-        x-init="if (window.location.hash === '#{{temat.idTematu}}') { open = true; $el.scrollIntoView(); }{{{ temat.idTematu === autoOpenId ? ' else if (!window.location.hash) { open = true; }' : '' }}}; if (open) $store.topic.current = {{temat.idTematu}}">
+        x-init="if (open) $store.topic.current = {{temat.idTematu}}">
 
           <button class="toggle" data-toggle @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
             <span class="box-arrow" :class="{ open }">▶</span>
@@ -88,6 +88,20 @@
           </div>
         </div>
       @end
+
+      {{--
+        fix for the flashing topic box
+      --}}
+      <script>
+        (() => {
+          const hash = window.location.hash.slice(1)
+          const target = document.getElementById(hash || '{{ autoOpenId || '' }}')
+          if (!target || !target.classList.contains('topic-box')) return
+          target.querySelector('.box')?.classList.add('open')
+          target.querySelector('.box-arrow')?.classList.add('open')
+          if (hash) target.scrollIntoView()
+        })()
+      </script>
     </div>
   </div>
 @end
