@@ -4,8 +4,8 @@ document.addEventListener('turbo:load', async () => {
 
   const [
     { basicSetup, EditorView },
-    { html },
-    { acceptCompletion },
+    { html, htmlLanguage },
+    { acceptCompletion, snippetCompletion },
     { indentWithTab },
     { keymap },
   ] = await Promise.all([
@@ -16,6 +16,20 @@ document.addEventListener('turbo:load', async () => {
     import('@codemirror/view'),
   ])
 
+  const edgeSnippets = [
+    snippetCompletion("@custom.sciezka.expandableBox({ title: '${tytuł}' })\n  ${treść}\n@end", {
+      label: '@custom.sciezka.expandableBox',
+      detail: 'rozwijana sekcja',
+      type: 'function',
+    }),
+  ]
+
+  const edgeComponents = (context) => {
+    const word = context.matchBefore(/@[\w.]*/)
+    if (!word && !context.explicit) return null
+    return { from: word ? word.from : context.pos, options: edgeSnippets, validFor: /^@[\w.]*$/ }
+  }
+
   for (const area of areas) {
     if (area.nextElementSibling?.classList.contains('cm-editor')) area.nextElementSibling.remove()
 
@@ -24,6 +38,7 @@ document.addEventListener('turbo:load', async () => {
       extensions: [
         basicSetup,
         html(),
+        htmlLanguage.data.of({ autocomplete: edgeComponents }),
         keymap.of([{ key: 'Tab', run: acceptCompletion }, indentWithTab]),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) area.value = update.state.doc.toString()
