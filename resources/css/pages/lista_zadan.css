@@ -116,18 +116,6 @@ form.filters {
   }
 }
 
-/*.ts-wrapper .ts-control {      !* the input box *!*/
-/*  border-radius: 8px;*/
-/*  border-color: #ccc;*/
-/*  flex: 1;*/
-/*}*/
-/*.ts-control > .item {          !* selected chips *!*/
-/*  background: #eef;*/
-/*}*/
-/*.ts-dropdown .option.active {  !* hovered option *!*/
-/*  background: #dde;*/
-/*}*/
-
 .clear-link {
   font-size: 13px;
   color: var(--text-secondary);

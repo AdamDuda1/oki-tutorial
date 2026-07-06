@@ -31,14 +31,12 @@ export class AuditLogSchema extends BaseModel {
 }
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime()
   declare deletedAt: DateTime | null
-  @column()
-  declare difficulty: number | null
   @column()
   declare hint: string | null
   @column()

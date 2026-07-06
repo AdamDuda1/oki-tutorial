@@ -13,7 +13,7 @@
           <th class="col-id">#</th>
           <th>Nazwa</th>
           <th>Ilość zadań</th>
-          <th>co zrobić?</th>
+          <th style="width: 1px; text-align: right;">co zrobić?</th>
         </tr>
       </thead>
       @each(t in tagi)
@@ -22,7 +22,7 @@
             <td>{{ t.idTagu }}</td>
             <td>{{ t.nazwa }}</td>
             <td><span class="tag-usage">{{ uzycia[t.nazwa] || 0 }} zadań</span></td>
-            <td>
+            <td style="text-align: right;">
               <form method="POST" action="{{ route('admin.tags.destroy', { id: t.idTagu }) }}"
                 onsubmit="return confirm('Usunąć tag „{{ t.nazwa }}”? Zostanie odpięty od wszystkich zadań.')">
                 {{ csrfField() }}
