@@ -76,6 +76,7 @@
   flex-direction: column;
   gap: 10px;
   text-align: left;
+  overflow-y: scroll;
 }
 
 .level-html {
@@ -98,7 +99,7 @@
     background: var(--background);
     color: var(--text);
     align-items: center;
-    gap: 7px;
+    gap: 10px;
 
     .box-arrow {
       display: inline-block;
@@ -190,7 +191,7 @@
     background: var(--background);
     color: var(--text);
     align-items: center;
-    gap: 7px;
+    gap: 8px;
 
     .counter {
       font-size: medium;

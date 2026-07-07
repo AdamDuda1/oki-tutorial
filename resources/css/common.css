@@ -157,7 +157,14 @@ main.page-enter {
   font-size: 13px;
   line-height: 1.6;
   overflow-x: auto;
+  max-height: 60vh;
   background: var(--background-darker);
   border-radius: 8px;
-  padding: 16px;
+  padding: 5px 0 0;
+}
+
+.modal-copy-btn {
+  width: auto;
+  background: transparent !important;
+  color: var(--brand);
 }

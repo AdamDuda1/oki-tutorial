@@ -52,7 +52,14 @@
           <button class="diff-btn-delete" @click="$store.modal.hide()">✕</button>
         </div>
         <p x-show="!$store.modal.code" x-text="$store.modal.body"></p>
-        <pre x-show="$store.modal.code" x-text="$store.modal.body" class="modal-code"></pre>
+        <div x-show="$store.modal.code" x-data="{ copied: false }" style="position: relative;">
+          <pre x-text="$store.modal.body" class="modal-code"></pre>
+          <div style="display: flex; margin-bottom: -25px">
+            <button type="button" class="modal-copy-btn underlinable"
+              @click="navigator.clipboard.writeText($store.modal.body).then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+              x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'"></button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
