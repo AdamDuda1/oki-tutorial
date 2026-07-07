@@ -122,9 +122,10 @@ Alpine.data('materialsEditor', () => ({
 }))
 
 document.addEventListener('turbo:load', () => {
-  // admin task form: tag picker that can create new tags
-  if (document.querySelector('#tagi-select')) {
-    new TomSelect('#tagi-select', {
+  const tagi = document.querySelector('#tagi-select')
+  if (tagi) {
+    if (tagi.nextElementSibling?.classList.contains('ts-wrapper')) tagi.nextElementSibling.remove()
+    new TomSelect(tagi, {
       plugins: ['remove_button'],
       maxOptions: null,
       create: true,

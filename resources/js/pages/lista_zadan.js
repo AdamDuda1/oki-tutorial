@@ -1,9 +1,14 @@
 import TomSelect from 'tom-select'
 import 'tom-select/dist/css/tom-select.css'
 
+let tableFetch = null
+
 function initZadaniaFilterSelect(selector, param) {
-  if (!document.querySelector(selector)) return
-  new TomSelect(selector, {
+  const select = document.querySelector(selector)
+  if (!select) return
+  if (select.nextElementSibling?.classList.contains('ts-wrapper')) select.nextElementSibling.remove()
+
+  new TomSelect(select, {
     plugins: ['remove_button'],
     maxOptions: null,
     onChange(values) {
@@ -12,11 +17,16 @@ function initZadaniaFilterSelect(selector, param) {
       for (const v of values) url.searchParams.append(param, v)
       url.searchParams.delete('page')
       history.replaceState(null, '', url)
-      fetch(url, { headers: { 'X-Requested-With': 'fetch' } })
+      tableFetch?.abort()
+      tableFetch = new AbortController()
+      fetch(url, { headers: { 'X-Requested-With': 'fetch' }, signal: tableFetch.signal })
         .then((res) => res.text())
         .then((html) => {
           const table = document.querySelector('#zadania-table')
           if (table) table.innerHTML = html
+        })
+        .catch((err) => {
+          if (err.name !== 'AbortError') throw err
         })
     },
   })
