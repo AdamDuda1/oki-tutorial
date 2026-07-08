@@ -31,7 +31,7 @@ export class AuditLogSchema extends BaseModel {
 }
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieText', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'omowienieText', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -52,8 +52,6 @@ export class ListaZadanSchema extends BaseModel {
   @column()
   declare linkDodatkoweMaterialy: string | null
   @column()
-  declare linkOmowienieText: string | null
-  @column()
   declare linkOmowienieVid: string | null
   @column()
   declare linkTresc: string
@@ -64,6 +62,8 @@ export class ListaZadanSchema extends BaseModel {
   @column()
   declare nazwa: string
   @column()
+  declare omowienieText: string | null
+  @column()
   declare published: boolean
   @column()
   declare tagi: any | null
@@ -71,6 +71,21 @@ export class ListaZadanSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare zrodlo: string
+}
+
+export class PasswordResetTokenSchema extends BaseModel {
+  static $columns = ['createdAt', 'expiresAt', 'id', 'token', 'userId'] as const
+  $columns = PasswordResetTokenSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime()
+  declare expiresAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare token: string
+  @column()
+  declare userId: number
 }
 
 export class PoziomySchema extends BaseModel {

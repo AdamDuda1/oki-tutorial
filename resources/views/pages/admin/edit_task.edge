@@ -104,13 +104,6 @@
           @end
         </div>
         <div>
-          @field.root({ name: 'linkOmowienieText' })
-            @!field.label({ text: 'Omówienie – tekst' })
-            @!input.control({ type: 'url', value: task ? task.linkOmowienieText : '' })
-            @!field.error()
-          @end
-        </div>
-        <div>
           @field.root({ name: 'linkDodatkoweMaterialy' })
             @!field.label({ text: 'Dodatkowe materiały' })
             @!input.control({ type: 'url', value: task ? task.linkDodatkoweMaterialy : '' })
@@ -128,6 +121,13 @@
           @field.root({ name: 'hint' })
             @!field.label({ text: 'Podpowiedź (hint)' })
             @!textarea.control({ rows: 3, value: task ? task.hint : '' })
+            @!field.error()
+          @end
+        </div>
+        <div class="span-2">
+          @field.root({ name: 'omowienieText' })
+            @!field.label({ text: 'Omówienie – tekst' })
+            @!textarea.control({ rows: 4, value: task ? task.omowienieText : '' })
             @!field.error()
           @end
         </div>

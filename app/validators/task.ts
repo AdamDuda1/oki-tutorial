@@ -9,7 +9,7 @@ export const taskValidator = vine.create({
   linkTresc: vine.string().url(),
   linkWyslij: optionalUrl(),
   linkZrodlo: optionalUrl(),
-  linkOmowienieText: optionalUrl(),
+  omowienieText: optionalText(),
   linkOmowienieVid: optionalUrl(),
   linkDodatkoweMaterialy: optionalUrl(),
   idPoziomuTrudnosci: vine.number().optional().nullable(),

@@ -21,8 +21,9 @@
       @if(zadanie.linkOmowienieVid)
         <a href="{{ zadanie.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
       @end
-      @if(zadanie.linkOmowienieText)
-        <a href="{{ zadanie.linkOmowienieText }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_note.svg" alt=""> Omówienie</a>
+      @if(zadanie.omowienieText)
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
+          data-omowienie="{{ zadanie.omowienieText }}"><img src="/icons/i_note.svg" alt=""> Omówienie</button>
       @end
       @if(zadanie.kodCpp)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
