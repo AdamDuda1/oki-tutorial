@@ -223,6 +223,30 @@
   text-decoration: underline;
 }
 
+.task-picker-dodatkowe {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.task-picker-dodatkowe.active {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.task-picker-dodatkowe input {
+  width: auto;
+  height: 14px;
+  cursor: pointer;
+  accent-color: var(--brand);
+}
+
 .task-picker-actions {
   display: flex;
   gap: 2px;

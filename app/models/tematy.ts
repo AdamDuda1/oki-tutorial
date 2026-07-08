@@ -58,6 +58,13 @@ export default class Tematy extends TematySchema {
   })
   declare zadaniaTreningowe: number[] | null
 
+  /* IDs zadań oznaczonych jako dodatkowe w tym temacie */
+  @column({
+    prepare: (value: number[] | null) => JSON.stringify(value),
+    consume: (value: any) => (typeof value === 'string' ? JSON.parse(value) : value),
+  })
+  declare zadaniaDodatkowe: number[] | null
+
   @column()
   declare published: boolean
 

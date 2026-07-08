@@ -138,7 +138,7 @@ export class TagiSchema extends BaseModel {
 }
 
 export class TematySchema extends BaseModel {
-  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idAutora', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaCwiczeniowe', 'zadaniaNaPomysl', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
+  static $columns = ['createdAt', 'customHtml', 'deletedAt', 'idAutora', 'idPoziomu', 'idTematu', 'krotkiOpis', 'linkYt', 'nazwa', 'position', 'published', 'updatedAt', 'zadaniaCwiczeniowe', 'zadaniaDodatkowe', 'zadaniaNaPomysl', 'zadaniaTreningowe', 'zewnetrzneMaterialy', 'zewnetrzneMaterialyOpisy'] as const
   $columns = TematySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -166,6 +166,8 @@ export class TematySchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare zadaniaCwiczeniowe: any | null
+  @column()
+  declare zadaniaDodatkowe: any | null
   @column()
   declare zadaniaNaPomysl: any | null
   @column()

@@ -215,6 +215,13 @@ export default class AdminMaterialyController {
           .map((s) => Number(s.trim()))
           .filter((n) => n > 0)
       : null
+    const zadaniaDodatkoweRaw = String(request.input('zadaniaDodatkowe') ?? '').trim()
+    const zadaniaDodatkowe = zadaniaDodatkoweRaw
+      ? zadaniaDodatkoweRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
+      : null
     const temat = await Tematy.create({
       nazwa,
       idPoziomu,
@@ -229,6 +236,7 @@ export default class AdminMaterialyController {
       zadaniaCwiczeniowe,
       zadaniaNaPomysl,
       zadaniaTreningowe,
+      zadaniaDodatkowe,
     })
     await AuditLog.record({
       user,
@@ -290,6 +298,13 @@ export default class AdminMaterialyController {
           .map((s) => Number(s.trim()))
           .filter((n) => n > 0)
       : null
+    const zadaniaDodatkoweRaw = String(request.input('zadaniaDodatkowe') ?? '').trim()
+    const zadaniaDodatkowe = zadaniaDodatkoweRaw
+      ? zadaniaDodatkoweRaw
+          .split('\n')
+          .map((s) => Number(s.trim()))
+          .filter((n) => n > 0)
+      : null
     temat.nazwa = request.input('nazwa', temat.nazwa).trim()
     temat.idPoziomu = Number(request.input('idPoziomu', temat.idPoziomu)) || temat.idPoziomu
     temat.krotkiOpis = request.input('krotkiOpis') || null
@@ -299,6 +314,7 @@ export default class AdminMaterialyController {
     temat.zadaniaCwiczeniowe = zadaniaCwiczeniowe
     temat.zadaniaNaPomysl = zadaniaNaPomysl
     temat.zadaniaTreningowe = zadaniaTreningowe
+    temat.zadaniaDodatkowe = zadaniaDodatkowe
     if (user.canEditAllContent) {
       temat.published = request.input('published') === 'on'
       temat.customHtml = customHtml

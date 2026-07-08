@@ -1,10 +1,16 @@
 @let(zadanie = $props.get('zadanie'))
+@let(dodatkowe = $props.get('dodatkowe'))
 
 <div class="task-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
   <button class="toggle" data-toggle @click="open = !open">
     <div class="toggle-left">
       <span class="task-box-arrow" :class="{ open }">▶</span>
-      <h3 class="medium">{{ zadanie.nazwa }}</h3>
+      <h3 class="medium">
+        @if(dodatkowe)
+          <span class="dodatkowe-tag">Dodatkowe:</span>
+        @end
+        {{ zadanie.nazwa }}
+      </h3>
     </div>
     <span class="toggle-right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'black' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
   </button>

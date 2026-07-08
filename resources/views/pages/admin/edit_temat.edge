@@ -108,12 +108,14 @@
           zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
           zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
         },
+        dodatkowe: temat ? (temat.zadaniaDodatkowe ?? []) : [],
       }) }}}
     </script>
 
     <input type="hidden" name="zadaniaCwiczeniowe" :value="listy.zadaniaCwiczeniowe.join('\n')">
     <input type="hidden" name="zadaniaNaPomysl" :value="listy.zadaniaNaPomysl.join('\n')">
     <input type="hidden" name="zadaniaTreningowe" :value="listy.zadaniaTreningowe.join('\n')">
+    <input type="hidden" name="zadaniaDodatkowe" :value="dodatkowe.join('\n')">
 
     <template x-for="sekcja in sekcje" :key="sekcja.klucz">
       <div style="margin-bottom: 24px;">
@@ -127,6 +129,9 @@
               <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
               <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
               <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" @click="pokazUzycia(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
+              <label class="task-picker-dodatkowe" :class="{ active: jestDodatkowe(id) }" title="Oznacz jako zadanie dodatkowe">
+                <input type="checkbox" :checked="jestDodatkowe(id)" @change="przelaczDodatkowe(id)"> dodatkowe
+              </label>
               <span class="task-picker-actions">
                 <a :href="`/admin/edit_task/${id}`" target="_blank" title="Edytuj zadanie" class="dont-underline">✎</a>
                 <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>

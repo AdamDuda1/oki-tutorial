@@ -4,6 +4,7 @@ Alpine.data('taskPicker', () => ({
   zadania: {},
   uzycia: {},
   listy: { zadaniaCwiczeniowe: [], zadaniaNaPomysl: [], zadaniaTreningowe: [] },
+  dodatkowe: [],
   szukaj: { zadaniaCwiczeniowe: '', zadaniaNaPomysl: '', zadaniaTreningowe: '' },
   sekcje: [
     { klucz: 'zadaniaCwiczeniowe', nazwa: 'Zadania ćwiczeniowe' },
@@ -18,6 +19,17 @@ Alpine.data('taskPicker', () => ({
     for (const z of dane.zadania) this.zadania[z.id] = z
     this.uzycia = dane.uzycia
     this.listy = dane.wybrane
+    this.dodatkowe = dane.dodatkowe ?? []
+  },
+
+  jestDodatkowe(id) {
+    return this.dodatkowe.includes(id)
+  },
+
+  przelaczDodatkowe(id) {
+    const i = this.dodatkowe.indexOf(id)
+    if (i === -1) this.dodatkowe.push(id)
+    else this.dodatkowe.splice(i, 1)
   },
 
   zadanie(id) {
@@ -83,7 +95,12 @@ Alpine.data('taskPicker', () => ({
   },
 
   usun(klucz, i) {
+    const id = this.listy[klucz][i]
     this.listy[klucz].splice(i, 1)
+    if (!this.wTychListach(id)) {
+      const j = this.dodatkowe.indexOf(id)
+      if (j !== -1) this.dodatkowe.splice(j, 1)
+    }
   },
 
   przesun(klucz, i, kierunek) {

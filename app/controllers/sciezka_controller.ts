@@ -43,20 +43,27 @@ export default class SciezkaController {
       }
     }
 
-    for (const temat of tematy)
-      temat.$extras.zadaniaCwiczeniowe = (temat.zadaniaCwiczeniowe ?? [])
-        .map((id) => taskMap.get(id))
-        .filter(Boolean)
+    for (const temat of tematy) {
+      const dodatkoweSet = new Set(temat.zadaniaDodatkowe ?? [])
+      temat.$extras.dodatkoweIds = temat.zadaniaDodatkowe ?? []
 
-    for (const temat of tematy)
-      temat.$extras.zadaniaNaPomysl = (temat.zadaniaNaPomysl ?? [])
-        .map((id) => taskMap.get(id))
-        .filter(Boolean)
+      const posortuj = (ids: number[] | null) =>
+        (ids ?? [])
+          .map((id) => taskMap.get(id))
+          .filter((z): z is InstanceType<typeof ListaZadan> => Boolean(z))
+          .sort((a, b) => {
+            const da = dodatkoweSet.has(a.idZadania) ? 1 : 0
+            const db = dodatkoweSet.has(b.idZadania) ? 1 : 0
+            if (da !== db) return da - db
+            const pa = a.poziomuTrudnosci?.position ?? Number.POSITIVE_INFINITY
+            const pb = b.poziomuTrudnosci?.position ?? Number.POSITIVE_INFINITY
+            return pa - pb
+          })
 
-    for (const temat of tematy)
-      temat.$extras.zadaniaTreningowe = (temat.zadaniaTreningowe ?? [])
-        .map((id) => taskMap.get(id))
-        .filter(Boolean)
+      temat.$extras.zadaniaCwiczeniowe = posortuj(temat.zadaniaCwiczeniowe)
+      temat.$extras.zadaniaNaPomysl = posortuj(temat.zadaniaNaPomysl)
+      temat.$extras.zadaniaTreningowe = posortuj(temat.zadaniaTreningowe)
+    }
 
     const renderCustom = async (html: string | null | undefined) => {
       if (!html) return null

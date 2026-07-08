@@ -1,4 +1,5 @@
 @let(zadania = $props.get('zadanie'))
+@let(dodatkowe = $props.get('dodatkowe') ?? [])
 @let(header = $props.get('header'))
 @let(description = $props.get('description'))
 @let(isFirst = $props.get('first', true))
@@ -14,7 +15,7 @@
       <div class="box-inner">
         <span style="font-size: 14px">{{ description }}</span>
         @each(zadanie in zadania)
-          @!custom.sciezka.zadanie({ zadanie: zadanie })
+          @!custom.sciezka.zadanie({ zadanie: zadanie, dodatkowe: dodatkowe.includes(zadanie.idZadania) })
         @end
       </div>
     </div>
