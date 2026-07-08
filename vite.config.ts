@@ -17,6 +17,7 @@ export default defineConfig({
   },
 
   optimizeDeps: {
+    noDiscovery: true,
     include: [
       'alpinejs',
       '@hotwired/turbo',

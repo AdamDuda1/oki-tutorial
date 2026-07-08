@@ -46,7 +46,10 @@
                   @end
                 </div>
                 <div class="learning-materials">
-                  <!--h3>Materiały do nauki</h3-->
+                  @if (temat.krotkiOpis)
+                    {{ temat.krotkiOpis }}
+                  @end
+
                   @each(material in temat.$extras.materialy)
                     <a href="{{ material.link }}" class="medium" target="_blank" rel="noopener">
                       {{ material.opis }}
