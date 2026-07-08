@@ -1,0 +1,12 @@
+@let(slot = await $slots.main())
+@let(href = $props.get('href', '#'))
+@let(text = slot.trim() ? slot : ($props.get('text') ?? href))
+@let(external = $props.get('external', !href.startsWith('/') && !href.startsWith('#')))
+
+<a href="{{ href }}" class="custom-link medium"
+  {{ external ? 'target="_blank" rel="noopener"' : '' }}>
+  {{{ text }}}
+  @if(external)
+    <img height="10" src="/icons/i_open_in_new_tab_orange.svg" alt="new tab">
+  @end
+</a>

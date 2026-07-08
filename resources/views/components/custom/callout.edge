@@ -1,0 +1,10 @@
+@let(content = await $slots.main())
+@let(type = $props.get('type', 'info'))
+@let(title = $props.get('title'))
+
+<div class="custom-callout {{ type }}">
+  @if(title)
+    <div class="custom-callout-title">{{{ title }}}</div>
+  @end
+  <div class="custom-callout-body">{{{ content }}}</div>
+</div>

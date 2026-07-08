@@ -22,12 +22,32 @@ document.addEventListener('turbo:load', async () => {
       detail: 'rozwijana sekcja',
       type: 'function',
     }),
+    snippetCompletion("@!custom.header({ text: '${tekst}', level: ${2} })", {
+      label: '@!custom.header',
+      detail: 'nagłówek',
+      type: 'function',
+    }),
+    snippetCompletion("@!custom.link({ href: '${url}', text: '${tekst}' })", {
+      label: '@!custom.link',
+      detail: 'odnośnik',
+      type: 'function',
+    }),
+    snippetCompletion("@!custom.code({ lang: '${python}', code: `${kod}` })", {
+      label: '@!custom.code',
+      detail: 'blok kodu z przyciskiem kopiowania',
+      type: 'function',
+    }),
+    snippetCompletion("@custom.callout({ type: '${info}', title: '${tytuł}' })\n  ${treść}\n@end", {
+      label: '@custom.callout',
+      detail: 'ramka (info / warning / danger / success)',
+      type: 'function',
+    }),
   ]
 
   const edgeComponents = (context) => {
-    const word = context.matchBefore(/@[\w.]*/)
+    const word = context.matchBefore(/@!?[\w.]*/)
     if (!word && !context.explicit) return null
-    return { from: word ? word.from : context.pos, options: edgeSnippets, validFor: /^@[\w.]*$/ }
+    return { from: word ? word.from : context.pos, options: edgeSnippets, validFor: /^@!?[\w.]*$/ }
   }
 
   for (const area of areas) {

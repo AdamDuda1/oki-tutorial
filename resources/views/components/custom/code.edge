@@ -1,0 +1,10 @@
+@let(slot = await $slots.main())
+@let(code = $props.has('code') ? $props.get('code') : slot)
+@let(lang = $props.get('lang', ''))
+
+<div class="custom-code" x-data="{ copied: false }">
+  <button type="button" class="custom-code-copy underlinable"
+    @click="navigator.clipboard.writeText($refs.code.textContent).then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
+    x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'">Kopiuj</button>
+  <pre class="custom-code-block"><code x-ref="code" class="language-{{ lang }}">{{ code }}</code></pre>
+</div>

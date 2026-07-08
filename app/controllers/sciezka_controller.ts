@@ -58,13 +58,23 @@ export default class SciezkaController {
         .map((id) => taskMap.get(id))
         .filter(Boolean)
 
+    const renderCustom = async (html: string | null | undefined) => {
+      if (!html) return null
+      try {
+        return await view.renderRaw(html)
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return `<div class="custom-render-error">custom html rendering error: ${message}</div>`
+      }
+    }
+
     for (const temat of tematy)
-      if (temat.customHtml) temat.$extras.customHTML = await view.renderRaw(temat.customHtml)
+      if (temat.customHtml) temat.$extras.customHTML = await renderCustom(temat.customHtml)
 
     const autoOpenId = tematy[0]?.idTematu ?? null // refer to line 11 as the time of writing
 
     const poziom = poziomy.find((p) => p.idPoziomu === Number(params.id))
-    const poziomHtml = poziom?.customHtml ? await view.renderRaw(poziom.customHtml) : null
+    const poziomHtml = await renderCustom(poziom?.customHtml)
 
     return view.render('pages/sciezka', { params, tematy, poziomy, autoOpenId, poziomHtml })
   }

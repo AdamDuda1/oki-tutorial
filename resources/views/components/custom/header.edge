@@ -1,0 +1,10 @@
+@let(slot = await $slots.main())
+@let(text = slot.trim() ? slot : ($props.get('text') ?? ''))
+@let(level = $props.get('level', 2))
+
+<h{{ level }} {{
+  $props
+    .except(['text', 'level'])
+    .merge({ class: ['custom-header'] })
+    .toAttrs()
+}}>{{{ text }}}</h{{ level }}>
