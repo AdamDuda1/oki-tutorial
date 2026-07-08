@@ -17,6 +17,9 @@ export type ScannedRoutes = {
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import_template': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import_store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.edit_task.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -53,6 +56,8 @@ export type ScannedRoutes = {
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import_template': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
@@ -73,6 +78,8 @@ export type ScannedRoutes = {
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import_template': { paramsTuple?: []; params?: {} }
     'admin.edit_task.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
@@ -88,6 +95,7 @@ export type ScannedRoutes = {
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
+    'admin.edit_task.import_store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.edit_task.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }

@@ -44,7 +44,7 @@
         </td>
         <td>
           @if(u.id === auth.user.id)
-            —
+            --
           @else
             <div style="display: flex; gap: 6px; align-items: center;">
               <form method="POST" action="{{ route('admin.users.reset_password', { id: u.id }) }}" data-turbo="false"

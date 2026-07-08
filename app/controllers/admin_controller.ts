@@ -59,7 +59,7 @@ export default class AdminController {
     })
     session.flash(
       'success',
-      `Nowe hasło dla ${user.email}: ${tempPassword} — zapisz je teraz, nie zostanie pokazane ponownie.`
+      `Nowe hasło dla ${user.email}: ${tempPassword} - zapisz je teraz, nie zostanie pokazane ponownie.`
     )
     session.flash(
       'successNext',

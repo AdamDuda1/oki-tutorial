@@ -3,6 +3,7 @@
     <span class="admin-nav-separator">LISTA ZADAŃ</span>
     <a href="/admin/edit_task" class="{{ $props.get('page') === 'Wybierz zadanie do edycji' || $props.get('page') === 'Edytuj zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Edytuj zadanie</a>
     <a href="/admin/edit_task/new" class="{{ $props.get('page') === 'Nowe zadanie' ? 'bold' : 'medium' }} admin-nav-topic">Nowe zadanie</a>
+    <a href="/admin/edit_task/import" class="{{ $props.get('page') === 'Import CSV' ? 'bold' : 'medium' }} admin-nav-topic">Import z CSV</a>
     @if(auth.user.canEditAllContent)
       <a href="/admin/edit_difficulty_levels" class="{{ $props.get('page') === 'Edytuj poziomy trudności' ? 'bold' : 'medium' }} admin-nav-topic">Poziomy trudności</a>
       <a href="/admin/edit_tags" class="{{ $props.get('page') === 'Edytuj tagi zadań' ? 'bold' : 'medium' }} admin-nav-topic">Tagi zadań</a>

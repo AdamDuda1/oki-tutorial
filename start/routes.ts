@@ -46,6 +46,11 @@ router
     router.get('edit_task', [AdminTasksController, 'index']).as('admin.edit_task.index')
     router.get('edit_task/new', [AdminTasksController, 'create']).as('admin.edit_task.create')
     router.post('edit_task/new', [AdminTasksController, 'store']).as('admin.edit_task.store')
+    router.get('edit_task/import', [AdminTasksController, 'import_csv_form']).as('admin.edit_task.import')
+    router
+      .get('edit_task/import/template', [AdminTasksController, 'import_csv_template'])
+      .as('admin.edit_task.import_template')
+    router.post('edit_task/import', [AdminTasksController, 'import_csv']).as('admin.edit_task.import_store')
     router.get('edit_task/:id', [AdminTasksController, 'edit']).as('admin.edit_task.edit')
     router.post('edit_task/:id', [AdminTasksController, 'update']).as('admin.edit_task.update')
     router

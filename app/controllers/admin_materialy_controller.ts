@@ -54,7 +54,6 @@ export default class AdminMaterialyController {
     const poziomyById = new Map(poziomy.map((p) => [p.idPoziomu, p]))
     const tematyById = new Map(tematy.map((t) => [t.idTematu, t]))
 
-    /* keys are "i<id>" — see the hidden inputs in materialy.edge */
     let zmienione = 0
     await db.transaction(async (trx) => {
       for (const [key, pos] of Object.entries(pPos)) {
