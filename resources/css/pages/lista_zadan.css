@@ -73,26 +73,6 @@ form.filters {
   gap: 6px;
 }
 
-.pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid var(--oki-gray);
-  color: var(--oki-gray);
-  user-select: none;
-  line-height: 1.4;
-}
-
-.pill input[type='radio'] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
 .filters {
   display: flex;
   flex-direction: column;

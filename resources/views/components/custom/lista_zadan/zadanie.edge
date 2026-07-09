@@ -22,8 +22,8 @@
       <span class="diff-badge" style="
       color: {{ poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color || '#000' }};
       background-color: {{ withAlpha(poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color, 0.1) || '#ffffff' }};">
-        {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.skrot : '??' }}
-        <span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span>
+        {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}
+        {{--<span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span>--}}
       </span>
     </td>
   </tr>
