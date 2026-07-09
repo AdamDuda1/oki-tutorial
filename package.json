@@ -72,6 +72,7 @@
     "codemirror": "^6.0.2",
     "dotenv": "^17.4.2",
     "edge.js": "^6.5.1",
+    "katex": "^0.17.0",
     "luxon": "^3.7.2",
     "mysql2": "^3.22.5",
     "reflect-metadata": "^0.2.2",

@@ -2,6 +2,7 @@ import '@hotwired/turbo'
 import Alpine from 'alpinejs'
 
 import './ui.js'
+import './katex.js'
 import './save_shortcut.js'
 
 import './pages/transitions.js'

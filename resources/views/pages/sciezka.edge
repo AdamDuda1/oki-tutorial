@@ -47,7 +47,7 @@
                 </div>
                 <div class="learning-materials">
                   @if (temat.krotkiOpis)
-                    {{{ temat.krotkiOpis }}}
+                    <div data-katex>{{{ temat.krotkiOpis }}}</div>
                   @end
 
                   @each(material in temat.$extras.materialy)
@@ -60,7 +60,7 @@
               </div>
 
               @if(temat.customHtml)
-                <div class="topic-html">
+                <div class="topic-html" data-katex>
                   {{{ temat.$extras.customHTML }}}
 
                 </div>

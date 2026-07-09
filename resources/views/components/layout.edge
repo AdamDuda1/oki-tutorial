@@ -51,7 +51,8 @@
           <span x-text="$store.modal.title"></span>
           <button class="diff-btn-delete" @click="$store.modal.hide()">✕</button>
         </div>
-        <p x-show="!$store.modal.code" x-text="$store.modal.body"></p>
+        <p x-show="!$store.modal.code"
+          x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"></p>
         <div x-show="$store.modal.code" x-data="{ copied: false }" style="position: relative;">
           <pre x-text="$store.modal.body" class="modal-code"></pre>
           <div style="display: flex; margin-bottom: -25px">
