@@ -94,6 +94,10 @@ form.filters {
     border-radius: 4px !important;
     border-color: #ccc;
   }
+
+  .ts-dropdown-content {
+    display: block !important;
+  }
 }
 
 .clear-link {
