@@ -94,25 +94,6 @@
   color: var(--code-text);
 }
 
-.code-block [class*='hljs-'] { color: var(--code-text); }
-.code-block .hljs-comment,
-.code-block .hljs-quote { color: var(--code-comment); }
-.code-block .hljs-keyword,
-.code-block .hljs-selector-tag { color: var(--code-keyword); }
-.code-block .hljs-string,
-.code-block .hljs-regexp,
-.code-block .hljs-char.escape_ { color: var(--code-string); }
-.code-block .hljs-number,
-.code-block .hljs-literal,
-.code-block .hljs-symbol,
-.code-block .hljs-meta,
-.code-block .hljs-attr { color: var(--code-constant); }
-.code-block .hljs-title,
-.code-block .hljs-title.function_ { color: var(--code-function); }
-.code-block .hljs-type,
-.code-block .hljs-built_in,
-.code-block .hljs-title.class_ { color: var(--code-type); }
-
 .copy-btn {
   position: absolute;
   top: 8px;
@@ -120,7 +101,7 @@
   width: auto;
   padding: 2px 10px;
   font-size: 12px;
-  color: var(--code-comment);
+  color: var(--code-muted);
   background: var(--code-button);
   border: 1px solid var(--code-border);
   border-radius: 6px;
