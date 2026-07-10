@@ -23,8 +23,16 @@ body {
   font-family: var(--font-brand), sans-serif;
 }
 
-nav *, h1, h2, h3, code, button, a, .admin-content *, .level-html, tbody *, .toggle-right {
+nav *, h1, h2, h3, code, button, a, .admin-content *, .level-html, tbody *, .toggle-right, .modal-header {
   font-family: var(--font-mono), monospace;
+}
+
+code {
+  font-family: var(--font-mono), monospace !important;
+}
+
+.katex {
+  font-size: medium;
 }
 
 a {
