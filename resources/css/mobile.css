@@ -69,6 +69,14 @@
       }
     }
 
+    &:not(.opened) {
+      .mobile-menu-handle {
+        background: white;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 0 5px 0 black;
+      }
+    }
+
     .mobile-menu-handle {
       position: absolute;
       transform: rotate(-90deg) translate(-20px, -65px);
