@@ -32,11 +32,11 @@
           data-omowienie="{{ zadanie.omowienieText }}"><img src="/icons/i_note.svg" alt=""> Omówienie</button>
       @end
       @if(zadanie.kodCpp)
-        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, 'cpp')"
           data-code="{{ zadanie.kodCpp }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
       @end
       @if(zadanie.kodPython)
-        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
+        <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, 'python')"
           data-code="{{ zadanie.kodPython }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
       @end
     </div>

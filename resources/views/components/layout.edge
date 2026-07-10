@@ -51,7 +51,8 @@
         <p x-show="!$store.modal.code"
           x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"></p>
         <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
-          <pre x-text="$store.modal.body"></pre>
+          {{-- $store.modal.code to nazwa języka (np. 'cpp'); highlightCode escapuje treść --}}
+          <pre><code x-effect="if ($store.modal.code) $el.innerHTML = window.highlightCode($store.modal.body, $store.modal.code)"></code></pre>
           <button type="button" class="copy-btn" :class="{ copied }"
             @click="copy($store.modal.body)"
             x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'">Kopiuj</button>

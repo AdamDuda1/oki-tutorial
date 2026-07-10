@@ -1,6 +1,6 @@
 @let(slot = await $slots.main())
 @let(code = $props.has('code') ? $props.get('code') : slot)
-@let(lang = $props.get('lang', ''))
+@let(lang = ($props.get('lang', '') || '').toLowerCase().replace('++', 'pp'))
 
 <div class="code-block" x-data="copyable">
   <pre><code x-ref="code" class="language-{{ lang }}">{{ code }}</code></pre>

@@ -24,4 +24,17 @@
   --easy: oklch(0.447 0.119 151.405);
   --medium: oklch(0.714 0.15 75.507);
   --hard: oklch(0.509 0.179 34.516);
+
+  /* Bloki kodu — zawsze ciemne (styl edytora), niezależnie od motywu strony */
+  --code-background: oklch(0.18 0.014 265);
+  --code-text: oklch(0.86 0.011 250);
+  --code-comment: oklch(0.66 0.014 245);
+  --code-keyword: oklch(0.74 0.146 26);
+  --code-string: oklch(0.85 0.065 245);
+  --code-constant: oklch(0.78 0.096 248);
+  --code-function: oklch(0.79 0.106 304);
+  --code-type: oklch(0.78 0.128 62);
+  --code-success: oklch(0.75 0.17 148);
+  --code-border: oklch(0.33 0.012 255);
+  --code-button: oklch(0.26 0.012 255);
 }

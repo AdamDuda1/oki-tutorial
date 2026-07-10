@@ -3,6 +3,7 @@ import Alpine from 'alpinejs'
 
 import './ui.js'
 import './katex.js'
+import './highlight.js'
 import './save_shortcut.js'
 
 import './pages/transitions.js'
