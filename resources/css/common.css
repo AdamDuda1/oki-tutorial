@@ -163,19 +163,24 @@ main.page-enter {
 
 .modal-box p { white-space: pre-wrap; line-height: 1.65; }
 
-.modal-code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  overflow-x: auto;
+.modal-code pre {
   max-height: 60vh;
-  background: var(--background-darker);
-  border-radius: 8px;
-  padding: 5px 0 0;
+  overflow: auto;
 }
 
-.modal-copy-btn {
+.modal-close {
   width: auto;
-  background: transparent !important;
-  color: var(--brand);
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.modal-close:hover {
+  background: var(--background-darker);
+  color: var(--text);
 }

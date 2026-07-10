@@ -40,33 +40,105 @@
 }
 .custom-modal-link.button:hover { background: var(--brand-hovered); }
 
-.custom-code {
-  position: relative;
+.toggle,
+.toggle:hover {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
 }
 
-.custom-code-block {
-  font-family: var(--font-brand), monospace;
+.box-arrow {
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+.box-arrow.open { transform: rotate(90deg); }
+
+.box {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.22s ease;
+}
+.box.open { grid-template-rows: 1fr; }
+
+.box > .box-inner {
+  overflow: hidden;
+  transition: padding-bottom 0.22s ease;
+}
+
+/* ---------- Bloki kodu + przycisk kopiowania ---------- */
+
+.code-block {
+  position: relative;
+  margin: 4px 0;
+}
+
+.code-block pre {
+  font-family: var(--font-mono), monospace;
   font-size: 13px;
   line-height: 1.6;
   overflow-x: auto;
   background: var(--background-darker);
   border-radius: 8px;
   padding: 12px 14px;
-  margin: 4px 0;
 }
-.custom-code-block code { font-family: inherit; }
+.code-block code { font-family: inherit; }
 
-.custom-code-copy {
+.copy-btn {
   position: absolute;
-  top: 6px;
+  top: 8px;
   right: 8px;
   width: auto;
-  background: transparent !important;
-  color: var(--brand);
-  border: none;
-  cursor: pointer;
+  padding: 2px 10px;
   font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--background);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
+.copy-btn:hover {
+  background: var(--background);
+  color: var(--brand);
+  border-color: var(--brand);
+}
+.copy-btn.copied,
+.copy-btn.copied:hover {
+  color: var(--easy);
+  border-color: var(--easy);
+}
+
+.task-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-quicksand), sans-serif;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background-color 0.22s ease;
+}
+.task-action:hover { text-decoration: none; }
+.task-action img { height: 14px; width: auto; }
+
+a.task-action,
+button.task-action {
+  background: var(--brand);
+  color: white;
+}
+a.task-action:hover,
+button.task-action:hover { background: var(--brand-hovered); }
 
 .custom-callout {
   border-radius: 8px;

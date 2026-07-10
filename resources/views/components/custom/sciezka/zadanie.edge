@@ -1,10 +1,10 @@
 @let(zadanie = $props.get('zadanie'))
 @let(dodatkowe = $props.get('dodatkowe'))
 
-<div class="task-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }">
+<div class="task-box" x-data="expandable">
   <button class="toggle" data-toggle @click="open = !open">
     <div class="toggle-left">
-      <span class="task-box-arrow" :class="{ open }">▶</span>
+      <span class="box-arrow" :class="{ open }">▶</span>
       <h3 class="medium">
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
@@ -12,7 +12,7 @@
         {{ zadanie.nazwa }}
       </h3>
     </div>
-    <span class="toggle-right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'black' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
+    <span class="toggle-right" style="color: {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.color : 'var(--text)' }}">{{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}</span>
   </button>
   <div class="box" :class="{ open }">
     <div class="box-inner">
@@ -33,11 +33,11 @@
       @end
       @if(zadanie.kodCpp)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
-          data-code="{{ zadanie.kodCpp }}"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
+          data-code="{{ zadanie.kodCpp }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
       @end
       @if(zadanie.kodPython)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
-          data-code="{{ zadanie.kodPython }}"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
+          data-code="{{ zadanie.kodPython }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
       @end
     </div>
   </div>

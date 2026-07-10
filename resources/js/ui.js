@@ -11,6 +11,23 @@ Alpine.store('modal', {
   hide() { this.open = false },
 })
 
+Alpine.data('expandable', () => ({
+  open: false,
+  init() {
+    this.open = this.$el.querySelector('.box')?.classList.contains('open') ?? false
+  },
+}))
+
+Alpine.data('copyable', () => ({
+  copied: false,
+  copy(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.copied = true
+      setTimeout(() => (this.copied = false), 1500)
+    })
+  },
+}))
+
 Alpine.data('alert', function (duration = 5000, delay = 80) {
   return {
     isVisible: false,

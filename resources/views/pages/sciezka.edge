@@ -18,7 +18,8 @@
           <a href="/sciezka/{{poziom.idPoziomu}}" class="medium category-header">{{poziom.nazwa}}</a>
         @endif
       @end
-      <span class="mobile-menu-handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń ścieżkę v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń ścieżkę v'; }">Rozwiń ścieżkę v</span>
+      <span class="mobile-menu-handle"
+        onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'">Rozwiń ścieżkę v</span>
     </nav>
 
     <div class="content">
@@ -29,13 +30,13 @@
       @end
 
       @each (temat in tematy)
-        <div class="topic-box" x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" id="{{temat.idTematu}}"
+        <div class="topic-box" x-data="expandable" id="{{temat.idTematu}}"
         x-effect="if ($store.topic.current === {{temat.idTematu}}) open = true"
         x-init="if (open) $store.topic.current = {{temat.idTematu}}">
 
           <button class="toggle" data-toggle @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
             <span class="box-arrow" :class="{ open }">▶</span>
-            <h2 class="bold" style="text-align: left">{{temat.nazwa}}</h2>
+            <h2 class="bold">{{temat.nazwa}}</h2>
           </button>
           <div class="box" :class="{ open }">
             <div class="box-inner">

@@ -207,28 +207,13 @@ form.filters {
     gap: 7px;
   }
 
-  .task-box-arrow {
-    display: inline-block;
-    font-size: 10px;
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
-    &.open { transform: rotate(90deg); }
-  }
-
-  .box {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-    &.open { grid-template-rows: 1fr; }
-  }
+  .box-arrow { font-size: 10px; }
 
   .box > .box-inner {
-    overflow: hidden;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     padding: 0 12px;
-    transition: padding-bottom 0.22s ease;
     justify-content: space-between;
 
     .przyciski {
@@ -274,29 +259,5 @@ form.filters {
 
   .box.open > .box-inner {
     padding-bottom: 12px;
-  }
-
-  .task-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    width: auto;
-    transition: background-color 0.22s ease;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-family: var(--font-quicksand), sans-serif;
-    font-weight: 550;
-
-    img {
-      height: 14px;
-      width: auto;
-    }
-  }
-
-  a.task-action {
-    background: var(--brand);
-    color: white;
-    border: none;
-    &:hover { background: var(--brand-hovered); }
   }
 }

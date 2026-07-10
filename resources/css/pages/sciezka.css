@@ -90,43 +90,19 @@
 }
 
 .topic-box {
-  /*border: 1px solid rgb(91 91 91 / 0.32);*/
-  /*border: 1px solid #cacaca inner;*/
-  outline: 1px solid #cacaca;
+  outline: 1px solid var(--border);
   border-radius: 8px;
 
   > .toggle {
-    width: 100%;
     padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    background: var(--background);
-    color: var(--text);
-    align-items: center;
     gap: 10px;
-
-    .box-arrow {
-      display: inline-block;
-      transition: transform 0.2s ease;
-      &.open { transform: rotate(90deg); }
-    }
-  }
-
-  > .box {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-    &.open { grid-template-rows: 1fr; }
   }
 
   > .box > .box-inner {
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 0 14px;
-    transition: padding-bottom 0.22s ease;
   }
 
   > .box.open > .box-inner {
@@ -168,13 +144,8 @@
 }
 
 .tasks-box {
-  outline: 1px solid #e0e0e0;
+  outline: 1px solid var(--border-light);
   margin: 0 -14px -9px;
-
-  &.first {
-    /*border-top-right-radius: 8px;*/
-    /*border-top-left-radius: 8px;*/
-  }
 
   &.last {
     border-bottom-right-radius: 8px;
@@ -184,136 +155,63 @@
 
   &.standalone {
     border-radius: 8px;
-    margin: 0 !important;
+    margin: 0;
   }
 
   > .toggle {
-    width: 100%;
     padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    background: var(--background);
-    color: var(--text);
-    align-items: center;
-    gap: 8px;
 
     .counter {
       font-size: medium;
-      color: gray;
-      font-family: var(--font-quicksand), serif;
+      color: var(--text-secondary);
+      font-family: var(--font-quicksand), sans-serif;
       font-weight: 500;
     }
-
-    .task-box-arrow {
-      display: inline-block;
-      transition: transform 0.2s ease;
-      font-size: 12px;
-      &.open { transform: rotate(90deg); }
-    }
-  }
-
-  > .box {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-    &.open { grid-template-rows: 1fr; }
   }
 
   > .box > .box-inner {
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     padding: 0 12px;
-    transition: padding-bottom 0.22s ease;
   }
 
   > .box.open > .box-inner {
     padding-bottom: 12px;
+  }
+
+  .box-description {
+    font-size: 14px;
+    color: var(--text-secondary);
   }
 }
 
 .task-box {
-  outline: 1px solid #e0e0e0;
+  outline: 1px solid var(--border-light);
   border-radius: 8px;
   margin-top: 10px;
 
   > .toggle {
-    width: 100%;
     padding: 4px 12px;
-    border-radius: 8px;
-    display: flex;
-    cursor: pointer;
-    background: var(--background);
-    color: var(--text);
-    align-items: center;
     gap: 7px;
-    font-size: 16px;
     justify-content: space-between;
 
-    .task-box-arrow {
-      display: inline-block;
-      transition: transform 0.2s ease;
-      font-size: 10px;
-      &.open { transform: rotate(90deg); }
-    }
-  }
-
-  > .box {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.22s ease;
-    &.open { grid-template-rows: 1fr; }
+    .box-arrow { font-size: 10px; }
   }
 
   > .box > .box-inner {
-    overflow: hidden;
-    transition: padding-bottom 0.22s ease;
-    padding: 0 8px;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-
-    .task-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      width: auto;
-      transition: background-color 0.22s ease;
-      border-radius: 6px;
-      padding: 6px 12px;
-      margin-bottom: -4px;
-      font-family: var(--font-quicksand), sans-serif;
-      font-weight: 550;
-
-      img {
-        height: 14px;
-        width: auto;
-        /*position: relative;*/
-        /*margin-top: -49px;*/
-        /*top: 10px;*/
-        /*margin-left: -2px;*/
-        /*margin-right: -2px;*/
-      }
-    }
-
-    a.task-action {
-      background: var(--brand);
-      color: white;
-      border: none;
-
-      &:hover { background: var(--brand-hovered); }
-    }
+    padding: 0 8px;
   }
 
   > .box.open > .box-inner {
-    padding-bottom: 12px;
+    padding-bottom: 8px;
   }
 
   .toggle-left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 7px;
   }
 

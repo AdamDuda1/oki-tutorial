@@ -18,6 +18,9 @@
   --text-secondary: oklch(0.457 0 0);
   --text-inverted: oklch(1 0 0);
 
+  --border: oklch(0.845 0 0);
+  --border-light: oklch(0.915 0 0);
+
   --easy: oklch(0.447 0.119 151.405);
   --medium: oklch(0.714 0.15 75.507);
   --hard: oklch(0.509 0.179 34.516);

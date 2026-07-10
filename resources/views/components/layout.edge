@@ -23,7 +23,7 @@
           if (interactive && interactive !== trigger) return
           const root = trigger.closest('[x-data]')
           if (!root) return
-          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow, .task-box-arrow'
+          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow'
           for (const el of root.querySelectorAll(selector)) {
             if (el.closest('[x-data]') === root) el.classList.toggle('open')
           }
@@ -41,25 +41,20 @@
       {{{ await $slots.main() }}}
     </main>
 
-    <!--@if(process.env.VITE_FEATURE_DARK_MODE === 'true')
-      <H1>DADSDSAKHJADSKHJDASHJ KDAS KJDSAJHK KJH DAS</H1>
-    @endif-->
     <div class="modal-overlay" x-data x-show="$store.modal.open" style="display:none;"
       @click.self="$store.modal.hide()" @keydown.escape.window="$store.modal.hide()">
       <div class="modal-box">
         <div class="modal-header">
           <span x-text="$store.modal.title"></span>
-          <button class="diff-btn-delete" @click="$store.modal.hide()">✕</button>
+          <button class="modal-close" @click="$store.modal.hide()">✕</button>
         </div>
         <p x-show="!$store.modal.code"
           x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"></p>
-        <div x-show="$store.modal.code" x-data="{ copied: false }" style="position: relative;">
-          <pre x-text="$store.modal.body" class="modal-code"></pre>
-          <div style="display: flex; margin-bottom: -25px">
-            <button type="button" class="modal-copy-btn underlinable"
-              @click="navigator.clipboard.writeText($store.modal.body).then(() => { copied = true; setTimeout(() => copied = false, 1500) })"
-              x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'"></button>
-          </div>
+        <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
+          <pre x-text="$store.modal.body"></pre>
+          <button type="button" class="copy-btn" :class="{ copied }"
+            @click="copy($store.modal.body)"
+            x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'">Kopiuj</button>
         </div>
       </div>
     </div>

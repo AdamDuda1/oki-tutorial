@@ -2,12 +2,12 @@
 @let(poziomyTrudnosci = $props.get('poziomyTrudnosci'))
 @let(withAlpha = $props.get('withAlpha'))
 
-<tbody x-data="{ open: !!$el.querySelector('.box')?.classList.contains('open') }" class="task-row">
+<tbody x-data="expandable" class="task-row">
   <tr data-toggle @click="open = !open">
     <td class="col-id">{{ z.idZadania }}</td>
     <td class="col-nazwa">
       <div class="toggle-left">
-        <span class="task-box-arrow" :class="{ open }">▶</span>
+        <span class="box-arrow" :class="{ open }">▶</span>
         {{ z.nazwa }}
       </div>
     </td>
@@ -49,11 +49,11 @@
             @end
             @if(z.kodCpp)
               <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, true)"
-                data-code="{{ z.kodCpp }}"><img src="/icons/i_code.svg" alt=""> Kod C++</button>
+                data-code="{{ z.kodCpp }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
             @end
             @if(z.kodPython)
               <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, true)"
-                data-code="{{ z.kodPython }}"><img src="/icons/i_code.svg" alt=""> Kod Python</button>
+                data-code="{{ z.kodPython }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
             @end
             @if(z.linkDodatkoweMaterialy)
               <a href="{{ z.linkDodatkoweMaterialy }}" class="task-action" target="_blank" rel="noopener">Dodatkowe materiały</a>
