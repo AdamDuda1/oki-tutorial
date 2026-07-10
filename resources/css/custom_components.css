@@ -11,6 +11,35 @@
 }
 .custom-link:hover { color: var(--brand-hovered); }
 
+.custom-modal-link,
+.custom-modal-link:hover {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--brand);
+  font: inherit;
+  cursor: pointer;
+}
+.custom-modal-link:hover {
+  color: var(--brand-hovered);
+  text-decoration: underline;
+}
+
+.custom-modal-link.button,
+.custom-modal-link.button:hover {
+  background: var(--brand);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.custom-modal-link.button:hover { background: var(--brand-hovered); }
+
 .custom-code {
   position: relative;
 }

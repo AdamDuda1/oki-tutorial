@@ -1,0 +1,18 @@
+@let(slot = (await $slots.main()).trim())
+@let(title = $props.get('title', ''))
+@let(text = $props.get('text', title))
+@let(code = $props.get('code', false))
+@let(variant = $props.get('variant', 'link'))
+@let(rawBody = slot || ($props.get('body') ?? ''))
+@let(body = code ? rawBody : rawBody.replace(/^[ \t]+/gm, ''))
+
+<button type="button" x-data data-title="{{ title }}" data-body="{{ body }}"
+  @click="$store.modal.show($el.dataset.title, $el.dataset.body, {{ code ? 'true' : 'false' }})"
+  {{
+    $props
+      .except(['title', 'text', 'body', 'code', 'variant'])
+      .merge({ class: ['custom-modal-link', variant] })
+      .toAttrs()
+  }}>
+  {{{ text }}}
+</button>

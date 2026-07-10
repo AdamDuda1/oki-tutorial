@@ -32,6 +32,22 @@ document.addEventListener('turbo:load', async () => {
       detail: 'odnośnik',
       type: 'function',
     }),
+    snippetCompletion(
+      "@!custom.modalLink({ title: '${tytuł}', text: '${tekst odnośnika}', body: '${treść}' })",
+      {
+        label: '@!custom.modalLink',
+        detail: 'odnośnik otwierający okienko z tekstem',
+        type: 'function',
+      }
+    ),
+    snippetCompletion(
+      "@custom.modalLink({ title: '${tytuł}', text: '${tekst odnośnika}' })\n  ${treść}\n@end",
+      {
+        label: '@custom.modalLink',
+        detail: 'okienko z dłuższą treścią (blok)',
+        type: 'function',
+      }
+    ),
     snippetCompletion("@!custom.code({ lang: '${python}', code: `${kod}` })", {
       label: '@!custom.code',
       detail: 'blok kodu z przyciskiem kopiowania',
