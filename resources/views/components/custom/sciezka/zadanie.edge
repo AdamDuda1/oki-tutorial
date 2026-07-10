@@ -22,14 +22,14 @@
       @end
       @if(zadanie.hint)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
-          data-hint="{{ zadanie.hint }}"><img src="/icons/i_hint.svg" alt=""> Hint</button>
+          data-hint="{{ zadanie.hint }}"><img src="/icons/i_hint.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Hint</span></button>
       @end
       @if(zadanie.linkOmowienieVid)
         <a href="{{ zadanie.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
       @end
       @if(zadanie.omowienieText)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
-          data-omowienie="{{ zadanie.omowienieText }}"><img src="/icons/i_note.svg" alt=""> Omówienie</button>
+          data-omowienie="{{ zadanie.omowienieText }}"><img src="/icons/i_note.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Omówienie</span></button>
       @end
       @if(zadanie.kodCpp)
         <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, 'cpp')"

@@ -21,6 +21,11 @@ body {
   :target { scroll-margin-top: 80px; }
   scroll-margin-top: 80px;
   font-family: var(--font-brand), sans-serif;
+  font-weight: 460;
+}
+
+.box-description, .topic-html {
+  font-weight: 500;
 }
 
 nav *, h1, h2, h3, code, button, a, .admin-content *, .level-html, tbody *, .toggle-right, .modal-header {
@@ -45,6 +50,7 @@ a:not(.dont-underline):hover {
 }
 .underlinable:hover {
   text-decoration: underline;
+  * {text-decoration: underline; }
 }
 
 .bold {
@@ -161,7 +167,11 @@ main.page-enter {
   font-weight: 650;
 }
 
-.modal-box p { white-space: pre-wrap; line-height: 1.65; }
+.modal-box p {
+  white-space: pre-wrap;
+  line-height: 1.65;
+  font-weight: 460;
+}
 
 .modal-code pre {
   max-height: 60vh;
