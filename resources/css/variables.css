@@ -1,6 +1,7 @@
 :root {
-  --font-brand: "JetBrains Mono"; /* font-family: var(--font-brand), monospace; */
+  --font-brand: "Quicksand"; /* font-family: var(--font-brand), sans-serif; */
   --font-quicksand: "Quicksand"; /* font-family: var(--font-quicksand), sans-serif; */
+  --font-mono: "JetBrains Mono"; /* font-family: var(--font-brand), monospace; */
 
   --oki-gray: oklch(0.556 0 0);
   --oki-yellow: oklch(0.904 0.153 95.162);

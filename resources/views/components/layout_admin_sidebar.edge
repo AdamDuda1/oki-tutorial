@@ -17,10 +17,10 @@
       <!--a href="/admin/flipper_features" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a-->
       <a href="/admin/stats_and_audit_log" class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic">Statystyki i historia zmian</a>
     @end
-    <span class="mobile-menu-handle" onclick="if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń menu v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń menu v'; }">Rozwiń menu v</span>
+    <span class="mobile-menu-handle"  style="left: 103%" if (document.getElementById('collapsable-sidenav').classList.contains('opened')) { document.getElementById('collapsable-sidenav').classList.remove('opened'); this.innerHTML = 'Rozwiń menu v'; } else { document.getElementById('collapsable-sidenav').classList.add('opened'); this.innerHTML = 'Zwiń menu v'; }">Rozwiń menu v</span>
   </nav>
 
-  <div class="content" style="padding-left: 70px; padding-right: 70px;">
+  <div class="content admin-content" style="padding-left: 70px; padding-right: 70px;">
     {{{ await $slots.main() }}}
   </div>
 </div>
