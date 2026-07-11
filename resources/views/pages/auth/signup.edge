@@ -50,5 +50,9 @@
     @if(appVersionAge())
       ({{ appVersionAge() }})
     @end
+    <label class="dark-mode-switch" title="Tryb ciemny">
+            <input type="checkbox" class="dark-mode-switch-input" data-dark-mode-toggle aria-label="Przełącz tryb ciemny">
+            <span class="dark-mode-switch-track"><span class="dark-mode-switch-thumb"></span></span>
+          </label>
   </div>
 @end

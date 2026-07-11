@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div>
+    <div style="display: flex; align-items: center; gap: 12px;">
       <button class="nav-hamburger" data-toggle=".nav-links" @click="open = !open" :aria-expanded="open.toString()" aria-label="Menu">
         <span x-text="open ? '✕' : '☰'">☰</span>
       </button>

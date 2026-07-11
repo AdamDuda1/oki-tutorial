@@ -1,6 +1,7 @@
 import '@hotwired/turbo'
 import Alpine from 'alpinejs'
 
+import './dark_mode.js'
 import './ui.js'
 import './katex.js'
 import './highlight.js'
