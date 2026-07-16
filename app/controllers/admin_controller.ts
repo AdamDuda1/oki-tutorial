@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 import User, { USER_ROLES } from '#models/user'
 import AuditLog from '#models/audit_log'
 import ListaZadan from '#models/lista_zadan'
@@ -91,6 +92,18 @@ export default class AdminController {
     const paginator = await AuditLog.query().orderBy('id', 'desc').paginate(page, 50)
     paginator.baseUrl('/admin/stats_and_audit_log')
 
+    const leaderboard = await db
+      .from('audit_log')
+      .join('users', 'users.id', 'audit_log.id_uzytkownika')
+      .whereIn(
+        'users.role',
+        USER_ROLES.filter((r) => r !== 'user')
+      )
+      .select('users.email')
+      .count('audit_log.id as zmiany')
+      .groupBy('users.email')
+      .orderBy('zmiany', 'desc')
+
     const stats = {
       zadania: await countRows(ListaZadan.query().whereNull('deleted_at')),
       zadaniaOpublikowane: await countRows(
@@ -103,6 +116,6 @@ export default class AdminController {
       uzytkownicy: await countRows(User.query()),
     }
 
-    return view.render('pages/admin/stats_and_audit_log', { paginator, stats })
+    return view.render('pages/admin/stats_and_audit_log', { paginator, stats, leaderboard })
   }
 }

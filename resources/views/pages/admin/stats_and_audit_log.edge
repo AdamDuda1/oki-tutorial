@@ -10,6 +10,17 @@
   </ul>
 </div>
 
+@if(leaderboard.length > 0)
+  <div class="admin-edit-task" style="margin-bottom: 24px;">
+    <h1>Ranking zmian</h1>
+    <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;">
+      @each(wpis in leaderboard)
+        <li><strong>{{ wpis.email }}:</strong> {{ wpis.zmiany }}</li>
+      @end
+    </ul>
+  </div>
+@end
+
 <div class="admin-edit-task">
   <h1>Audit log</h1>
 
