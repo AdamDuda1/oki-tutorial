@@ -117,27 +117,25 @@
 
 .topic-header {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
+  display: flow-root;
   padding-top: 4px;
 
   iframe {
+    float: left;
+    margin-right: 12px;
     border-radius: 8px;
-    flex-shrink: 0;
     width: 35vw;
     aspect-ratio: 16 / 9;
   }
 
   .learning-materials {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
     h3 { margin-bottom: 4px; }
 
     a {
+      display: block;
+      margin-top: 3px;
       font-size: 14px;
+      line-height: 1.3;
       color: var(--brand);
     }
   }
