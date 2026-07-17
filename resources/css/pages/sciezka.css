@@ -120,6 +120,12 @@
   display: flow-root;
   padding-top: 4px;
 
+  /* embed height (35vw * 9/16) + top padding + 4px gap under the embed;
+     only takes effect when the materials fit within the embed height */
+  &:has(iframe) {
+    min-height: calc(35vw * 9 / 16 + 8px);
+  }
+
   iframe {
     float: left;
     margin-right: 12px;

@@ -101,8 +101,12 @@
 
     .topic-header {
       flex-direction: column;
+      min-height: 0;
 
-      iframe { width: 100%; }
+      iframe {
+        width: 100%;
+        margin-bottom: 4px;
+      }
     }
   }
 
