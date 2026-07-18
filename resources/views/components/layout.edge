@@ -33,6 +33,10 @@
   </head>
   <body>
     @include('partials/header')
+    @let(ustawienia = await siteSettings())
+    @if(ustawienia.banner)
+      <div class="site-banner">{{ ustawienia.banner }}</div>
+    @end
     <main>
       @if(!$props.get('noAlerts'))
         @include('partials/flash_alerts')

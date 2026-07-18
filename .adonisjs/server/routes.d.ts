@@ -45,6 +45,8 @@ export type ScannedRoutes = {
     'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
+    'admin.site_settings': { paramsTuple?: []; params?: {} }
+    'admin.site_settings.update': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -67,6 +69,7 @@ export type ScannedRoutes = {
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
+    'admin.site_settings': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -89,6 +92,7 @@ export type ScannedRoutes = {
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
+    'admin.site_settings': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -112,6 +116,7 @@ export type ScannedRoutes = {
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.site_settings.update': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {

@@ -128,6 +128,15 @@ export class PoziomyTrudnosciSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class SettingSchema extends BaseModel {
+  static $columns = ['key', 'val'] as const
+  $columns = SettingSchema.$columns
+  @column({ isPrimary: true })
+  declare key: string
+  @column()
+  declare val: string | null
+}
+
 export class TagiSchema extends BaseModel {
   static $columns = ['idTagu', 'nazwa'] as const
   $columns = TagiSchema.$columns

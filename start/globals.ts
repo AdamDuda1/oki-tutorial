@@ -22,6 +22,11 @@ function resolveVersionInfo(): { hash: string; timestamp: number | null } {
 
 const versionInfo = resolveVersionInfo()
 
+edge.global('siteSettings', async () => {
+  const { default: Setting } = await import('#models/setting')
+  return Setting.getAll()
+})
+
 edge.global('appVersion', versionInfo.hash)
 edge.global('appVersionAge', () => {
   if (!versionInfo.timestamp) return null

@@ -1,0 +1,29 @@
+@layout({ title: 'Ustawienia strony' })
+@layoutAdminSidebar({ page: 'Ustawienia strony' })
+
+<div class="admin-edit-task">
+  <h1>Ustawienia strony</h1>
+
+  <form method="POST" action="{{ route('admin.site_settings.update') }}">
+    {{ csrfField() }}
+
+    <div>
+      <label for="banner">Banner wyświetlany na górze strony (puste = brak banera)</label>
+      <input id="banner" name="banner" value="{{ ustawienia.banner || '' }}"
+        placeholder="np. W sobotę 20:00–22:00 przerwa techniczna">
+    </div>
+
+    <label style="display: flex; align-items: center; gap: 8px; width: max-content; cursor: pointer; font-size: 16px;">
+      <input type="checkbox" name="maintenance" value="1" style="width: auto; height: auto;"
+        {{ ustawienia.maintenance === '1' ? 'checked' : '' }}>
+      Tryb przerwy technicznej (stronę widzą tylko admini i edytorzy)
+    </label>
+
+    <div class="admin-form-actions">
+      @!button({ text: 'Zapisz', type: 'submit' })
+    </div>
+  </form>
+</div>
+
+@end
+@end

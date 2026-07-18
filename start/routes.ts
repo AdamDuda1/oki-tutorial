@@ -122,6 +122,10 @@ router
     router
       .get('stats_and_audit_log', [AdminController, 'stats_and_audit_log'])
       .as('admin.stats_and_audit_log')
+    router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
+    router
+      .post('site_settings', [AdminController, 'update_site_settings'])
+      .as('admin.site_settings.update')
   })
   .prefix('/admin')
   .use(middleware.admin())

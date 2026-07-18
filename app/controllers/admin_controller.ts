@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import User, { USER_ROLES } from '#models/user'
 import AuditLog from '#models/audit_log'
+import Setting from '#models/setting'
 import ListaZadan from '#models/lista_zadan'
 import Tematy from '#models/tematy'
 
@@ -84,6 +85,30 @@ export default class AdminController {
       opis: `użytkownik ${user.email} (rola: ${user.role})`,
     })
     session.flash('success', `Użytkownik ${user.email} został usunięty.`)
+    return response.redirect().back()
+  }
+
+  async site_settings({ view }: HttpContext) {
+    return view.render('pages/admin/site_settings', { ustawienia: await Setting.getAll() })
+  }
+
+  async update_site_settings({ request, response, session, auth }: HttpContext) {
+    const nowe: Record<string, string> = {
+      banner: String(request.input('banner', '')).trim(),
+      maintenance: request.input('maintenance') ? '1' : '',
+    }
+    const stare = await Setting.getAll()
+    for (const [key, val] of Object.entries(nowe)) {
+      if ((stare[key] ?? '') === val) continue
+      await Setting.set(key, val)
+      await AuditLog.record({
+        user: auth.user!,
+        akcja: 'zaktualizowano',
+        typObiektu: 'ustawienie',
+        opis: `${key}: ${stare[key] || '-'} → ${val || '-'}`,
+      })
+    }
+    session.flash('success', 'Zapisano ustawienia.')
     return response.redirect().back()
   }
 
