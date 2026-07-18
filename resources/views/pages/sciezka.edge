@@ -35,7 +35,7 @@
         x-init="if (open) $store.topic.current = {{temat.idTematu}}">
 
           <button class="toggle" data-toggle @click="open = !open; if (open) { history.replaceState(null, '', '#{{temat.idTematu}}'); $store.topic.current = {{temat.idTematu}} }">
-            <span class="box-arrow" :class="{ open }">▶</span>
+            <span class="box-arrow" :class="{ open }"></span>
             <h2 class="bold">{{temat.nazwa}}</h2>
           </button>
           <div class="box" :class="{ open }">

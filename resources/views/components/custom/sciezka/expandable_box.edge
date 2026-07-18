@@ -3,7 +3,7 @@
 
 <div class="tasks-box standalone" x-data="expandable">
   <button class="toggle" data-toggle @click="open = !open">
-    <span class="box-arrow" :class="{ open }">▶</span>
+    <span class="box-arrow" :class="{ open }"></span>
     <h3 class="bold">{{{ title }}}</h3>
   </button>
   <div class="box" :class="{ open }">

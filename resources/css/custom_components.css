@@ -59,6 +59,16 @@
   font-size: 12px;
   transition: transform 0.2s ease;
 }
+/* drawn in css because no loaded font has the U+25B6 glyph,
+   so a text arrow falls back to a random system font */
+.box-arrow::before {
+  content: '';
+  display: block;
+  width: 0.7em;
+  height: 0.8em;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
 .box-arrow.open { transform: rotate(90deg); }
 
 .box {
