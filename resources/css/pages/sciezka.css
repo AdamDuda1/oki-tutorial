@@ -103,6 +103,11 @@
   padding: 4px 0;
 }
 
+.level-html .katex,
+.topic-html .katex {
+  font-size: 1.21rem;
+}
+
 .topic-box {
   outline: 1px solid var(--border);
   border-radius: 8px;

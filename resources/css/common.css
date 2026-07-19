@@ -32,6 +32,10 @@ nav *, h1, h2, h3, code, button, a, .admin-content *, .level-html, tbody *, .tog
   font-family: var(--font-mono), monospace;
 }
 
+.katex * {
+  font-family: inherit;
+}
+
 code {
   font-family: var(--font-mono), monospace !important;
 }
