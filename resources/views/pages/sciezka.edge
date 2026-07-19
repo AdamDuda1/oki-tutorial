@@ -22,6 +22,11 @@
         onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'">Rozwiń ścieżkę v</span>
     </nav>
 
+    @let(ustawienia = await siteSettings())
+    @if(ustawienia.banner)
+      <div class="site-banner">{{ ustawienia.banner }}</div>
+    @end
+
     <div class="content">
       @if(poziomHtml)
         <div class="level-html">

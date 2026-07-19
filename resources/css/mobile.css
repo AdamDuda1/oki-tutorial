@@ -50,12 +50,11 @@
     display: flex !important;
   }
 
-  .sidenav {
+  .sciezka-app .sidenav {
     z-index: 99;
     position: absolute;
-    height: calc(100vh - 60px);
+    height: 100%;
     left: clamp(-800px, -15vw, -350px);
-    width: 0;
     transition: transform 0.15s ease-in-out;
     transform: translate(0, 0);
 
@@ -92,12 +91,8 @@
   }
 
   .content {
-    position: absolute;
-    width: 94vw;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    margin-left: auto;
-    margin-right: auto;
+    padding-left: calc(3vw + 20px) !important;
+    padding-right: calc(3vw + 20px) !important;
 
     .topic-header {
       flex-direction: column;

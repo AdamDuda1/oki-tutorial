@@ -124,7 +124,28 @@ main {
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
   background: var(--background);
+}
+
+body:has(.sciezka-app) {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+body:has(.sciezka-app) header {
+  flex-shrink: 0;
+}
+
+body:has(.sciezka-app) > .site-banner {
+  display: none;
+}
+
+body:has(.sciezka-app) main {
+  flex: 1;
+  min-height: 0;
 }
 
 main.page-exit {

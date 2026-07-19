@@ -22,6 +22,11 @@
       onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń menu v' : 'Rozwiń menu v'">Rozwiń menu v</span>
   </nav>
 
+  @let(ustawienia = await siteSettings())
+  @if(ustawienia.banner)
+    <div class="site-banner">{{ ustawienia.banner }}</div>
+  @end
+
   <div class="content admin-content" style="padding-left: 70px; padding-right: 70px;">
     {{{ await $slots.main() }}}
   </div>

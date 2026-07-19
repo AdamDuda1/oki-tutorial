@@ -94,7 +94,7 @@ export default class AdminController {
 
   async update_site_settings({ request, response, session, auth }: HttpContext) {
     const nowe: Record<string, string> = {
-      banner: String(request.input('banner', '')).trim(),
+      banner: String(request.input('banner') ?? '').trim(),
       maintenance: request.input('maintenance') ? '1' : '',
     }
     const stare = await Setting.getAll()
