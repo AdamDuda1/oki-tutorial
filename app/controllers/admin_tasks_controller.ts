@@ -99,6 +99,7 @@ export default class AdminTasksController {
       session.flash('error', 'Brak dostępu.')
       return response.redirect().toRoute('admin.edit_task.index')
     }
+    await task.load('autor')
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
     return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi })

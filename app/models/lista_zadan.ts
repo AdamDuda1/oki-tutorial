@@ -1,6 +1,7 @@
 import { belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import PoziomTrudnosci from '#models/poziom_trudnosci'
+import User from '#models/user'
 import { ListaZadanSchema } from '#database/schema'
 
 export default class ListaZadan extends ListaZadanSchema {
@@ -17,4 +18,9 @@ export default class ListaZadan extends ListaZadanSchema {
     localKey: 'idPoziomuTrudnosci',
   })
   declare poziomuTrudnosci: BelongsTo<typeof PoziomTrudnosci>
+
+  @belongsTo(() => User, {
+    foreignKey: 'idAutora',
+  })
+  declare autor: BelongsTo<typeof User>
 }

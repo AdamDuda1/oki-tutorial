@@ -31,6 +31,15 @@
     <td colspan="4">
       <div class="box" :class="{ open }">
         <div class="box-inner">
+          @if(auth.user && auth.user.canAccessAdmin)
+            @!adminBox({
+              id: z.idZadania,
+              autor: z.autor ? (z.autor.fullName || z.autor.email) : null,
+              dodano: z.createdAt,
+              edytowano: z.updatedAt,
+              href: (auth.user.canEditAllContent || z.idAutora === auth.user.id) ? '/admin/edit_task/' + z.idZadania : null,
+            })
+          @end
           <div class="przyciski">
             <a href="{{ z.linkTresc }}" class="task-action" target="_blank" rel="noopener">Treść</a>
             <!--@if(z.linkWyslij)

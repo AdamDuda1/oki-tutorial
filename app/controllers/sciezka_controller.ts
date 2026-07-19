@@ -17,6 +17,7 @@ export default class SciezkaController {
       .whereNull('deleted_at')
       .where('id_poziomu', params.id)
       .orderBy('position')
+      .preload('autor')
 
     for (const temat of tematy) {
       temat.$extras.materialy = (temat.zewnetrzneMaterialy || []).map((link, i) => ({
@@ -38,6 +39,7 @@ export default class SciezkaController {
         .where('published', true)
         .whereNull('deleted_at')
         .preload('poziomuTrudnosci')
+        .preload('autor')
       for (const task of tasks) {
         taskMap.set(task.idZadania, task)
       }

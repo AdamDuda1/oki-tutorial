@@ -3,6 +3,7 @@ import { belongsTo, column } from '@adonisjs/lucid/orm'
 import { TematySchema } from '#database/schema'
 import * as relations from '@adonisjs/lucid/types/relations'
 import Poziomy from '#models/poziomy'
+import User from '#models/user'
 
 export default class Tematy extends TematySchema {
   static table = 'tematy'
@@ -82,4 +83,9 @@ export default class Tematy extends TematySchema {
     localKey: 'idPoziomu',
   })
   declare poziom: relations.BelongsTo<typeof Poziomy>
+
+  @belongsTo(() => User, {
+    foreignKey: 'idAutora',
+  })
+  declare autor: relations.BelongsTo<typeof User>
 }

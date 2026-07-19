@@ -21,6 +21,7 @@ export default class ListaZadanController {
       .where('published', true)
       .orderBy('id_zadania')
       .preload('poziomuTrudnosci')
+      .preload('autor')
     if (poziomFilter.length) query.whereIn('id_poziomu_trudnosci', poziomFilter)
     if (zrodloFilter.length) query.whereIn('zrodlo', zrodloFilter)
     for (const tag of wybraneTagi) {

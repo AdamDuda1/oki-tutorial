@@ -11,10 +11,20 @@
 })))
 
 @if(!isNew)
-  <a href="{{ route('admin.materialy') }}" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
+  <a href="{{ route('admin.materialy') }}" class="back-link" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
 @end
 
 <h1>{{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}</h1>
+@if(!isNew)
+  <div class="admin-debug-info">
+    #{{ temat.idTematu }}
+    · autor: {{ temat.autor ? (temat.autor.fullName || temat.autor.email) : '—' }}
+    · utworzono {{ temat.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+    @if(temat.updatedAt)
+      · edytowano {{ temat.updatedAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+    @end
+  </div>
+@end
 
 <script id="materials-data" type="application/json">
   {{{ JSON.stringify(temat ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
@@ -133,7 +143,7 @@
                 <input type="checkbox" :checked="jestDodatkowe(id)" @change="przelaczDodatkowe(id)"> dodatkowe
               </label>
               <span class="task-picker-actions">
-                <a :href="`/admin/edit_task/${id}`" target="_blank" title="Edytuj zadanie" class="dont-underline">✎</a>
+                <a :href="`/admin/edit_task/${id}`" title="Edytuj zadanie" class="dont-underline" data-modal-edit>✎</a>
                 <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>
                 <button type="button" @click="przesun(sekcja.klucz, i, 1)" :disabled="i === listy[sekcja.klucz].length - 1">↓</button>
                 <button type="button" class="diff-btn-delete" @click="usun(sekcja.klucz, i)">✕</button>

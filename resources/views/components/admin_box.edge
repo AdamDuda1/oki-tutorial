@@ -1,0 +1,18 @@
+@let(autor = $props.get('autor'))
+@let(dodano = $props.get('dodano'))
+@let(edytowano = $props.get('edytowano'))
+
+<div class="admin-box-wrap">
+  <div class="admin-box">
+    <div>#{{ $props.get('id') }}{{ autor ? ' · autor: ' + autor : '' }}</div>
+    @if(dodano)
+      <div>dodano: {{ dodano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}</div>
+    @end
+    @if(edytowano)
+      <div>edytowano: {{ edytowano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}</div>
+    @end
+    @if($props.get('href'))
+      <a href="{{ $props.get('href') }}" data-modal-edit>(edytuj)</a>
+    @end
+  </div>
+</div>

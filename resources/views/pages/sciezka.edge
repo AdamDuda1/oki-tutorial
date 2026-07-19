@@ -45,6 +45,15 @@
           </button>
           <div class="box" :class="{ open }">
             <div class="box-inner">
+              @if(auth.user && auth.user.canAccessAdmin)
+                @!adminBox({
+                  id: temat.idTematu,
+                  autor: temat.autor ? (temat.autor.fullName || temat.autor.email) : null,
+                  dodano: temat.createdAt,
+                  edytowano: temat.updatedAt,
+                  href: (auth.user.canEditAllContent || temat.idAutora === auth.user.id) ? '/admin/materialy/temat/' + temat.idTematu : null,
+                })
+              @end
               <div class="topic-header">
                 <div>
                   @if (temat.linkYt)

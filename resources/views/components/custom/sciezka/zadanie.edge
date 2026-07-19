@@ -16,6 +16,15 @@
   </button>
   <div class="box" :class="{ open }">
     <div class="box-inner">
+      @if(auth.user && auth.user.canAccessAdmin)
+        @!adminBox({
+          id: zadanie.idZadania,
+          autor: zadanie.autor ? (zadanie.autor.fullName || zadanie.autor.email) : null,
+          dodano: zadanie.createdAt,
+          edytowano: zadanie.updatedAt,
+          href: (auth.user.canEditAllContent || zadanie.idAutora === auth.user.id) ? '/admin/edit_task/' + zadanie.idZadania : null,
+        })
+      @end
       <a href="{{ zadanie.linkTresc }}" class="task-action" target="_blank" rel="noopener">Treść</a>
       @if(zadanie.linkWyslij)
         <a href="{{ zadanie.linkWyslij }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij w konkursie</a>

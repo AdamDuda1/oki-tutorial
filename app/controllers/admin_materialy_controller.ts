@@ -35,9 +35,12 @@ export default class AdminMaterialyController {
     const poziomy = await Poziomy.query()
       .whereNull('deleted_at')
       .orderBy('position')
-      .preload('tematy', (q) => q.whereNull('deleted_at').orderBy('position'))
+      .preload('tematy', (q) => q.whereNull('deleted_at').orderBy('position').preload('autor'))
     const allIds = poziomy.map((p) => p.idPoziomu)
-    const wszystkie = await Tematy.query().whereNull('deleted_at').orderBy('position')
+    const wszystkie = await Tematy.query()
+      .whereNull('deleted_at')
+      .orderBy('position')
+      .preload('autor')
     const uncategorised = wszystkie.filter(
       (t) => t.idPoziomu === null || !allIds.includes(t.idPoziomu)
     )
@@ -256,6 +259,7 @@ export default class AdminMaterialyController {
       session.flash('error', 'Brak dostępu.')
       return response.redirect().toRoute('admin.materialy')
     }
+    await temat.load('autor')
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
     const { zadania, uzycia } = await zadaniaPickerData(temat.idTematu)
     return view.render('pages/admin/edit_temat', {

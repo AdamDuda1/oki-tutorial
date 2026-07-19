@@ -13,6 +13,7 @@
         nazwa: t.nazwa,
         published: t.published,
         canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
+        autor: t.autor ? (t.autor.fullName || t.autor.email) : null,
       })),
     }))) }}}
   </script>
@@ -56,11 +57,12 @@
             <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
           @end
           @if(auth.user.canEditAllContent)
-            <a :href="`/admin/materialy/poziom/${p.id}`" x-text="p.nazwa" draggable="false" style="font-weight: 700;"></a>
+            <a :href="`/admin/materialy/poziom/${p.id}`" x-text="p.nazwa" draggable="false" style="font-weight: 700;" data-modal-edit></a>
           @else
             <strong x-text="p.nazwa"></strong>
           @end
-          <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" draggable="false" style="margin-left: auto; font-size: 13px; color: var(--brand);">+ Nowy temat</a>
+          <span class="admin-debug-hint" x-text="'#' + p.id"></span>
+          <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" draggable="false" style="margin-left: auto; font-size: 13px; color: var(--brand);" data-modal-edit>+ Nowy temat</a>
         </div>
 
         <div class="diff-level-list">
@@ -82,9 +84,10 @@
               @if(auth.user.canEditAllContent)
                 <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">⠿</span>
               @end
-              <a x-show="t.canEdit" :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa" draggable="false"></a>
+              <a x-show="t.canEdit" :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa" draggable="false" data-modal-edit></a>
               <span x-show="!t.canEdit" x-text="t.nazwa"></span>
               <span x-show="!t.published" style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
+              <span class="admin-debug-hint" x-text="'#' + t.id + (t.autor ? ' · ' + t.autor : '')"></span>
             </div>
           </template>
         </div>
@@ -120,10 +123,11 @@
         @each(temat in uncategorised)
           <div class="diff-level-row">
             @if(auth.user.canEditAllContent || temat.idAutora === auth.user.id)
-              <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" style="flex: 1;">{{ temat.nazwa }}</a>
+              <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" data-modal-edit>{{ temat.nazwa }}</a>
             @else
-              <span style="flex: 1;">{{ temat.nazwa }}</span>
+              <span>{{ temat.nazwa }}</span>
             @end
+            <span class="admin-debug-hint">#{{ temat.idTematu }}{{ temat.autor ? ' · ' + (temat.autor.fullName || temat.autor.email) : '' }}</span>
           </div>
         @end
       </div>

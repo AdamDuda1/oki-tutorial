@@ -14,10 +14,20 @@
   ])
 
 @if (!isNew)
-  <a href="/admin/edit_task" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
+  <a href="/admin/edit_task" class="back-link" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
 @end
 
 <h1>{{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}</h1>
+@if(!isNew)
+  <div class="admin-debug-info">
+    #{{ task.idZadania }}
+    · autor: {{ task.autor ? (task.autor.fullName || task.autor.email) : '—' }}
+    · utworzono {{ task.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+    @if(task.updatedAt)
+      · edytowano {{ task.updatedAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+    @end
+  </div>
+@end
 
   @form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
 

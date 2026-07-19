@@ -76,7 +76,7 @@ const shieldConfig = defineConfig({
      * It can block all framing with 'DENY' or allow same-origin framing
      * with 'SAMEORIGIN'.
      */
-    action: 'DENY',
+    action: 'SAMEORIGIN',
   },
 
   /**
