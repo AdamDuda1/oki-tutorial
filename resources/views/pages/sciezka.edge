@@ -48,7 +48,11 @@
               <div class="topic-header">
                 <div>
                   @if (temat.linkYt)
-                    <iframe src="{{temat.linkYt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    @let(ytId = (temat.linkYt.split('/embed/')[1] || '').split('?')[0])
+                    <button type="button" class="yt-facade" data-embed="{{temat.linkYt}}" title="Odtwórz wideo">
+                      <img src="https://i.ytimg.com/vi/{{ytId}}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy">
+                      <span class="yt-play"></span>
+                    </button>
                   @end
                 </div>
                 <div class="learning-materials">

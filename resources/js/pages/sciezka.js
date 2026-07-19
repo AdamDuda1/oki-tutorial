@@ -34,6 +34,19 @@ document.addEventListener(
   true
 )
 
+document.addEventListener('click', (event) => {
+  const facade = event.target.closest('.yt-facade')
+  if (!facade) return
+  const src = facade.dataset.embed
+  const iframe = document.createElement('iframe')
+  iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1'
+  iframe.title = 'YouTube video player'
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin'
+  iframe.allowFullscreen = true
+  facade.replaceWith(iframe)
+})
+
 function initSciezkaUrlSync() {
   const boxes = [...document.querySelectorAll('.topic-box')]
   if (boxes.length === 0) return
