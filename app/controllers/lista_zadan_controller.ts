@@ -29,7 +29,10 @@ export default class ListaZadanController {
     }
     if (q) query.where('nazwa', 'like', `%${q}%`)
 
-    const paginator = await query.paginate(page, 20)
+    let paginator = await query.clone().paginate(page, 20)
+    if (page > paginator.lastPage) {
+      paginator = await query.clone().paginate(paginator.lastPage, 20)
+    }
     paginator.baseUrl('/lista_zadan')
 
     const activeFilters: Record<string, any> = {}
