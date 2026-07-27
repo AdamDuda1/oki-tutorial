@@ -14,4 +14,11 @@
       @!custom.listaZadan.zadanie({ zadanie: z, poziomyTrudnosci: poziomyTrudnosci, withAlpha: withAlpha })
     @end
   </table>
+
+  @!pagination({
+    currentPage: paginator.currentPage,
+    totalPages: paginator.lastPage,
+    prevUrl: paginator.getPreviousPageUrl(),
+    nextUrl: paginator.getNextPageUrl()
+  })
 @end
