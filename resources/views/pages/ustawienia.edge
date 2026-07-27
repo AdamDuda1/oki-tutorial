@@ -1,0 +1,29 @@
+@layout({ title: 'Ustawienia' })
+  <div class="form-container">
+    <h1>Ustawienia konta</h1>
+    <br>
+    <div style="max-width: 90vw; min-width: 50vw;">
+      @form({ route: 'settings.update', method: 'POST' })
+        <div>
+          @field.root({ name: 'fullName' })
+            @!field.label({ text: 'Imię i nazwisko' })
+            @!input.control({ value: auth.user.fullName ?? '' })
+            @!field.error()
+          @end
+        </div>
+
+        <div>
+          @field.root({ name: 'email' })
+            @!field.label({ text: 'Email' })
+            @!input.control({ type: 'email', autocomplete: 'email', value: auth.user.email })
+            @!field.error()
+          @end
+        </div>
+
+        <div>
+          @!button({ text: 'Zapisz zmiany', type: 'submit' })
+        </div>
+      @end
+    </div>
+  </div>
+@end

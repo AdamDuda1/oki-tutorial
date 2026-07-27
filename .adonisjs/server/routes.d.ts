@@ -13,6 +13,8 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'settings': { paramsTuple?: []; params?: {} }
+    'settings.update': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -55,6 +57,7 @@ export type ScannedRoutes = {
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'settings': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -78,6 +81,7 @@ export type ScannedRoutes = {
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'settings': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -98,6 +102,7 @@ export type ScannedRoutes = {
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'settings.update': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.import_store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

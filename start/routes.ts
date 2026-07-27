@@ -6,6 +6,7 @@ const ListaZadanController = () => import('#controllers/lista_zadan_controller')
 const AdminController = () => import('#controllers/admin_controller')
 const AdminTasksController = () => import('#controllers/admin_tasks_controller')
 const AdminMaterialyController = () => import('#controllers/admin_materialy_controller')
+const ProfileController = () => import('#controllers/profile_controller')
 
 router
   .get('/', async ({ response }) => {
@@ -37,6 +38,9 @@ router
 router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy'])
+
+    router.get('ustawienia', [ProfileController, 'edit']).as('settings')
+    router.post('ustawienia', [ProfileController, 'update']).as('settings.update')
   })
   .use(middleware.auth())
 

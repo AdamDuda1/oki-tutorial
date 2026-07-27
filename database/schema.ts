@@ -31,12 +31,14 @@ export class AuditLogSchema extends BaseModel {
 }
 
 export class ListaZadanSchema extends BaseModel {
-  static $columns = ['createdAt', 'deletedAt', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'omowienieText', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
+  static $columns = ['createdAt', 'deletedAt', 'difficulty', 'hint', 'idAutora', 'idPoziomuTrudnosci', 'idZadania', 'kodCpp', 'kodPython', 'linkDodatkoweMaterialy', 'linkOmowienieVid', 'linkTresc', 'linkWyslij', 'linkZrodlo', 'nazwa', 'omowienieText', 'published', 'tagi', 'updatedAt', 'zrodlo'] as const
   $columns = ListaZadanSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime()
   declare deletedAt: DateTime | null
+  @column()
+  declare difficulty: number | null
   @column()
   declare hint: string | null
   @column()
@@ -71,21 +73,6 @@ export class ListaZadanSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare zrodlo: string
-}
-
-export class PasswordResetTokenSchema extends BaseModel {
-  static $columns = ['createdAt', 'expiresAt', 'id', 'token', 'userId'] as const
-  $columns = PasswordResetTokenSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column.dateTime()
-  declare expiresAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare token: string
-  @column()
-  declare userId: number
 }
 
 export class PoziomySchema extends BaseModel {

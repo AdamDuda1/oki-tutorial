@@ -29,6 +29,7 @@
         @if(auth?.user)
           <div>
             @!avatar({ initials: auth?.user?.initials })
+            @!link({ route: 'settings', text: 'Ustawienia' })
               @form({ route: 'session.destroy', method: 'POST' })
               @!button({ text: 'Wyloguj' })
             @end

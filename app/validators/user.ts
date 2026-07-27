@@ -16,3 +16,20 @@ export const signupValidator = vine.create({
     confirmationField: 'passwordConfirmation',
   }),
 })
+
+/**
+ * Validator for a user editing their own profile. The email uniqueness
+ * check excludes the current user (passed via `meta.userId`) so keeping
+ * the same email is not flagged as taken.
+ */
+export const updateProfileValidator = vine.create({
+  fullName: vine.string().nullable(),
+  email: email().unique(async (db, value, field) => {
+    const row = await db
+      .from('users')
+      .whereNot('id', field.meta.userId)
+      .where('email', value)
+      .first()
+    return !row
+  }),
+})

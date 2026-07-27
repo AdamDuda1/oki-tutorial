@@ -9,6 +9,7 @@ export const controllers = {
   AdminTasks: () => import('#controllers/admin_tasks_controller'),
   ListaZadan: () => import('#controllers/lista_zadan_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  Profile: () => import('#controllers/profile_controller'),
   Sciezka: () => import('#controllers/sciezka_controller'),
   Session: () => import('#controllers/session_controller'),
 }
