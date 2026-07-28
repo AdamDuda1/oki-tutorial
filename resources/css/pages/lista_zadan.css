@@ -47,8 +47,13 @@
   background: var(--background-darker);
   border: 1px solid var(--brand-lighter);
   cursor: pointer;
-  &:hover { border-color: var(--brand); }
-  &.disabled { opacity: 0.35; pointer-events: none; }
+  &:hover {
+    border-color: var(--brand);
+  }
+  &.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
 }
 
 .page-info {
@@ -207,7 +212,9 @@ form.filters {
     gap: 7px;
   }
 
-  .box-arrow { font-size: 10px; }
+  .box-arrow {
+    font-size: 10px;
+  }
 
   .box > .box-inner {
     display: flex;

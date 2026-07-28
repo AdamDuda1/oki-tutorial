@@ -18,7 +18,12 @@ const CSV_COLUMNS = [
   { key: 'link_zrodlo', label: 'Link do źródła', required: false, kind: 'url' },
   { key: 'link_omowienie_vid', label: 'Omówienie – wideo (URL)', required: false, kind: 'url' },
   { key: 'omowienie_text', label: 'Omówienie – tekst', required: false, kind: 'text' },
-  { key: 'link_dodatkowe_materialy', label: 'Dodatkowe materiały (URL)', required: false, kind: 'url' },
+  {
+    key: 'link_dodatkowe_materialy',
+    label: 'Dodatkowe materiały (URL)',
+    required: false,
+    kind: 'url',
+  },
   { key: 'trudnosc', label: 'Trudność (skrót lub nazwa)', required: false, kind: 'text' },
   { key: 'hint', label: 'Podpowiedź', required: false, kind: 'text' },
   { key: 'kod_cpp', label: 'Kod C++', required: false, kind: 'text' },
@@ -169,7 +174,10 @@ export default class AdminTasksController {
 
   async import_csv_form({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
-    const trudnosci = poziomyTrudnosci.map((p) => p.skrot).filter(Boolean).join(', ')
+    const trudnosci = poziomyTrudnosci
+      .map((p) => p.skrot)
+      .filter(Boolean)
+      .join(', ')
     return view.render('pages/admin/import_tasks', { trudnosci, bledy: null })
   }
 
@@ -185,7 +193,10 @@ export default class AdminTasksController {
     const user = auth.user!
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
 
-    const trudnosci = poziomyTrudnosci.map((p) => p.skrot).filter(Boolean).join(', ')
+    const trudnosci = poziomyTrudnosci
+      .map((p) => p.skrot)
+      .filter(Boolean)
+      .join(', ')
     const rerenderZBledem = (bledy: string[]) =>
       view.render('pages/admin/import_tasks', { trudnosci, bledy })
 
@@ -194,13 +205,16 @@ export default class AdminTasksController {
     if (!file.isValid) return rerenderZBledem(file.errors.map((e) => e.message))
 
     const content = await readFile(file.tmpPath!, 'utf-8')
-    const firstLine = (content.charCodeAt(0) === 0xfeff ? content.slice(1) : content).split(/\r?\n/, 1)[0] ?? ''
+    const firstLine =
+      (content.charCodeAt(0) === 0xfeff ? content.slice(1) : content).split(/\r?\n/, 1)[0] ?? ''
     const delimiter = detectDelimiter(firstLine)
     const rows = parseCsv(content, delimiter).filter((r) => r.some((c) => c.trim() !== ''))
     if (rows.length < 2) return rerenderZBledem(['Plik nie zawiera żadnych wierszy z danymi.'])
 
     const header = rows[0].map((h) => h.trim().toLowerCase())
-    const brakujace = CSV_COLUMNS.filter((c) => c.required && !header.includes(c.key)).map((c) => c.key)
+    const brakujace = CSV_COLUMNS.filter((c) => c.required && !header.includes(c.key)).map(
+      (c) => c.key
+    )
     if (brakujace.length) {
       const sep = delimiter === '\t' ? 'TAB' : delimiter
       return rerenderZBledem([

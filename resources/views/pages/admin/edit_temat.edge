@@ -1,189 +1,309 @@
 @layout({ title: temat ? 'Edytuj temat' : 'Nowy temat' })
-@layoutAdminSidebar({ page: temat ? 'Edytuj tematy' : 'Nowy temat' })
-
-@let(isNew = temat === null)
-@let(formRoute = isNew ? 'admin.materialy.store_temat' : 'admin.materialy.update_temat')
-@let(formParams = isNew ? {} : { id: temat.idTematu })
-@let(poziomOptions = poziomy.map(p => ({
-  value: p.idPoziomu,
-  name: p.nazwa,
-  isSelected: temat ? temat.idPoziomu === p.idPoziomu : p.idPoziomu === selectedPoziomu,
-})))
-
-@if(!isNew)
-  <a href="{{ route('admin.materialy') }}" class="back-link" style="margin-bottom: -15px; color: var(--brand);">< wróć</a>
-@end
-
-<h1>{{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}</h1>
-@if(!isNew)
-  <div class="admin-debug-info">
-    #{{ temat.idTematu }}
-    · autor: {{ temat.autor ? (temat.autor.fullName || temat.autor.email) : '—' }}
-    · utworzono {{ temat.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
-    @if(temat.updatedAt)
-      · edytowano {{ temat.updatedAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+  @layoutAdminSidebar({ page: temat ? 'Edytuj tematy' : 'Nowy temat' })
+    @let(isNew = temat === null)
+    @let(formRoute = isNew ? 'admin.materialy.store_temat' : 'admin.materialy.update_temat')
+    @let(formParams = isNew ? {} : { id: temat.idTematu })
+    @let(poziomOptions = poziomy.map((p) => ({
+      value: p.idPoziomu,
+      name: p.nazwa,
+      isSelected: temat ? temat.idPoziomu === p.idPoziomu : p.idPoziomu === selectedPoziomu,
+    })))
+    @if(!isNew)
+      <a
+        href="{{ route('admin.materialy') }}"
+        class="back-link"
+        style="margin-bottom: -15px; color: var(--brand);"
+      >
+        < wróć
+      </a>
     @end
-  </div>
-@end
 
-<script id="materials-data" type="application/json">
-  {{{ JSON.stringify(temat ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
-    url,
-    opis: (temat.zewnetrzneMaterialyOpisy ?? [])[i] ?? '',
-  })) : []) }}}
-</script>
-
-@form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
-
-  <div class="admin-form-section">
-    <h2>Podstawowe informacje</h2>
-    <div class="admin-form-grid">
-      <div>
-        @field.root({ name: 'nazwa' })
-          @!field.label({ text: 'Nazwa' })
-          @!input.control({ value: temat ? temat.nazwa : '' })
-          @!field.error()
+    <h1>{{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}</h1>
+    @if(!isNew)
+      <div class="admin-debug-info">
+        
+    #
+        {{ temat.idTematu }}
+        
+    · autor:
+        {{ temat.autor ? temat.autor.fullName || temat.autor.email : '-' }}
+        
+    · utworzono
+        {{ temat.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+        @if(temat.updatedAt)
+          · edytowano
+          {{ temat.updatedAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
         @end
       </div>
-      <div>
-        @field.root({ name: 'idPoziomu' })
-          @!field.label({ text: 'Poziom' })
-          @!select.control({ options: poziomOptions })
-          @!field.error()
-        @end
+    @end
+
+    <script id="materials-data" type="application/json">
+      {
+        {
+          {
+            JSON.stringify(
+              temat
+                ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
+                    url,
+                    opis: (temat.zewnetrzneMaterialyOpisy ?? [])[i] ?? '',
+                  }))
+                : [],
+            );
+          }
+        }
+      }
+    </script>
+    @form({
+      route: formRoute,
+      routeParams: formParams,
+      method: 'POST',
+      'data-save-shortcut': true,
+    })
+      <div class="admin-form-section">
+        <h2>Podstawowe informacje</h2>
+        <div class="admin-form-grid">
+          <div>
+            @field.root({ name: 'nazwa' })
+              @!field.label({ text: 'Nazwa' })
+              @!input.control({ value: temat ? temat.nazwa : '' })
+              @!field.error()
+            @end
+          </div>
+          <div>
+            @field.root({ name: 'idPoziomu' })
+              @!field.label({ text: 'Poziom' })
+              @!select.control({ options: poziomOptions })
+              @!field.error()
+            @end
+          </div>
+          <div class="span-2">
+            @field.root({ name: 'krotkiOpis' })
+              @!field.label({ text: 'Krótki opis' })
+              @!textarea.control({
+                rows: 3,
+                value: temat ? (temat.krotkiOpis ?? '') : '',
+              })
+              @!field.error()
+            @end
+          </div>
+          <div>
+            @field.root({ name: 'linkYt' })
+              @!field.label({ text: 'Link YouTube' })
+              @!input.control({ type: 'url', value: temat ? (temat.linkYt ?? '') : '' })
+              @!field.error()
+            @end
+          </div>
+          @if(auth.user.canEditAllContent)
+            <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
+              <input
+                type="checkbox"
+                name="published"
+                id="published"
+                style="width: auto; height: 18px; cursor: pointer;"
+                {{ temat && temat.published ? 'checked' : '' }}
+              />
+              <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
+            </div>
+          @end
+        </div>
       </div>
-      <div class="span-2">
-        @field.root({ name: 'krotkiOpis' })
-          @!field.label({ text: 'Krótki opis' })
-          @!textarea.control({ rows: 3, value: temat ? (temat.krotkiOpis ?? '') : '' })
-          @!field.error()
-        @end
-      </div>
-      <div>
-        @field.root({ name: 'linkYt' })
-          @!field.label({ text: 'Link YouTube' })
-          @!input.control({ type: 'url', value: temat ? (temat.linkYt ?? '') : '' })
-          @!field.error()
-        @end
+
+      <div class="admin-form-section" x-data="materialsEditor">
+        <h2>Zewnętrzne materiały</h2>
+        <template x-for="(m, i) in materials" :key="i">
+          <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+            <input
+              :name="`mat_url[${i}]`"
+              x-model="m.url"
+              type="url"
+              placeholder="URL"
+              style="flex: 2;"
+            />
+            <input :name="`mat_opis[${i}]`" x-model="m.opis" placeholder="Opis" style="flex: 3;" />
+            <button type="button" class="diff-btn-delete" @click="remove(i)">✕</button>
+          </div>
+        </template>
+        <button
+          type="button"
+          @click="add()"
+          style="font-size: 13px; color: var(--brand); background: none; border: none; cursor: pointer; padding: 0;"
+        >
+          + Dodaj materiał
+        </button>
       </div>
       @if(auth.user.canEditAllContent)
-        <div style="display: flex; align-items: flex-end; padding-bottom: 2px; gap: 10px;">
-          <input type="checkbox" name="published" id="published" style="width: auto; height: 18px; cursor: pointer;" {{ temat && temat.published ? 'checked' : '' }} />
-          <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
-        </div>
-      @end
-    </div>
-  </div>
+        <div class="admin-form-section">
+          @field.root({ name: 'customHtml' })
+            @!field.label({ text: 'Customowy HTML (opcjonalnie)' })
+            @!textarea.control({
+              rows: 15,
+              value: temat ? (temat.customHtml ?? '') : '',
+              style: 'font-family: monospace; font-size: 13px;',
+              'data-code-editor': 'html',
+            })
+          @end
 
-  <div class="admin-form-section" x-data="materialsEditor">
-    <h2>Zewnętrzne materiały</h2>
-    <template x-for="(m, i) in materials" :key="i">
-      <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-        <input :name="`mat_url[${i}]`" x-model="m.url" type="url" placeholder="URL" style="flex: 2;">
-        <input :name="`mat_opis[${i}]`" x-model="m.opis" placeholder="Opis" style="flex: 3;">
-        <button type="button" class="diff-btn-delete" @click="remove(i)">✕</button>
-      </div>
-    </template>
-    <button type="button" @click="add()" style="font-size: 13px; color: var(--brand); background: none; border: none; cursor: pointer; padding: 0;">+ Dodaj materiał</button>
-  </div>
-
-  @if(auth.user.canEditAllContent)
-    <div class="admin-form-section">
-      @field.root({ name: 'customHtml' })
-        @!field.label({ text: 'Customowy HTML (opcjonalnie)' })
-        @!textarea.control({ rows: 15, value: temat ? (temat.customHtml ?? '') : '', style: 'font-family: monospace; font-size: 13px;', 'data-code-editor': 'html' })
-      @end
-
-      <a style="color: var(--brand); cursor: pointer;" x-data @click.stop="$store.modal.show('Formatowanie',
-      'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox({ title: \'tutaj idzie nagłówek sekcji\' })\n   tutaj idzie treść\n \@end ')">Pomoc z formatowaniem ></a>
-    </div>
-  @end
-
-  <div class="admin-form-section" x-data="taskPicker">
-    <h2>Zadania</h2>
-
-    <script id="zadania-picker-data" type="application/json">
-      {{{ JSON.stringify({
-        zadania: zadania.map(z => ({
-          id: z.idZadania,
-          nazwa: z.nazwa,
-          zrodlo: z.zrodlo,
-          published: z.published,
-          skrot: z.poziomuTrudnosci?.skrot ?? '?',
-          kolor: z.poziomuTrudnosci?.color ?? 'var(--text-secondary)',
-        })),
-        uzycia,
-        wybrane: {
-          zadaniaCwiczeniowe: temat ? (temat.zadaniaCwiczeniowe ?? []) : [],
-          zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
-          zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
-        },
-        dodatkowe: temat ? (temat.zadaniaDodatkowe ?? []) : [],
-      }) }}}
-    </script>
-
-    <input type="hidden" name="zadaniaCwiczeniowe" :value="listy.zadaniaCwiczeniowe.join('\n')">
-    <input type="hidden" name="zadaniaNaPomysl" :value="listy.zadaniaNaPomysl.join('\n')">
-    <input type="hidden" name="zadaniaTreningowe" :value="listy.zadaniaTreningowe.join('\n')">
-    <input type="hidden" name="zadaniaDodatkowe" :value="dodatkowe.join('\n')">
-
-    <template x-for="sekcja in sekcje" :key="sekcja.klucz">
-      <div style="margin-bottom: 24px;">
-        <label style="font-weight: 600;" x-text="sekcja.nazwa"></label>
-
-        <div class="task-picker-list">
-          <template x-for="(id, i) in listy[sekcja.klucz]" :key="id">
-            <div class="task-picker-row">
-              <span class="diff-badge" :style="badgeStyle(id)" x-text="zadanie(id).skrot"></span>
-              <span class="task-picker-hint" x-text="'#' + id"></span>
-              <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
-              <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
-              <span x-show="liczbaUzyc(id, true) > 0" class="task-picker-warn" @click="pokazUzycia(id)" x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"></span>
-              <label class="task-picker-dodatkowe" :class="{ active: jestDodatkowe(id) }" title="Oznacz jako zadanie dodatkowe">
-                <input type="checkbox" :checked="jestDodatkowe(id)" @change="przelaczDodatkowe(id)"> dodatkowe
-              </label>
-              <span class="task-picker-actions">
-                <a :href="`/admin/edit_task/${id}`" title="Edytuj zadanie" class="dont-underline" data-modal-edit>✎</a>
-                <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">↑</button>
-                <button type="button" @click="przesun(sekcja.klucz, i, 1)" :disabled="i === listy[sekcja.klucz].length - 1">↓</button>
-                <button type="button" class="diff-btn-delete" @click="usun(sekcja.klucz, i)">✕</button>
-              </span>
-            </div>
-          </template>
-          <p class="task-picker-hint" x-show="listy[sekcja.klucz].length === 0" style="margin: 2px 0;">Brak zadań. Wyszukaj poniżej, żeby dodać.</p>
-        </div>
-
-        <div class="task-picker-search" @click.outside="szukaj[sekcja.klucz] = ''">
-          <input
-            type="text"
-            x-model="szukaj[sekcja.klucz]"
-            placeholder="Szukaj zadania po nazwie lub ID..."
-            @keydown.escape.prevent="szukaj[sekcja.klucz] = ''"
-            @keydown.enter.prevent="dodajPierwsze(sekcja.klucz)"
+          <a
+            style="color: var(--brand); cursor: pointer;"
+            x-data
+            @click.stop="$store.modal.show('Formatowanie',
+              'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox(__EDGE_TAGARG_1__)"
           >
-          <div class="task-picker-results" x-show="szukaj[sekcja.klucz].trim() !== ''">
-            <template x-for="z in wyniki(sekcja.klucz)" :key="z.id">
-              <button type="button" class="task-picker-result" @click="dodaj(sekcja.klucz, z.id)">
-                <span class="diff-badge" :style="badgeStyle(z.id)" x-text="z.skrot"></span>
-                <span class="task-picker-hint" x-text="'#' + z.id"></span>
-                <span class="task-picker-nazwa" x-text="z.nazwa"></span>
-                <span class="task-picker-hint" x-show="z.zrodlo" x-text="z.zrodlo"></span>
-                <span x-show="!z.published" class="task-picker-hint">(ukryte)</span>
-                <span x-show="liczbaUzyc(z.id) > 0" class="task-picker-warn" @click.stop="pokazUzycia(z.id)" x-text="'Użyte już ' + liczbaUzyc(z.id) + ' raz(y)!'"></span>
-              </button>
-            </template>
-            <p class="task-picker-hint" x-show="wyniki(sekcja.klucz).length === 0" style="margin: 6px 10px;">Brak wyników.</p>
-          </div>
+            Pomoc z formatowaniem >
+          </a>
         </div>
+      @end
+
+      <div class="admin-form-section" x-data="taskPicker">
+        <h2>Zadania</h2>
+
+        <script id="zadania-picker-data" type="application/json">
+          {
+            {
+              {
+                JSON.stringify({
+                  zadania: zadania.map((z) => ({
+                    id: z.idZadania,
+                    nazwa: z.nazwa,
+                    zrodlo: z.zrodlo,
+                    published: z.published,
+                    skrot: z.poziomuTrudnosci?.skrot ?? '?',
+                    kolor: z.poziomuTrudnosci?.color ?? 'var(--text-secondary)',
+                  })),
+                  uzycia,
+                  wybrane: {
+                    zadaniaCwiczeniowe: temat ? (temat.zadaniaCwiczeniowe ?? []) : [],
+                    zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
+                    zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
+                  },
+                  dodatkowe: temat ? (temat.zadaniaDodatkowe ?? []) : [],
+                });
+              }
+            }
+          }
+        </script>
+
+        <input
+          type="hidden"
+          name="zadaniaCwiczeniowe"
+          :value="listy.zadaniaCwiczeniowe.join('\n')"
+        />
+        <input type="hidden" name="zadaniaNaPomysl" :value="listy.zadaniaNaPomysl.join('\n')" />
+        <input type="hidden" name="zadaniaTreningowe" :value="listy.zadaniaTreningowe.join('\n')" />
+        <input type="hidden" name="zadaniaDodatkowe" :value="dodatkowe.join('\n')" />
+
+        <template x-for="sekcja in sekcje" :key="sekcja.klucz">
+          <div style="margin-bottom: 24px;">
+            <label style="font-weight: 600;" x-text="sekcja.nazwa"></label>
+
+            <div class="task-picker-list">
+              <template x-for="(id, i) in listy[sekcja.klucz]" :key="id">
+                <div class="task-picker-row">
+                  <span
+                    class="diff-badge"
+                    :style="badgeStyle(id)"
+                    x-text="zadanie(id).skrot"
+                  ></span>
+                  <span class="task-picker-hint" x-text="'#' + id"></span>
+                  <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
+                  <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
+                  <span
+                    x-show="liczbaUzyc(id, true) > 0"
+                    class="task-picker-warn"
+                    @click="pokazUzycia(id)"
+                    x-text="'Użyte już ' + liczbaUzyc(id, true) + ' raz(y)!'"
+                  ></span>
+                  <label
+                    class="task-picker-dodatkowe"
+                    :class="{ active: jestDodatkowe(id) }"
+                    title="Oznacz jako zadanie dodatkowe"
+                  >
+                    <input
+                      type="checkbox"
+                      :checked="jestDodatkowe(id)"
+                      @change="przelaczDodatkowe(id)"
+                    />
+                     dodatkowe
+
+                  </label>
+                  <span class="task-picker-actions">
+                    <a
+                      :href="`/admin/edit_task/${id}`"
+                      title="Edytuj zadanie"
+                      class="dont-underline"
+                      data-modal-edit
+                    >
+                      ✎
+                    </a>
+                    <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      @click="przesun(sekcja.klucz, i, 1)"
+                      :disabled="i === listy[sekcja.klucz].length - 1"
+                    >
+                      ↓
+                    </button>
+                    <button type="button" class="diff-btn-delete" @click="usun(sekcja.klucz, i)">
+                      ✕
+                    </button>
+                  </span>
+                </div>
+              </template>
+              <p
+                class="task-picker-hint"
+                x-show="listy[sekcja.klucz].length === 0"
+                style="margin: 2px 0;"
+              >
+                Brak zadań. Wyszukaj poniżej, żeby dodać.
+              </p>
+            </div>
+
+            <div class="task-picker-search" @click.outside="szukaj[sekcja.klucz] = ''">
+              <input
+                type="text"
+                x-model="szukaj[sekcja.klucz]"
+                placeholder="Szukaj zadania po nazwie lub ID..."
+                @keydown.escape.prevent="szukaj[sekcja.klucz] = ''"
+                @keydown.enter.prevent="dodajPierwsze(sekcja.klucz)"
+              />
+              <div class="task-picker-results" x-show="szukaj[sekcja.klucz].trim() !== ''">
+                <template x-for="z in wyniki(sekcja.klucz)" :key="z.id">
+                  <button
+                    type="button"
+                    class="task-picker-result"
+                    @click="dodaj(sekcja.klucz, z.id)"
+                  >
+                    <span class="diff-badge" :style="badgeStyle(z.id)" x-text="z.skrot"></span>
+                    <span class="task-picker-hint" x-text="'#' + z.id"></span>
+                    <span class="task-picker-nazwa" x-text="z.nazwa"></span>
+                    <span class="task-picker-hint" x-show="z.zrodlo" x-text="z.zrodlo"></span>
+                    <span x-show="!z.published" class="task-picker-hint">(ukryte)</span>
+                    <span
+                      x-show="liczbaUzyc(z.id) > 0"
+                      class="task-picker-warn"
+                      @click.stop="pokazUzycia(z.id)"
+                      x-text="'Użyte już ' + liczbaUzyc(z.id) + ' raz(y)!'"
+                    ></span>
+                  </button>
+                </template>
+                <p
+                  class="task-picker-hint"
+                  x-show="wyniki(sekcja.klucz).length === 0"
+                  style="margin: 6px 10px;"
+                >
+                  Brak wyników.
+                </p>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
-    </template>
-  </div>
 
-  <div class="admin-form-actions">
-    @!button({ text: isNew ? 'Dodaj temat' : 'Zapisz zmiany', type: 'submit' })
-  </div>
-
-@end
-
-@end
+      <div class="admin-form-actions">
+        @!button({ text: isNew ? 'Dodaj temat' : 'Zapisz zmiany', type: 'submit' })
+      </div>
+    @end
+  @end
 @end

@@ -3,11 +3,14 @@ import TomSelect from 'tom-select'
 
 Alpine.data('levelEditor', () => ({
   levels: [],
-  srcIdx: null, targetIdx: null, insertPos: null,
+  srcIdx: null,
+  targetIdx: null,
+  insertPos: null,
 
   init() {
     const el = document.getElementById('levels-data')
-    if (el) this.levels = JSON.parse(el.textContent).map(l => ({ ...l, color: l.color || '#000000' }))
+    if (el)
+      this.levels = JSON.parse(el.textContent).map((l) => ({ ...l, color: l.color || '#000000' }))
   },
 
   dragStart(idx, event) {
@@ -26,7 +29,10 @@ Alpine.data('levelEditor', () => ({
 
   drop() {
     const { srcIdx: src, targetIdx: target, insertPos: pos } = this
-    if (src === null || target === null || src === target) { this._clear(); return }
+    if (src === null || target === null || src === target) {
+      this._clear()
+      return
+    }
     const items = [...this.levels]
     const [item] = items.splice(src, 1)
     let at = pos === 'before' ? target : target + 1
@@ -36,12 +42,18 @@ Alpine.data('levelEditor', () => ({
     this._clear()
   },
 
-  _clear() { this.srcIdx = null; this.targetIdx = null; this.insertPos = null },
+  _clear() {
+    this.srcIdx = null
+    this.targetIdx = null
+    this.insertPos = null
+  },
 }))
 
 Alpine.data('materialyEditor', () => ({
   poziomy: [],
-  dragging: null, over: null, insertPos: null,
+  dragging: null,
+  over: null,
+  insertPos: null,
 
   init() {
     const el = document.getElementById('materialy-data')
@@ -86,8 +98,12 @@ Alpine.data('materialyEditor', () => ({
   },
 
   drop() {
-    const d = this.dragging, o = this.over
-    if (!d || !o) { this._clear(); return }
+    const d = this.dragging,
+      o = this.over
+    if (!d || !o) {
+      this._clear()
+      return
+    }
     if (d.type === 'poziom' && o.type === 'poziom' && d.pi !== o.pi) {
       const items = [...this.poziomy]
       const [item] = items.splice(d.pi, 1)
@@ -96,7 +112,10 @@ Alpine.data('materialyEditor', () => ({
       items.splice(at, 0, item)
       this.poziomy = items
     } else if (d.type === 'temat' && o.type === 'temat') {
-      if (d.pi === o.pi && d.ti === o.ti) { this._clear(); return }
+      if (d.pi === o.pi && d.ti === o.ti) {
+        this._clear()
+        return
+      }
       const [item] = this.poziomy[d.pi].tematy.splice(d.ti, 1)
       let at = this.insertPos === 'before' ? o.ti : o.ti + 1
       if (d.pi === o.pi && o.ti > d.ti) at--
@@ -108,7 +127,11 @@ Alpine.data('materialyEditor', () => ({
     this._clear()
   },
 
-  _clear() { this.dragging = null; this.over = null; this.insertPos = null },
+  _clear() {
+    this.dragging = null
+    this.over = null
+    this.insertPos = null
+  },
 }))
 
 Alpine.data('materialsEditor', () => ({
@@ -117,8 +140,12 @@ Alpine.data('materialsEditor', () => ({
     const el = document.getElementById('materials-data')
     if (el) this.materials = JSON.parse(el.textContent)
   },
-  add() { this.materials.push({ url: '', opis: '' }) },
-  remove(i) { this.materials.splice(i, 1) },
+  add() {
+    this.materials.push({ url: '', opis: '' })
+  },
+  remove(i) {
+    this.materials.splice(i, 1)
+  },
 }))
 
 document.addEventListener('turbo:load', () => {

@@ -1,14 +1,17 @@
 @layout({ title: 'Admin' })
-@layoutAdminSidebar({ page: 'home' })
-  <div class="admin-page" style="text-align: center">
-    <h1>admin panel</h1>
-    <div>
-      build <code>{{ appVersion }}</code>
-      @if(appVersionAge())
-        ({{ appVersionAge() }})
-      @end
-     </div>
-  </div>
+  @layoutAdminSidebar({ page: 'home' })
+    <div class="admin-page" style="text-align: center">
+      <h1>admin panel</h1>
+      <div>
+        
+      build
+        <code>{{ appVersion }}</code>
+        @if(appVersionAge())
+          (
+          {{ appVersionAge() }}
+          )
+        @end
+      </div>
+    </div>
+  @end
 @end
-@end
-

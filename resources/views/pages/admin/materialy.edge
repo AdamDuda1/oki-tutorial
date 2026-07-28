@@ -1,139 +1,203 @@
 @layout({ title: 'Materiały' })
-@layoutAdminSidebar({ page: 'Edytuj tematy' })
+  @layoutAdminSidebar({ page: 'Edytuj tematy' })
+    <div class="admin-edit-task">
+      <h1>Materiały (ctrl+shift+R jak coś się nie ładuje)</h1>
 
-<div class="admin-edit-task">
-  <h1>Materiały (ctrl+shift+R jak coś się nie ładuje)</h1>
+      <script id="materialy-data" type="application/json">
+        {
+          {
+            {
+              JSON.stringify(
+                poziomy.map((p) => ({
+                  id: p.idPoziomu,
+                  nazwa: p.nazwa,
+                  tematy: p.tematy.map((t) => ({
+                    id: t.idTematu,
+                    nazwa: t.nazwa,
+                    published: t.published,
+                    canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
+                    autor: t.autor ? t.autor.fullName || t.autor.email : null,
+                  })),
+                })),
+              );
+            }
+          }
+        }
+      </script>
 
-  <script id="materialy-data" type="application/json">
-    {{{ JSON.stringify(poziomy.map(p => ({
-      id: p.idPoziomu,
-      nazwa: p.nazwa,
-      tematy: p.tematy.map(t => ({
-        id: t.idTematu,
-        nazwa: t.nazwa,
-        published: t.published,
-        canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
-        autor: t.autor ? (t.autor.fullName || t.autor.email) : null,
-      })),
-    }))) }}}
-  </script>
-
-  <form method="POST" action="{{ route('admin.materialy.update_positions') }}" x-data="materialyEditor">
-    {{ csrfField() }}
-
-    {{-- Hidden position inputs --}}
-    <template x-for="(p, pi) in poziomy" :key="p.id">
-      <div style="display: contents;">
-        {{-- "i" prefix keeps the ids as object keys; bare numeric keys get parsed as a compacted array, shifting every id --}}
-        <input type="hidden" :name="`p[i${p.id}]`" :value="pi + 1">
-        <template x-for="(t, ti) in p.tematy" :key="t.id">
+      <form
+        method="POST"
+        action="{{ route('admin.materialy.update_positions') }}"
+        x-data="materialyEditor"
+      >
+        {{ csrfField() }}
+        {{-- Hidden position inputs --}}
+        <template x-for="(p, pi) in poziomy" :key="p.id">
           <div style="display: contents;">
-            <input type="hidden" :name="`t[i${t.id}]`" :value="ti + 1">
-            <input type="hidden" :name="`tp[i${t.id}]`" :value="p.id">
+            {{-- "i" prefix keeps the ids as object keys; bare numeric keys get parsed as a compacted array, shifting every id --}}
+            <input type="hidden" :name="`p[i${p.id}]`" :value="pi + 1" />
+            <template x-for="(t, ti) in p.tematy" :key="t.id">
+              <div style="display: contents;">
+                <input type="hidden" :name="`t[i${t.id}]`" :value="ti + 1" />
+                <input type="hidden" :name="`tp[i${t.id}]`" :value="p.id" />
+              </div>
+            </template>
           </div>
         </template>
-      </div>
-    </template>
-
-    {{-- Poziomy drag list --}}
-    <template x-for="(p, pi) in poziomy" :key="p.id">
-      <div
-        class="materialy-poziom-block"
-        :class="{
-          'is-dragging': dragging?.type === 'poziom' && dragging.pi === pi,
-          'drop-above': over?.type === 'poziom' && over.pi === pi && insertPos === 'before' && dragging?.pi !== pi,
-          'drop-below': over?.type === 'poziom' && over.pi === pi && insertPos === 'after' && dragging?.pi !== pi,
-          'drop-into': over?.type === 'poziom' && over.pi === pi && insertPos === 'into',
-        }"
-        draggable="false"
-        @dragstart="startPoziom(pi, $event)"
-        @dragover.prevent="overPoziom(pi, $event)"
-        @drop.prevent="drop()"
-        @dragend="$el.draggable = false; _clear()"
-        @mouseup="$el.draggable = false"
-      >
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          @if(auth.user.canEditAllContent)
-            <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">⠿</span>
-          @end
-          @if(auth.user.canEditAllContent)
-            <a :href="`/admin/materialy/poziom/${p.id}`" x-text="p.nazwa" draggable="false" style="font-weight: 700;" data-modal-edit></a>
-          @else
-            <strong x-text="p.nazwa"></strong>
-          @end
-          <span class="admin-debug-hint" x-text="'#' + p.id"></span>
-          <a :href="`/admin/materialy/temat/new?poziom=${p.id}`" draggable="false" style="margin-left: auto; font-size: 13px; color: var(--brand);" data-modal-edit>+ Nowy temat</a>
-        </div>
-
-        <div class="diff-level-list">
-          <template x-for="(t, ti) in p.tematy" :key="t.id">
-            <div
-              class="diff-level-row"
-              :class="{
-                'is-dragging': dragging?.type === 'temat' && dragging.pi === pi && dragging.ti === ti,
-                'drop-above': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'before' && !(dragging?.pi === pi && dragging?.ti === ti),
-                'drop-below': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'after' && !(dragging?.pi === pi && dragging?.ti === ti),
+        {{-- Poziomy drag list --}}
+        <template x-for="(p, pi) in poziomy" :key="p.id">
+          <div
+            class="materialy-poziom-block"
+            :class="{
+              'is-dragging': dragging?.type === 'poziom' && dragging.pi === pi,
+              'drop-above': over?.type === 'poziom' && over.pi === pi && insertPos === 'before' && dragging?.pi !== pi,
+              'drop-below': over?.type === 'poziom' && over.pi === pi && insertPos === 'after' && dragging?.pi !== pi,
+              'drop-into': over?.type === 'poziom' && over.pi === pi && insertPos === 'into',
               }"
-              draggable="false"
-              @dragstart.stop="startTemat(pi, ti, $event)"
-              @dragover.prevent="overTemat(pi, ti, $event)"
-              @drop.prevent.stop="drop()"
-              @dragend="$el.draggable = false; _clear()"
-              @mouseup.stop="$el.draggable = false"
-            >
+            draggable="false"
+            @dragstart="startPoziom(pi, $event)"
+            @dragover.prevent="overPoziom(pi, $event)"
+            @drop.prevent="drop()"
+            @dragend="$el.draggable = false; _clear()"
+            @mouseup="$el.draggable = false"
+          >
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
               @if(auth.user.canEditAllContent)
-                <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">⠿</span>
+                <span
+                  class="drag-handle"
+                  @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true"
+                >
+                  ⠿
+                </span>
               @end
-              <a x-show="t.canEdit" :href="`/admin/materialy/temat/${t.id}`" x-text="t.nazwa" draggable="false" data-modal-edit></a>
-              <span x-show="!t.canEdit" x-text="t.nazwa"></span>
-              <span x-show="!t.published" style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
-              <span class="admin-debug-hint" x-text="'#' + t.id + (t.autor ? ' · ' + t.autor : '')"></span>
+              @if(auth.user.canEditAllContent)
+                <a
+                  :href="`/admin/materialy/poziom/${p.id}`"
+                  x-text="p.nazwa"
+                  draggable="false"
+                  style="font-weight: 700;"
+                  data-modal-edit
+                ></a>
+              @else
+                <strong x-text="p.nazwa"></strong>
+              @end
+
+              <span class="admin-debug-hint" x-text="'#' + p.id"></span>
+              <a
+                :href="`/admin/materialy/temat/new?poziom=${p.id}`"
+                draggable="false"
+                style="margin-left: auto; font-size: 13px; color: var(--brand);"
+                data-modal-edit
+              >
+                + Nowy temat
+              </a>
             </div>
-          </template>
-        </div>
-      </div>
-    </template>
 
-    @if(auth.user.canEditAllContent)
-      <div class="admin-form-actions" style="margin-top: 8px;">
-        @!button({ text: 'Zapisz kolejność', type: 'submit' })
-      </div>
-    @end
-  </form>
+            <div class="diff-level-list">
+              <template x-for="(t, ti) in p.tematy" :key="t.id">
+                <div
+                  class="diff-level-row"
+                  :class="{
+                    'is-dragging': dragging?.type === 'temat' && dragging.pi === pi && dragging.ti === ti,
+                    'drop-above': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'before' && !(dragging?.pi === pi && dragging?.ti === ti),
+                    'drop-below': over?.type === 'temat' && over.pi === pi && over.ti === ti && insertPos === 'after' && !(dragging?.pi === pi && dragging?.ti === ti),
+                    }"
+                  draggable="false"
+                  @dragstart.stop="startTemat(pi, ti, $event)"
+                  @dragover.prevent="overTemat(pi, ti, $event)"
+                  @drop.prevent.stop="drop()"
+                  @dragend="$el.draggable = false; _clear()"
+                  @mouseup.stop="$el.draggable = false"
+                >
+                  @if(auth.user.canEditAllContent)
+                    <span
+                      class="drag-handle"
+                      @mousedown.stop="$el.closest('.diff-level-row').draggable = true"
+                    >
+                      ⠿
+                    </span>
+                  @end
 
-  {{-- Add poziom --}}
-  @if(auth.user.canEditAllContent)
-    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
-      <h2>Dodaj nowy poziom</h2>
-      <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
-        {{ csrfField() }}
-        <div style="display: flex; gap: 12px; align-items: flex-end;">
-          <input name="nazwa" placeholder="Nazwa poziomu" required>
-          @!button({ text: 'Dodaj', type: 'submit', style: 'flex: 1' })
-        </div>
-      </form>
-    </div>
-  @end
-
-  {{-- Uncategorised --}}
-  @if(uncategorised.length > 0)
-    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
-      <h2>Bez przypisanego poziomu</h2>
-      <div class="diff-level-list">
-        @each(temat in uncategorised)
-          <div class="diff-level-row">
-            @if(auth.user.canEditAllContent || temat.idAutora === auth.user.id)
-              <a href="{{ route('admin.materialy.edit_temat', { id: temat.idTematu }) }}" data-modal-edit>{{ temat.nazwa }}</a>
-            @else
-              <span>{{ temat.nazwa }}</span>
-            @end
-            <span class="admin-debug-hint">#{{ temat.idTematu }}{{ temat.autor ? ' · ' + (temat.autor.fullName || temat.autor.email) : '' }}</span>
+                  <a
+                    x-show="t.canEdit"
+                    :href="`/admin/materialy/temat/${t.id}`"
+                    x-text="t.nazwa"
+                    draggable="false"
+                    data-modal-edit
+                  ></a>
+                  <span x-show="!t.canEdit" x-text="t.nazwa"></span>
+                  <span
+                    x-show="!t.published"
+                    style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;"
+                  >
+                    (ukryte)
+                  </span>
+                  <span
+                    class="admin-debug-hint"
+                    x-text="'#' + t.id + (t.autor ? ' · ' + t.autor : '')"
+                  ></span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+        @if(auth.user.canEditAllContent)
+          <div class="admin-form-actions" style="margin-top: 8px;">
+            @!button({ text: 'Zapisz kolejność', type: 'submit' })
           </div>
         @end
-      </div>
+      </form>
+      {{-- Add poziom --}}
+      @if(auth.user.canEditAllContent)
+        <div
+          style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);"
+        >
+          <h2>Dodaj nowy poziom</h2>
+          <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
+            {{ csrfField() }}
+            <div style="display: flex; gap: 12px; align-items: flex-end;">
+              <input name="nazwa" placeholder="Nazwa poziomu" required />
+              @!button({ text: 'Dodaj', type: 'submit', style: 'flex: 1' })
+            </div>
+          </form>
+        </div>
+      @end
+      {{-- Uncategorised --}}
+      @if(uncategorised.length > 0)
+        <div
+          style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);"
+        >
+          <h2>Bez przypisanego poziomu</h2>
+          <div class="diff-level-list">
+            @each(temat in uncategorised)
+              <div class="diff-level-row">
+                @if(auth.user.canEditAllContent || temat.idAutora === auth.user.id)
+                  <a
+                    href="{{
+                      route('admin.materialy.edit_temat', {
+                        id: temat.idTematu,
+                      })
+                    }}"
+                    data-modal-edit
+                  >
+                    {{ temat.nazwa }}
+                  </a>
+                @else
+                  <span>{{ temat.nazwa }}</span>
+                @end
+
+                <span class="admin-debug-hint">
+                  #{{ temat.idTematu }}{{
+                    temat.autor
+                      ? ' · ' + (temat.autor.fullName || temat.autor.email)
+                      : ''
+                  }}
+                </span>
+              </div>
+            @end
+          </div>
+        </div>
+      @end
     </div>
   @end
-</div>
-
-@end
 @end

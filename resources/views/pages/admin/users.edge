@@ -1,70 +1,110 @@
 @layout({ title: 'Zalogowani użytkownicy' })
-@layoutAdminSidebar({ page: 'Zalogowani użytkownicy' })
+  @layoutAdminSidebar({ page: 'Zalogowani użytkownicy' })
+    <div class="admin-edit-task" style="margin-bottom: 24px;">
+      <h2>Role</h2>
+      <ul
+        style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;"
+      >
+        <li><strong>user</strong> - zwykłe konto, bez żadnego dostępu.</li>
+        <li>
+          <strong>editor1</strong>
+          - dodawanie zadań i tematów, może edytować tylko te, które sam dodał. Nowe treści są nieopublikowane, dopóki admin lub editor2 ich nie opublikuje. Bez dostępu do customowego HTMLa.
+        </li>
+        <li>
+          <strong>editor2</strong>
+          - pełna edycja zadań i materiałów (_published, customowy HTML). Bez zarządzania stroną i użytkownikami.
+        </li>
+        <li><strong>admin</strong> - pełny dostęp, w tym zarządzanie użytkownikami i rolami.</li>
+      </ul>
+    </div>
 
-<div class="admin-edit-task" style="margin-bottom: 24px;">
-  <h2>Role</h2>
-  <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;">
-    <li><strong>user</strong> - zwykłe konto, bez żadnego dostępu.</li>
-    <li><strong>editor1</strong> - dodawanie zadań i tematów, może edytować tylko te, które sam dodał. Nowe treści są nieopublikowane, dopóki admin lub editor2 ich nie opublikuje. Bez dostępu do customowego HTMLa.</li>
-    <li><strong>editor2</strong> - pełna edycja zadań i materiałów (_published, customowy HTML). Bez zarządzania stroną i użytkownikami.</li>
-    <li><strong>admin</strong> - pełny dostęp, w tym zarządzanie użytkownikami i rolami.</li>
-  </ul>
-</div>
-
-<table class="zadania-table">
-  <thead>
-    <tr>
-      <th class="col-id">#</th>
-      <th>Imię & Nazwisko</th>
-      <th>Email</th>
-      <th>Rola</th>
-      <th>co zrobić?</th>
-    </tr>
-  </thead>
-  @each(u in users)
-    <tbody class="task-row">
-      <tr>
-        <td>{{ u.id }}</td>
-        <td>{{ u.fullName }}</td>
-        <td>{{ u.email }}</td>
-        <td>
-          @if(u.id === auth.user.id)
-            {{ u.role }} <span style="color: var(--text-secondary)">(ty)</span>
-          @else
-            @form({ route: 'admin.users.update_role', routeParams: { id: u.id }, method: 'POST', style: 'display: flex; gap: 6px; align-items: center; flex-direction: row;' })
-              <select name="role">
-                @each(r in roles)
-                  <option value="{{ r }}" {{ u.role === r ? 'selected' : '' }}>{{ r }}</option>
+    <table class="zadania-table">
+      <thead>
+        <tr>
+          <th class="col-id">#</th>
+          <th>Imię & Nazwisko</th>
+          <th>Email</th>
+          <th>Rola</th>
+          <th>co zrobić?</th>
+        </tr>
+      </thead>
+      @each(u in users)
+        <tbody class="task-row">
+          <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.fullName }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+              @if(u.id === auth.user.id)
+                {{ u.role }}
+                <span style="color: var(--text-secondary)">(ty)</span>
+              @else
+                @form({
+                  route: 'admin.users.update_role',
+                  routeParams: { id: u.id },
+                  method: 'POST',
+                  style:
+                    'display: flex; gap: 6px; align-items: center; flex-direction: row;',
+                })
+                  <select name="role">
+                    @each(r in roles)
+                      <option value="{{ r }}" {{ u.role === r ? 'selected' : '' }}>{{ r }}</option>
+                    @end
+                  </select>
+                  <!--@!button({ text: '">Zapisz</a>', type: 'submit' })-->
+                  <button
+                    type="submit"
+                    style="background: transparent; color: var(--brand); padding: 0; width: auto;"
+                  >
+                    <a>Zapisz</a>
+                  </button>
                 @end
-              </select>
-              <!--@!button({ text: '">Zapisz</a>', type: 'submit' })-->
-              <button type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto;"><a>Zapisz</a></button>
-            @end
-          @end
-        </td>
-        <td>
-          @if(u.id === auth.user.id)
-            --
-          @else
-            <div style="display: flex; gap: 6px; align-items: center;">
-              <form method="POST" action="{{ route('admin.users.reset_password', { id: u.id }) }}" data-turbo="false"
-                onsubmit="return confirm('Zresetować hasło użytkownika {{ u.email }}? Nowe hasło zostanie pokazane tylko raz.')">
-                {{ csrfField() }}
-                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">resetuj hasło</button>
-              </form>
+              @end
+            </td>
+            <td>
+              @if(u.id === auth.user.id)
+                --
+              @else
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <form
+                    method="POST"
+                    action="{{ route('admin.users.reset_password', { id: u.id }) }}"
+                    data-turbo="false"
+                    onsubmit="return confirm('Zresetować hasło użytkownika {{ u.email }}? Nowe hasło zostanie pokazane tylko raz.')"
+                  >
+                    {{ csrfField() }}
+                    <button
+                      class="underlinable"
+                      type="submit"
+                      style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;"
+                    >
+                      resetuj hasło
+                    </button>
+                  </form>
+                  
               /
-              <form method="POST" action="{{ route('admin.users.destroy', { id: u.id }) }}" data-turbo="false"
-                onsubmit="return confirm('Usunąć konto {{ u.email }}? Tej operacji nie można cofnąć.')">
-                {{ csrfField() }}
-                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">usuń</button>
-              </form>
-            </div>
-          @end
-        </td>
-      </tr>
-    </tbody>
-  @end
-</table>
 
-@end
+                  <form
+                    method="POST"
+                    action="{{ route('admin.users.destroy', { id: u.id }) }}"
+                    data-turbo="false"
+                    onsubmit="return confirm('Usunąć konto {{ u.email }}? Tej operacji nie można cofnąć.')"
+                  >
+                    {{ csrfField() }}
+                    <button
+                      class="underlinable"
+                      type="submit"
+                      style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;"
+                    >
+                      usuń
+                    </button>
+                  </form>
+                </div>
+              @end
+            </td>
+          </tr>
+        </tbody>
+      @end
+    </table>
+  @end
 @end

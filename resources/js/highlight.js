@@ -19,9 +19,10 @@ Promise.all([
     highlighter = h
     highlightMarked()
   })
-  .catch((e) => console.warn('Shiki init failed — kod bez kolorowania', e))
+  .catch((e) => console.warn('Shiki init failed; kod bez kolorowania', e))
 
-const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c])
+const escapeHtml = (s) =>
+  s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c])
 
 function toLangId(lang) {
   lang = String(lang || '')

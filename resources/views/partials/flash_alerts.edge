@@ -6,7 +6,11 @@
   @end
   @let(firstDuration = 15000)
   @if(flashMessages.has('success'))
-    @alert.root({ variant: 'success', autoDismiss: true, duration: flashMessages.has('successNext') ? firstDuration : 5000 })
+    @alert.root({
+      variant: 'success',
+      autoDismiss: true,
+      duration: flashMessages.has('successNext') ? firstDuration : 5000,
+    })
       @!alert.description({ text: flashMessages.get('success') })
     @end
   @end

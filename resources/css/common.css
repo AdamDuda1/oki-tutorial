@@ -3,7 +3,9 @@
   margin: 0;
   padding: 0;
 
-  transition: color .5s ease, background-color .5s ease;
+  transition:
+    color 0.5s ease,
+    background-color 0.5s ease;
 
   color: var(--text);
   /*background: var(--background);*/
@@ -18,17 +20,31 @@ body {
   font-size: 16px;
   line-height: 1.5;
   scroll-behavior: smooth;
-  :target { scroll-margin-top: 80px; }
+  :target {
+    scroll-margin-top: 80px;
+  }
   scroll-margin-top: 80px;
   font-family: var(--font-brand), sans-serif;
   font-weight: 460;
 }
 
-.box-description, .topic-html {
+.box-description,
+.topic-html {
   font-weight: 500;
 }
 
-nav *, h1, h2, h3, code, button, a, .admin-content *, .level-html, tbody *, .toggle-right, .modal-header {
+nav *,
+h1,
+h2,
+h3,
+code,
+button,
+a,
+.admin-content *,
+.level-html,
+tbody *,
+.toggle-right,
+.modal-header {
   font-family: var(--font-mono), monospace;
 }
 
@@ -54,7 +70,9 @@ a:not(.dont-underline):hover {
 }
 .underlinable:hover {
   text-decoration: underline;
-  * {text-decoration: underline; }
+  * {
+    text-decoration: underline;
+  }
 }
 
 .bold {
@@ -68,7 +86,6 @@ a:not(.dont-underline):hover {
 .no-animate-on-path-change {
   transition: opacity 0s ease !important;
 }
-
 
 header {
   background: var(--background-darker);
@@ -155,7 +172,9 @@ body:has(.sciezka-app) main {
 main.page-exit {
   opacity: 0;
   /*transform: translateY(-5px);*/
-  transition: opacity 130ms ease-in, transform 130ms ease-in;
+  transition:
+    opacity 130ms ease-in,
+    transform 130ms ease-in;
 }
 
 @keyframes page-enter {
@@ -221,7 +240,9 @@ main.page-enter {
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 .modal-close:hover {
   background: var(--background-darker);

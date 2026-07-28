@@ -1,50 +1,83 @@
 @layout({ title: 'Wybierz zadanie do edycji' })
-@layoutAdminSidebar({ page: 'Wybierz zadanie do edycji' })
-
-<table class="zadania-table">
-  <thead>
-    <tr>
-      <th class="col-id">#</th>
-      <th>Nazwa</th>
-      <th style="width: 100px; text-align: right;">co zrobić?</th>
-    </tr>
-  </thead>
-  @each(z in zadania)
-    <tbody class="task-row">
-      <tr>
-        <td>{{ z.idZadania }}</td>
-        <td>
-          {{ z.nazwa }}
-          @if(!z.published)
-            <span style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">(ukryte)</span>
-          @end
-        </td>
-        <td>
-          @if(auth.user.canEditAllContent || z.idAutora === auth.user.id)
-            <div style="display: flex; gap: 6px; align-items: center;">
-              <a class="underlinable" style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">edytuj</a>
-              @if(auth.user.canEditAllContent)
-                /
-                <form method="POST" action="{{ route('admin.edit_task.toggle_published', { id: z.idZadania }) }}" data-turbo="false">
-                  {{ csrfField() }}
-                  <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">{{ z.published ? 'ukryj' : 'pokaż' }}</button>
-                </form>
+  @layoutAdminSidebar({ page: 'Wybierz zadanie do edycji' })
+    <table class="zadania-table">
+      <thead>
+        <tr>
+          <th class="col-id">#</th>
+          <th>Nazwa</th>
+          <th style="width: 100px; text-align: right;">co zrobić?</th>
+        </tr>
+      </thead>
+      @each(z in zadania)
+        <tbody class="task-row">
+          <tr>
+            <td>{{ z.idZadania }}</td>
+            <td>
+              {{ z.nazwa }}
+              @if(!z.published)
+                <span style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">
+                  (ukryte)
+                </span>
               @end
-              /
-              <form method="POST" action="{{ route('admin.edit_task.destroy', { id: z.idZadania }) }}" data-turbo="false"
-                onsubmit="return confirm('Usunąć zadanie „{{ z.nazwa }}”? Zniknie z listy zadań i ze ścieżek.')">
-                {{ csrfField() }}
-                <button class="underlinable" type="submit" style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;">usuń</button>
-              </form>
-            </div>
-          @else
-            -
-          @end
-        </td>
-      </tr>
-    </tbody>
-  @end
-</table>
+            </td>
+            <td>
+              @if(auth.user.canEditAllContent || z.idAutora === auth.user.id)
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <a
+                    class="underlinable"
+                    style="color: var(--brand)"
+                    href="/admin/edit_task/{{ z.idZadania }}"
+                  >
+                    edytuj
+                  </a>
+                  @if(auth.user.canEditAllContent)
+                    /
+                    <form
+                      method="POST"
+                      action="{{
+                        route('admin.edit_task.toggle_published', {
+                          id: z.idZadania,
+                        })
+                      }}"
+                      data-turbo="false"
+                    >
+                      {{ csrfField() }}
+                      <button
+                        class="underlinable"
+                        type="submit"
+                        style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;"
+                      >
+                        {{ z.published ? 'ukryj' : 'pokaż' }}
+                      </button>
+                    </form>
+                  @end
+                  
 
-@end
+              /
+
+                  <form
+                    method="POST"
+                    action="{{ route('admin.edit_task.destroy', { id: z.idZadania }) }}"
+                    data-turbo="false"
+                    onsubmit="return confirm('Usunąć zadanie „{{ z.nazwa }}”? Zniknie z listy zadań i ze ścieżek.')"
+                  >
+                    {{ csrfField() }}
+                    <button
+                      class="underlinable"
+                      type="submit"
+                      style="background: transparent; color: var(--brand); padding: 0; width: auto; cursor: pointer;"
+                    >
+                      usuń
+                    </button>
+                  </form>
+                </div>
+              @else
+                -
+              @end
+            </td>
+          </tr>
+        </tbody>
+      @end
+    </table>
+  @end
 @end

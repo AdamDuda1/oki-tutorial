@@ -21,7 +21,7 @@
 @if(!isNew)
   <div class="admin-debug-info">
     #{{ task.idZadania }}
-    · autor: {{ task.autor ? (task.autor.fullName || task.autor.email) : '—' }}
+    · autor: {{ task.autor ? (task.autor.fullName || task.autor.email) : '-' }}
     · utworzono {{ task.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
     @if(task.updatedAt)
       · edytowano {{ task.updatedAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}

@@ -9,7 +9,8 @@ Alpine.store('topic', { current: null })
 document.addEventListener(
   'click',
   (event) => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+      return
     const link = event.target.closest('a[href]')
     if (!link || link.target) return
     const url = new URL(link.href)
@@ -41,7 +42,8 @@ document.addEventListener('click', (event) => {
   const iframe = document.createElement('iframe')
   iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1'
   iframe.title = 'YouTube video player'
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  iframe.allow =
+    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
   iframe.referrerPolicy = 'strict-origin-when-cross-origin'
   iframe.allowFullscreen = true
   facade.replaceWith(iframe)

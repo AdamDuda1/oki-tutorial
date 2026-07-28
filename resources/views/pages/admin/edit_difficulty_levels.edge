@@ -1,75 +1,123 @@
 @layout({ title: 'Edytuj poziomy trudności' })
-@layoutAdminSidebar({ page: 'Edytuj poziomy trudności' })
+  @layoutAdminSidebar({ page: 'Edytuj poziomy trudności' })
+    <div class="admin-edit-task">
+      <h1>Edytuj poziomy trudności</h1>
 
-<div class="admin-edit-task">
-  <h1>Edytuj poziomy trudności</h1>
+      <script id="levels-data" type="application/json">
+        {
+          {
+            {
+              JSON.stringify(
+                poziomyTrudnosci.map((pt) => ({
+                  id: pt.idPoziomuTrudnosci,
+                  skrot: pt.skrot,
+                  rozwiniecie: pt.rozwiniecie,
+                  color: pt.color,
+                })),
+              );
+            }
+          }
+        }
+      </script>
 
-  <script id="levels-data" type="application/json">
-    {{{ JSON.stringify(poziomyTrudnosci.map(pt => ({
-      id: pt.idPoziomuTrudnosci,
-      skrot: pt.skrot,
-      rozwiniecie: pt.rozwiniecie,
-      color: pt.color,
-    }))) }}}
-  </script>
-
-  <form method="POST" action="{{ route('admin.difficulty_levels.update') }}" x-data="{ ...levelEditor(), deleted: false }" data-save-shortcut>
-    {{ csrfField() }}
-
-    <div class="diff-level-list">
-      <template x-for="(level, i) in levels" :key="level.id">
-        <div
-          class="diff-level-row"
-          :class="{
-            'is-dragging': srcIdx === i,
-            'drop-above': targetIdx === i && insertPos === 'before' && srcIdx !== i,
-            'drop-below': targetIdx === i && insertPos === 'after' && srcIdx !== i,
-          }"
-          draggable="false"
-          @dragstart="dragStart(i, $event)"
-          @dragover.prevent="dragOver($event, i)"
-          @drop.prevent="drop()"
-          @dragend="$el.draggable = false; _clear()"
-          @mouseup="$el.draggable = false"
-        >
-          <span class="drag-handle" @mousedown.stop="$el.parentElement.draggable = true">⠿</span>
-          <input type="hidden" :name="`levels[${i}][id]`" :value="level.id">
-          <input type="hidden" :name="`levels[${i}][position]`" :value="i + 1">
-          <input type="color" :name="`levels[${i}][color]`" x-model="level.color" class="diff-color-picker">
-          <input :name="`levels[${i}][skrot]`" x-model="level.skrot" placeholder="Skrót" class="diff-input-skrot">
-          <input :name="`levels[${i}][rozwiniecie]`" x-model="level.rozwiniecie" placeholder="Rozwinięcie" class="diff-input-rozwiniecie">
-          <button type="button" class="diff-btn-delete" @click.stop="levels.splice(i, 1); deleted = true" @dragstart.stop>✕</button>
+      <form
+        method="POST"
+        action="{{ route('admin.difficulty_levels.update') }}"
+        x-data="{ ...levelEditor(), deleted: false }"
+        data-save-shortcut
+      >
+        {{ csrfField() }}
+        <div class="diff-level-list">
+          <template x-for="(level, i) in levels" :key="level.id">
+            <div
+              class="diff-level-row"
+              :class="{
+                'is-dragging': srcIdx === i,
+                'drop-above': targetIdx === i && insertPos === 'before' && srcIdx !== i,
+                'drop-below': targetIdx === i && insertPos === 'after' && srcIdx !== i,
+                }"
+              draggable="false"
+              @dragstart="dragStart(i, $event)"
+              @dragover.prevent="dragOver($event, i)"
+              @drop.prevent="drop()"
+              @dragend="$el.draggable = false; _clear()"
+              @mouseup="$el.draggable = false"
+            >
+              <span class="drag-handle" @mousedown.stop="$el.parentElement.draggable = true">
+                ⠿
+              </span>
+              <input type="hidden" :name="`levels[${i}][id]`" :value="level.id" />
+              <input type="hidden" :name="`levels[${i}][position]`" :value="i + 1" />
+              <input
+                type="color"
+                :name="`levels[${i}][color]`"
+                x-model="level.color"
+                class="diff-color-picker"
+              />
+              <input
+                :name="`levels[${i}][skrot]`"
+                x-model="level.skrot"
+                placeholder="Skrót"
+                class="diff-input-skrot"
+              />
+              <input
+                :name="`levels[${i}][rozwiniecie]`"
+                x-model="level.rozwiniecie"
+                placeholder="Rozwinięcie"
+                class="diff-input-rozwiniecie"
+              />
+              <button
+                type="button"
+                class="diff-btn-delete"
+                @click.stop="levels.splice(i, 1); deleted = true"
+                @dragstart.stop
+              >
+                ✕
+              </button>
+            </div>
+          </template>
         </div>
-      </template>
+
+        <div class="admin-form-actions">
+          @!button({ text: 'Zapisz', type: 'submit' })
+          <span x-show="deleted" style="font-size: 13px; color: #b45309;">
+            Pamiętaj żeby zapisać!
+          </span>
+        </div>
+      </form>
     </div>
 
-    <div class="admin-form-actions">
-      @!button({ text: 'Zapisz', type: 'submit' })
-      <span x-show="deleted" style="font-size: 13px; color: #b45309;">Pamiętaj żeby zapisać!</span>
+    <div
+      class="admin-edit-task"
+      style="padding-top: 35px; margin-top: 25px; border-top: 1px solid black;"
+    >
+      <h1>Dodaj nowy</h1>
+
+      <form method="POST" action="{{ route('admin.difficulty_levels.store') }}">
+        {{ csrfField() }}
+        <div class="diff-level-row">
+          <input type="color" name="color" value="#cccccc" class="diff-color-picker" />
+          <input name="skrot" placeholder="Skrót" class="diff-input-skrot" required />
+          <input
+            name="rozwiniecie"
+            placeholder="Rozwinięcie"
+            class="diff-input-rozwiniecie"
+            required
+          />
+        </div>
+        <div class="admin-form-actions">
+          @!button({ text: 'Dodaj', type: 'submit' })
+        </div>
+      </form>
     </div>
-  </form>
-</div>
 
-<div class="admin-edit-task" style="padding-top: 35px; margin-top: 25px; border-top: 1px solid black;">
-  <h1>Dodaj nowy</h1>
-
-  <form method="POST" action="{{ route('admin.difficulty_levels.store') }}">
-    {{ csrfField() }}
-    <div class="diff-level-row">
-      <input type="color" name="color" value="#cccccc" class="diff-color-picker">
-      <input name="skrot" placeholder="Skrót" class="diff-input-skrot" required>
-      <input name="rozwiniecie" placeholder="Rozwinięcie" class="diff-input-rozwiniecie" required>
+    <div style="display: flex; margin-top: 20px; gap: 10px;">
+      <img src="/images/admin_reference_for_adding_task_diff.png" />
+      <span style="font-size: 12px;">
+        Dla odniesienia - tutaj skrót to `T3`, rozwinięcie to `Mega trudne!`.
+        <br />
+        Kolor tła to kolor z alphą 10%.
+      </span>
     </div>
-    <div class="admin-form-actions">
-      @!button({ text: 'Dodaj', type: 'submit' })
-    </div>
-  </form>
-</div>
-
-<div style="display: flex; margin-top: 20px; gap: 10px;">
-  <img src="/images/admin_reference_for_adding_task_diff.png">
-  <span style="font-size: 12px;">Dla odniesienia - tutaj skrót to `T3`, rozwinięcie to `Mega trudne!`.<br>Kolor tła to kolor z alphą 10%.</span>
-</div>
-
-@end
+  @end
 @end

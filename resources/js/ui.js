@@ -6,9 +6,14 @@ Alpine.store('modal', {
   body: '',
   code: false, // false = zwykły tekst; nazwa języka (np. 'cpp') = blok kodu
   show(title, body, code = false) {
-    this.title = title; this.body = body; this.code = code; this.open = true
+    this.title = title
+    this.body = body
+    this.code = code
+    this.open = true
   },
-  hide() { this.open = false },
+  hide() {
+    this.open = false
+  },
 })
 
 Alpine.data('expandable', () => ({

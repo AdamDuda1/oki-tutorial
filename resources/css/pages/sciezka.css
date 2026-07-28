@@ -49,12 +49,16 @@
 
     &:not(.active) {
       background: var(--brand-lighter);
-      &:hover { background-color: var(--brand-lighter-hovered); }
+      &:hover {
+        background-color: var(--brand-lighter-hovered);
+      }
     }
 
     &.active {
       background: var(--brand);
-      &:hover { background-color: var(--brand-hovered); }
+      &:hover {
+        background-color: var(--brand-hovered);
+      }
     }
   }
 
@@ -81,7 +85,7 @@
   }
 
   .topic.active::after {
-    content: " <-";
+    content: ' <-';
   }
 }
 
@@ -162,7 +166,9 @@
     overflow: hidden;
     background: #000;
 
-    &:hover { background: #000; }
+    &:hover {
+      background: #000;
+    }
 
     img {
       width: 100%;
@@ -200,7 +206,9 @@
   }
 
   .learning-materials {
-    h3 { margin-bottom: 4px; }
+    h3 {
+      margin-bottom: 4px;
+    }
 
     a {
       display: block;
@@ -264,7 +272,9 @@
     gap: 7px;
     justify-content: space-between;
 
-    .box-arrow { font-size: 10px; }
+    .box-arrow {
+      font-size: 10px;
+    }
   }
 
   > .box > .box-inner {
@@ -289,8 +299,16 @@
     top: 1px;
   }
 
-  .difficulty-1 { color: var(--easy); }
-  .difficulty-2 { color: var(--medium); }
-  .difficulty-3 { color: var(--hard); }
-  .difficulty-4 { color: oklch(0.42 0.18 35); }
+  .difficulty-1 {
+    color: var(--easy);
+  }
+  .difficulty-2 {
+    color: var(--medium);
+  }
+  .difficulty-3 {
+    color: var(--hard);
+  }
+  .difficulty-4 {
+    color: oklch(0.42 0.18 35);
+  }
 }

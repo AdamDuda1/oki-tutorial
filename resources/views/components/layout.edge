@@ -7,31 +7,41 @@
     <link rel="preload" as="image" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Quicksand:wght@300..700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Quicksand:wght@300..700&display=swap"
+    />
     @if(umami.enabled)
-      <script defer src="{{ umami.url }}/script.js" data-website-id="{{ umami.websiteId }}"></script>
+      <script
+        defer
+        src="{{ umami.url }}/script.js"
+        data-website-id="{{ umami.websiteId }}"
+        data-tag="{{ auth?.user?.role ?? 'guest' }}"
+      ></script>
     @end
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
     <script>
       /* Awaryjne otwieranie boxów/menu zanim załaduje się bundle z Alpine */
       (() => {
-        let alpineUp = false
-        document.addEventListener('alpine:init', () => { alpineUp = true })
+        let alpineUp = false;
+        document.addEventListener('alpine:init', () => {
+          alpineUp = true;
+        });
         document.addEventListener('click', (e) => {
-          if (alpineUp) return
-          const trigger = e.target.closest('[data-toggle]')
-          if (!trigger) return
-          const interactive = e.target.closest('a, button')
-          if (interactive && interactive !== trigger) return
-          const root = trigger.closest('[x-data]')
-          if (!root) return
-          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow'
+          if (alpineUp) return;
+          const trigger = e.target.closest('[data-toggle]');
+          if (!trigger) return;
+          const interactive = e.target.closest('a, button');
+          if (interactive && interactive !== trigger) return;
+          const root = trigger.closest('[x-data]');
+          if (!root) return;
+          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow';
           for (const el of root.querySelectorAll(selector)) {
-            if (el.closest('[x-data]') === root) el.classList.toggle('open')
+            if (el.closest('[x-data]') === root) el.classList.toggle('open');
           }
-        })
-      })()
+        });
+      })();
     </script>
   </head>
   <body class="{{ request.qs().embed ? 'embed-mode' : '' }}">
@@ -40,29 +50,43 @@
     @if(ustawienia.banner)
       <div class="site-banner">{{ ustawienia.banner }}</div>
     @end
+
     <main>
       @if(!$props.get('noAlerts'))
         @include('partials/flash_alerts')
       @end
-
       {{{ await $slots.main() }}}
     </main>
 
-    <div class="modal-overlay" x-data x-show="$store.modal.open" style="display:none;"
-      @click.self="$store.modal.hide()" @keydown.escape.window="$store.modal.hide()">
+    <div
+      class="modal-overlay"
+      x-data
+      x-show="$store.modal.open"
+      style="display:none;"
+      @click.self="$store.modal.hide()"
+      @keydown.escape.window="$store.modal.hide()"
+    >
       <div class="modal-box">
         <div class="modal-header">
           <span x-text="$store.modal.title"></span>
           <button class="modal-close" @click="$store.modal.hide()">✕</button>
         </div>
-        <p x-show="!$store.modal.code"
-          x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"></p>
+        <p
+          x-show="!$store.modal.code"
+          x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"
+        ></p>
         <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
           {{-- $store.modal.code to nazwa języka (np. 'cpp'); highlightCode escapuje treść --}}
           <pre><code x-effect="if ($store.modal.code) $el.innerHTML = window.highlightCode($store.modal.body, $store.modal.code)"></code></pre>
-          <button type="button" class="copy-btn" :class="{ copied }"
+          <button
+            type="button"
+            class="copy-btn"
+            :class="{ copied }"
             @click="copy($store.modal.body)"
-            x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'">Kopiuj</button>
+            x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'"
+          >
+            Kopiuj
+          </button>
         </div>
       </div>
     </div>

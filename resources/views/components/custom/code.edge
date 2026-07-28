@@ -4,7 +4,13 @@
 
 <div class="code-block" x-data="copyable">
   <pre><code x-ref="code" class="language-{{ lang }}">{{ code }}</code></pre>
-  <button type="button" class="copy-btn" :class="{ copied }"
+  <button
+    type="button"
+    class="copy-btn"
+    :class="{ copied }"
     @click="copy($refs.code.textContent)"
-    x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'">Kopiuj</button>
+    x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'"
+  >
+    Kopiuj
+  </button>
 </div>

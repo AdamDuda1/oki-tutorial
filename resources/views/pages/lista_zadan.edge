@@ -2,46 +2,67 @@
   <div class="lista-zadan-page">
     <div class="lista-header">
       <h1>Lista zadań</h1>
-      <!--span class="task-count">{{ paginator.total }} zadań</span-->
+      <!--span class="task-count">__EDGE_EXPR_1__ zadań</span-->
     </div>
 
     <div class="filters">
       <div>
         <select id="poziom-select" name="poziom[]" multiple placeholder="Filtruj po trudności...">
           @each(pt in poziomyTrudnosci)
-            <option value="{{ pt.idPoziomuTrudnosci }}" {{ filters.poziom?.includes(pt.idPoziomuTrudnosci) ? 'selected' : '' }}>{{ pt.skrot }} – {{ pt.rozwiniecie }}</option>
+            <option
+              value="{{ pt.idPoziomuTrudnosci }}"
+              {{
+                filters.poziom?.includes(pt.idPoziomuTrudnosci)
+                  ? 'selected'
+                  : ''
+              }}
+            >
+              {{ pt.skrot }}
+              –
+              {{ pt.rozwiniecie }}
+            </option>
           @end
         </select>
-
         <select id="zrodla-select" name="zrodlo[]" multiple placeholder="Filtruj po źródle...">
           @each(z in zrodla)
-            <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>{{ z }}</option>
+            <option value="{{ z }}" {{ filters.zrodlo?.includes(z) ? 'selected' : '' }}>
+              {{ z }}
+            </option>
           @end
         </select>
-
         <select id="tagi-filter-select" name="tagi[]" multiple placeholder="Filtruj po tagach...">
           @each(t in wszystkieTagi)
-            <option value="{{ t.nazwa }}" {{ filters.tagi?.includes(t.nazwa) ? 'selected' : '' }}>{{ t.nazwa }}</option>
+            <option value="{{ t.nazwa }}" {{ filters.tagi?.includes(t.nazwa) ? 'selected' : '' }}>
+              {{ t.nazwa }}
+            </option>
           @end
         </select>
       </div>
-      <div class="search-bar"
+      <div
+        class="search-bar"
         x-data="{
           q: new URLSearchParams(location.search).get('q') || '',
           timer: null,
           search() {
-            clearTimeout(this.timer);
-            this.timer = setTimeout(async () => {
-              const url = new URL(location.href);
-              this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
-              url.searchParams.delete('page');
-              history.replaceState(null, '', url);
-              const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
-              document.querySelector('#zadania-table').innerHTML = await res.text();
-            }, 100);
+          clearTimeout(this.timer);
+          this.timer = setTimeout(async () => {
+          const url = new URL(location.href);
+          this.q ? url.searchParams.set('q', this.q) : url.searchParams.delete('q');
+          url.searchParams.delete('page');
+          history.replaceState(null, '', url);
+          const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+          document.querySelector('#zadania-table').innerHTML = await res.text();
+          }, 100);
           }
-        }">
-        <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()">
+          }"
+      >
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Szukaj zadań..."
+          x-model="q"
+          @input="search()"
+        />
       </div>
     </div>
 

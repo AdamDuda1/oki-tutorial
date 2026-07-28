@@ -6,13 +6,18 @@
 @let(rawBody = slot || ($props.get('body') ?? ''))
 @let(body = code ? rawBody : rawBody.replace(/^[ \t]+/gm, ''))
 
-<button type="button" x-data data-title="{{ title }}" data-body="{{ body }}"
+<button
+  type="button"
+  x-data
+  data-title="{{ title }}"
+  data-body="{{ body }}"
   @click="$store.modal.show($el.dataset.title, $el.dataset.body, {{ code ? 'true' : 'false' }})"
   {{
     $props
       .except(['title', 'text', 'body', 'code', 'variant'])
       .merge({ class: ['custom-modal-link', variant] })
       .toAttrs()
-  }}>
+  }}
+>
   {{{ text }}}
 </button>

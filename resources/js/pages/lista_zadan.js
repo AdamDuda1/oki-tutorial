@@ -6,7 +6,8 @@ let tableFetch = null
 function initZadaniaFilterSelect(selector, param) {
   const select = document.querySelector(selector)
   if (!select) return
-  if (select.nextElementSibling?.classList.contains('ts-wrapper')) select.nextElementSibling.remove()
+  if (select.nextElementSibling?.classList.contains('ts-wrapper'))
+    select.nextElementSibling.remove()
 
   new TomSelect(select, {
     plugins: ['remove_button'],

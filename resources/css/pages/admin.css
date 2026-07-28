@@ -10,7 +10,7 @@
   padding: 4px 16px;
   color: #1a1a1a;
   text-decoration: none;
-  font-size: 18px
+  font-size: 18px;
 }
 
 .admin-nav-topic:hover {
@@ -78,7 +78,9 @@
   border: 1px solid var(--brand-lighter);
   border-radius: 6px;
   font-weight: 500;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .admin-page ul li a:hover {
@@ -120,8 +122,12 @@
   border-radius: 1px;
 }
 
-.diff-level-row.drop-above::before { top: -5px; }
-.diff-level-row.drop-below::after  { bottom: -5px; }
+.diff-level-row.drop-above::before {
+  top: -5px;
+}
+.diff-level-row.drop-below::after {
+  bottom: -5px;
+}
 
 .drag-handle {
   cursor: grab;
@@ -167,7 +173,9 @@
   font-size: 14px;
   padding: 4px 8px;
   line-height: 1;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .diff-btn-delete:hover {
@@ -321,7 +329,9 @@
   transition: opacity 0.15s;
 }
 
-.materialy-poziom-block.is-dragging { opacity: 0.35; }
+.materialy-poziom-block.is-dragging {
+  opacity: 0.35;
+}
 
 .materialy-poziom-block.drop-into {
   border-color: var(--brand);
@@ -332,14 +342,19 @@
 .materialy-poziom-block.drop-below::after {
   content: '';
   position: absolute;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: 2px;
   background: var(--brand);
   border-radius: 1px;
 }
 
-.materialy-poziom-block.drop-above::before { top: -5px; }
-.materialy-poziom-block.drop-below::after  { bottom: -5px; }
+.materialy-poziom-block.drop-above::before {
+  top: -5px;
+}
+.materialy-poziom-block.drop-below::after {
+  bottom: -5px;
+}
 
 #csv {
   display: inline-block;
@@ -350,13 +365,16 @@
   cursor: pointer;
   font: 500 14px sans-serif;
 }
-#csv:hover { background: var(--brand-hovered); }
+#csv:hover {
+  background: var(--brand-hovered);
+}
 
-#csv input[type="file"] {
+#csv input[type='file'] {
   position: absolute;
-  width: 1px; height: 1px;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  clip: rect(0 0 0 0);   /* visually hidden but still accessible */
+  clip: rect(0 0 0 0); /* visually hidden but still accessible */
 }
 
 .import-help code {

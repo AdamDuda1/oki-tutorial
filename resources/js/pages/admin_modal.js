@@ -54,7 +54,8 @@ function closeTopModal() {
 document.addEventListener(
   'click',
   (event) => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+      return
     const link = event.target.closest('a[data-modal-edit]')
     if (!link) return
     event.preventDefault()

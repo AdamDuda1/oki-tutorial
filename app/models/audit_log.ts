@@ -6,7 +6,7 @@ import type { TransactionClientContract } from '@adonisjs/lucid/types/database'
 
 export type Zmiany = Record<string, { przed: unknown; po: unknown }>
 
-const UKRYTE_POLA = new Set(['password'])  // TODO
+const UKRYTE_POLA = new Set(['password']) // TODO
 
 function formatValue(value: unknown): string {
   if (value === null || value === undefined || value === '') return '-'

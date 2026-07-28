@@ -33,10 +33,16 @@ Alpine.data('taskPicker', () => ({
   },
 
   zadanie(id) {
-    return this.zadania[id] ?? {
-      id, nazwa: '(zadanie nie istnieje)', zrodlo: '', published: true,
-      skrot: '?', kolor: 'var(--text-secondary)',
-    }
+    return (
+      this.zadania[id] ?? {
+        id,
+        nazwa: '(zadanie nie istnieje)',
+        zrodlo: '',
+        published: true,
+        skrot: '?',
+        kolor: 'var(--text-secondary)',
+      }
+    )
   },
 
   badgeStyle(id) {
