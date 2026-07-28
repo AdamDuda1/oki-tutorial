@@ -11,6 +11,7 @@ export default class SessionController {
     const user = await User.verifyCredentials(email, password)
 
     await auth.use('web').login(user)
+    await user.recordLogin()
     response.redirect().toRoute(user.canAccessAdmin ? 'admin' : 'home')
   }
 

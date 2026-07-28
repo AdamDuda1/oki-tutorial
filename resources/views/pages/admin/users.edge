@@ -25,6 +25,7 @@
           <th>Imię & Nazwisko</th>
           <th>Email</th>
           <th>Rola</th>
+          <th>Ostatnie logowanie</th>
           <th>co zrobić?</th>
         </tr>
       </thead>
@@ -62,6 +63,13 @@
               @end
             </td>
             <td>
+              @if(u.lastLoginAt)
+                {{ u.lastLoginAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+              @else
+                <span style="color: var(--text-secondary)">nigdy</span>
+              @end
+            </td>
+            <td>
               @if(u.id === auth.user.id)
                 --
               @else
@@ -81,7 +89,7 @@
                       resetuj hasło
                     </button>
                   </form>
-                  
+
               /
 
                   <form
