@@ -33,7 +33,7 @@ export default class AuditLog extends AuditLogSchema {
 
   static async record(wpis: {
     user: User
-    akcja: 'utworzono' | 'zaktualizowano' | 'usunięto'
+    akcja: 'utworzono' | 'zaktualizowano' | 'usunięto' | 'wykonano'
     typObiektu: string
     idObiektu?: number | null
     opis: string

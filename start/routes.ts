@@ -6,6 +6,7 @@ const ListaZadanController = () => import('#controllers/lista_zadan_controller')
 const AdminController = () => import('#controllers/admin_controller')
 const AdminTasksController = () => import('#controllers/admin_tasks_controller')
 const AdminMaterialyController = () => import('#controllers/admin_materialy_controller')
+const AdminSqlController = () => import('#controllers/admin_sql_controller')
 
 router
   .get('/', async ({ response }) => {
@@ -126,6 +127,8 @@ router
     router
       .get('stats_and_audit_log', [AdminController, 'stats_and_audit_log'])
       .as('admin.stats_and_audit_log')
+    router.get('sql', [AdminSqlController, 'index']).as('admin.sql')
+    router.post('sql', [AdminSqlController, 'execute']).as('admin.sql.execute')
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
     router
       .post('site_settings', [AdminController, 'update_site_settings'])

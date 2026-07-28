@@ -1,0 +1,87 @@
+@layout({ title: 'Konsola SQL' })
+  @layoutAdminSidebar({ page: 'Konsola SQL' })
+    <div class="admin-edit-task" style="margin-bottom: 24px;">
+      <h1>Konsola SQL</h1>
+      <p style="margin: 0 0 16px;">
+        Zapytanie leci prosto do bazy, bez cofania. Jedno zapytanie na raz. Każde wykonanie trafia do
+        <a href="/admin/stats_and_audit_log" style="color: var(--brand);" class="underlinable">
+          audit logu
+        </a>
+        .
+      </p>
+
+      <form
+        method="POST"
+        action="{{ route('admin.sql.execute') }}"
+        data-turbo="false"
+        onsubmit="return /^\s*(select|show|describe|desc|explain|pragma|with)\b/i.test(this.sql.value) || confirm('To zapytanie może zmienić dane. Wykonać?')"
+      >
+        {{ csrfField() }}
+        <div>
+          <label for="sql">Zapytanie</label>
+          <textarea
+            id="sql"
+            name="sql"
+            rows="8"
+            spellcheck="false"
+            autofocus
+            style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; width: 100%;"
+            placeholder="select id, email, role, last_login_at from users order by last_login_at desc"
+          >{{ sql }}</textarea>
+        </div>
+
+        <div class="admin-form-actions">
+          @!button({ text: 'Wykonaj', type: 'submit' })
+        </div>
+      </form>
+    </div>
+    @if(blad)
+      <div class="admin-edit-task" style="margin-bottom: 24px;">
+        <h2>Błąd</h2>
+        <pre
+          style="white-space: pre-wrap; word-break: break-word; color: var(--destructive, #b91c1c); margin: 0;"
+        >{{ blad }}</pre>
+      </div>
+    @end
+    @if(wynik)
+      <div class="admin-edit-task">
+        <h2>Wynik</h2>
+        <p style="color: var(--text-secondary); font-size: 14px; margin: 0 0 12px;">
+          {{ wynik.info }}
+          @if(czas !== null)
+            ·
+            {{ czas }}
+            ms
+          @end
+          @if(wynik.obciete)
+            · pokazano pierwszych 500
+          @end
+        </p>
+        @if(wynik.kolumny.length > 0)
+          <div style="overflow-x: auto;">
+            <table class="zadania-table">
+              <thead>
+                <tr>
+                  @each(kolumna in wynik.kolumny)
+                    <th style="white-space: nowrap;">{{ kolumna }}</th>
+                  @end
+                </tr>
+              </thead>
+              <tbody>
+                @each(wiersz in wynik.wiersze)
+                  <tr>
+                    @each(komorka in wiersz)
+                      <td style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">
+                        {{ komorka }}
+                      </td>
+                    @end
+                  </tr>
+                @end
+              </tbody>
+            </table>
+          </div>
+        @end
+      </div>
+    @end
+  @end
+@end
