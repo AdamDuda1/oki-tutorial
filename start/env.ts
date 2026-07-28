@@ -24,4 +24,9 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   // Session
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
+
+  // Umami — optional; without both values the tracker script is not rendered
+  // and the admin panel link is hidden.
+  UMAMI_URL: Env.schema.string.optional({ format: 'url', tld: false }),
+  UMAMI_WEBSITE_ID: Env.schema.string.optional(),
 })

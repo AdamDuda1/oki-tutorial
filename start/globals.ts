@@ -1,6 +1,7 @@
 import edge from 'edge.js'
 import { execFileSync } from 'node:child_process'
 import { DateTime } from 'luxon'
+import env from '#start/env'
 
 function resolveVersionInfo(): { hash: string; timestamp: number | null } {
   if (process.env.APP_VERSION) {
@@ -25,6 +26,15 @@ const versionInfo = resolveVersionInfo()
 edge.global('siteSettings', async () => {
   const { default: Setting } = await import('#models/setting')
   return Setting.getAll()
+})
+
+const umamiUrl = (env.get('UMAMI_URL') ?? '').replace(/\/+$/, '')
+const umamiWebsiteId = env.get('UMAMI_WEBSITE_ID') ?? ''
+
+edge.global('umami', {
+  url: umamiUrl,
+  websiteId: umamiWebsiteId,
+  enabled: Boolean(umamiUrl && umamiWebsiteId),
 })
 
 edge.global('appVersion', versionInfo.hash)

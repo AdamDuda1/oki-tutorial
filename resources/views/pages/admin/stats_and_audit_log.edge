@@ -10,6 +10,17 @@
   </ul>
 </div>
 
+@if(umami.enabled)
+  <div class="admin-edit-task" style="margin-bottom: 24px;">
+    <h1>Ruch na stronie</h1>
+    <p style="margin: 0; color: var(--text-secondary); font-size: 14px;">
+      Statystyki odwiedzin zbiera Umami —
+      <a href="{{ umami.url }}/websites/{{ umami.websiteId }}" target="_blank" rel="noopener"
+        style="color: var(--brand);" class="underlinable">otwórz panel Umami</a>
+    </p>
+  </div>
+@end
+
 @if(leaderboard.length > 0)
   <div class="admin-edit-task" style="margin-bottom: 24px;">
     <h1>Ranking zmian</h1>
