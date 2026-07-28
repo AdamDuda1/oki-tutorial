@@ -3,12 +3,10 @@
     <span class="admin-nav-separator">LISTA ZADAŃ</span>
     <a
       href="/admin/edit_task"
-      class="{{
-        $props.get('page') === 'Wybierz zadanie do edycji' ||
+      class="{{ $props.get('page') === 'Wybierz zadanie do edycji' ||
         $props.get('page') === 'Edytuj zadanie'
           ? 'bold'
-          : 'medium'
-      }} admin-nav-topic"
+          : 'medium' }} admin-nav-topic"
     >
       Edytuj zadanie
     </a>
@@ -38,7 +36,7 @@
         Tagi zadań
       </a>
     @end
-
+    
     <span class="admin-nav-separator" style="margin-top: 25px">ZAKŁADKA MATERIAŁY</span>
     <a
       href="/admin/materialy"
@@ -60,7 +58,7 @@
       >
         Zalogowani użytkownicy
       </a>
-      <!--a href="/admin/flipper_features" class="__EDGE_EXPR_10__ admin-nav-topic">Flipper features</a-->
+      <!--a href="/admin/flipper_features" class="{{ $props.get('page') === 'Flipper features' ? 'bold' : 'medium' }} admin-nav-topic">Flipper features</a-->
       <a
         href="/admin/stats_and_audit_log"
         class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic"
@@ -80,7 +78,7 @@
         Konsola SQL
       </a>
     @end
-
+    
     <span
       class="mobile-menu-handle"
       style="left: 103%"
@@ -91,9 +89,11 @@
   </nav>
   @let(ustawienia = await siteSettings())
   @if(ustawienia.banner)
-    <div class="site-banner">{{ ustawienia.banner }}</div>
+    <div class="site-banner">
+      {{ ustawienia.banner }}
+    </div>
   @end
-
+  
   <div class="content admin-content" style="padding-left: 70px; padding-right: 70px;">
     {{{ await $slots.main() }}}
   </div>

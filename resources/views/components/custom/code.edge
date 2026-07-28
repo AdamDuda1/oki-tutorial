@@ -3,7 +3,9 @@
 @let(lang = ($props.get('lang', '') || '').toLowerCase().replace('++', 'pp'))
 
 <div class="code-block" x-data="copyable">
-  <pre><code x-ref="code" class="language-{{ lang }}">{{ code }}</code></pre>
+  <pre>
+    <code x-ref="code" class="language-{{ lang }}">{{ code }}</code>
+  </pre>
   <button
     type="button"
     class="copy-btn"

@@ -3,8 +3,8 @@
 @let(classes = [])
 
 <button
-  {{ $props.except(['text']).merge({ class: classes }).toAttrs() }}
   style="{{ $props.get('style') ?? '' }}"
+  {{ $props.except(['text']).merge({ class: classes }).toAttrs() }}
 >
   {{{ buttonText }}}
 </button>

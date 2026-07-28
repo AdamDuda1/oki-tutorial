@@ -10,7 +10,7 @@ Alpine.data('levelEditor', () => ({
   init() {
     const el = document.getElementById('levels-data')
     if (el)
-      this.levels = JSON.parse(el.textContent).map((l) => ({ ...l, color: l.color || '#000000' }))
+      this.levels = JSON.parse(el.dataset.json).map((l) => ({ ...l, color: l.color || '#000000' }))
   },
 
   dragStart(idx, event) {
@@ -57,7 +57,7 @@ Alpine.data('materialyEditor', () => ({
 
   init() {
     const el = document.getElementById('materialy-data')
-    if (el) this.poziomy = JSON.parse(el.textContent)
+    if (el) this.poziomy = JSON.parse(el.dataset.json)
   },
 
   startPoziom(pi, event) {
@@ -138,7 +138,7 @@ Alpine.data('materialsEditor', () => ({
   materials: [],
   init() {
     const el = document.getElementById('materials-data')
-    if (el) this.materials = JSON.parse(el.textContent)
+    if (el) this.materials = JSON.parse(el.dataset.json)
   },
   add() {
     this.materials.push({ url: '', opis: '' })

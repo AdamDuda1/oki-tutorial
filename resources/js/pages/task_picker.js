@@ -15,7 +15,7 @@ Alpine.data('taskPicker', () => ({
   init() {
     const el = document.getElementById('zadania-picker-data')
     if (!el) return
-    const dane = JSON.parse(el.textContent)
+    const dane = JSON.parse(el.dataset.json)
     for (const z of dane.zadania) this.zadania[z.id] = z
     this.uzycia = dane.uzycia
     this.listy = dane.wybrane

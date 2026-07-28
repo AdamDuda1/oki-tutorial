@@ -14,21 +14,17 @@
         class="back-link"
         style="margin-bottom: -15px; color: var(--brand);"
       >
-        < wróć
+        &lt; wróć
       </a>
     @end
-
-    <h1>{{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}</h1>
+    
+    <h1>
+      {{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}
+    </h1>
     @if(!isNew)
       <div class="admin-debug-info">
-        
-    #
-        {{ temat.idTematu }}
-        
-    · autor:
-        {{ temat.autor ? temat.autor.fullName || temat.autor.email : '-' }}
-        
-    · utworzono
+        #{{ temat.idTematu }} · autor:
+        {{ temat.autor ? temat.autor.fullName || temat.autor.email : '-' }} · utworzono
         {{ temat.createdAt.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
         @if(temat.updatedAt)
           · edytowano
@@ -36,23 +32,21 @@
         @end
       </div>
     @end
-
-    <script id="materials-data" type="application/json">
-      {
-        {
-          {
-            JSON.stringify(
-              temat
-                ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
-                    url,
-                    opis: (temat.zewnetrzneMaterialyOpisy ?? [])[i] ?? '',
-                  }))
-                : [],
-            );
-          }
-        }
-      }
-    </script>
+    
+    {{-- Dane w atrybucie, nie w <script> - patrz komentarz w materialy.edge. --}}
+    <div
+      id="materials-data"
+      hidden
+      data-json="{{ JSON.stringify(
+        temat
+          ? (temat.zewnetrzneMaterialy ?? []).map((url, i) => ({
+              url,
+              opis: (temat.zewnetrzneMaterialyOpisy ?? [])[i] ?? '',
+            }))
+          : []
+      ) }}"
+    >
+    </div>
     @form({
       route: formRoute,
       routeParams: formParams,
@@ -60,7 +54,9 @@
       'data-save-shortcut': true,
     })
       <div class="admin-form-section">
-        <h2>Podstawowe informacje</h2>
+        <h2>
+          Podstawowe informacje
+        </h2>
         <div class="admin-form-grid">
           <div>
             @field.root({ name: 'nazwa' })
@@ -109,16 +105,12 @@
       </div>
 
       <div class="admin-form-section" x-data="materialsEditor">
-        <h2>Zewnętrzne materiały</h2>
+        <h2>
+          Zewnętrzne materiały
+        </h2>
         <template x-for="(m, i) in materials" :key="i">
           <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-            <input
-              :name="`mat_url[${i}]`"
-              x-model="m.url"
-              type="url"
-              placeholder="URL"
-              style="flex: 2;"
-            />
+            <input :name="`mat_url[${i}]`" x-model="m.url" type="url" placeholder="URL" style="flex: 2;" />
             <input :name="`mat_opis[${i}]`" x-model="m.opis" placeholder="Opis" style="flex: 3;" />
             <button type="button" class="diff-btn-delete" @click="remove(i)">✕</button>
           </div>
@@ -142,52 +134,48 @@
               'data-code-editor': 'html',
             })
           @end
-
+          
           <a
             style="color: var(--brand); cursor: pointer;"
             x-data
-            @click.stop="$store.modal.show('Formatowanie',
-              'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox(__EDGE_TAGARG_1__)"
+            data-help="Możesz używać standardowego formatowania HTML (&lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;a href&gt;, &lt;img&gt;, &lt;table&gt;, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np:&#10;&#10;Rozwijana sekcja, tak jak sekcje na zadania:&#10; &#64;custom.sciezka.expandableBox({ title: 'tutaj idzie nagłówek sekcji' })&#10;   tutaj idzie treść&#10; &#64;end"
+            @click.stop="$store.modal.show('Formatowanie', $el.dataset.help)"
           >
-            Pomoc z formatowaniem >
+            Pomoc z formatowaniem &gt;
           </a>
         </div>
       @end
-
+              
       <div class="admin-form-section" x-data="taskPicker">
-        <h2>Zadania</h2>
+        <h2>
+          Zadania
+        </h2>
 
-        <script id="zadania-picker-data" type="application/json">
-          {
-            {
-              {
-                JSON.stringify({
-                  zadania: zadania.map((z) => ({
-                    id: z.idZadania,
-                    nazwa: z.nazwa,
-                    zrodlo: z.zrodlo,
-                    published: z.published,
-                    skrot: z.poziomuTrudnosci?.skrot ?? '?',
-                    kolor: z.poziomuTrudnosci?.color ?? 'var(--text-secondary)',
-                  })),
-                  uzycia,
-                  wybrane: {
-                    zadaniaCwiczeniowe: temat ? (temat.zadaniaCwiczeniowe ?? []) : [],
-                    zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
-                    zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
-                  },
-                  dodatkowe: temat ? (temat.zadaniaDodatkowe ?? []) : [],
-                });
-              }
-            }
-          }
-        </script>
+        {{-- Dane w atrybucie, nie w <script> - patrz komentarz w materialy.edge. --}}
+        <div
+          id="zadania-picker-data"
+          hidden
+          data-json="{{ JSON.stringify({
+            zadania: zadania.map((z) => ({
+              id: z.idZadania,
+              nazwa: z.nazwa,
+              zrodlo: z.zrodlo,
+              published: z.published,
+              skrot: z.poziomuTrudnosci?.skrot ?? '?',
+              kolor: z.poziomuTrudnosci?.color ?? 'var(--text-secondary)',
+            })),
+            uzycia,
+            wybrane: {
+              zadaniaCwiczeniowe: temat ? (temat.zadaniaCwiczeniowe ?? []) : [],
+              zadaniaNaPomysl: temat ? (temat.zadaniaNaPomysl ?? []) : [],
+              zadaniaTreningowe: temat ? (temat.zadaniaTreningowe ?? []) : [],
+            },
+            dodatkowe: temat ? (temat.zadaniaDodatkowe ?? []) : [],
+          }) }}"
+        >
+        </div>
 
-        <input
-          type="hidden"
-          name="zadaniaCwiczeniowe"
-          :value="listy.zadaniaCwiczeniowe.join('\n')"
-        />
+        <input type="hidden" name="zadaniaCwiczeniowe" :value="listy.zadaniaCwiczeniowe.join('\n')" />
         <input type="hidden" name="zadaniaNaPomysl" :value="listy.zadaniaNaPomysl.join('\n')" />
         <input type="hidden" name="zadaniaTreningowe" :value="listy.zadaniaTreningowe.join('\n')" />
         <input type="hidden" name="zadaniaDodatkowe" :value="dodatkowe.join('\n')" />
@@ -199,11 +187,7 @@
             <div class="task-picker-list">
               <template x-for="(id, i) in listy[sekcja.klucz]" :key="id">
                 <div class="task-picker-row">
-                  <span
-                    class="diff-badge"
-                    :style="badgeStyle(id)"
-                    x-text="zadanie(id).skrot"
-                  ></span>
+                  <span class="diff-badge" :style="badgeStyle(id)" x-text="zadanie(id).skrot"></span>
                   <span class="task-picker-hint" x-text="'#' + id"></span>
                   <span class="task-picker-nazwa" x-text="zadanie(id).nazwa"></span>
                   <span x-show="!zadanie(id).published" class="task-picker-hint">(ukryte)</span>
@@ -218,21 +202,11 @@
                     :class="{ active: jestDodatkowe(id) }"
                     title="Oznacz jako zadanie dodatkowe"
                   >
-                    <input
-                      type="checkbox"
-                      :checked="jestDodatkowe(id)"
-                      @change="przelaczDodatkowe(id)"
-                    />
-                     dodatkowe
-
+                    <input type="checkbox" :checked="jestDodatkowe(id)" @change="przelaczDodatkowe(id)" />
+                    dodatkowe
                   </label>
                   <span class="task-picker-actions">
-                    <a
-                      :href="`/admin/edit_task/${id}`"
-                      title="Edytuj zadanie"
-                      class="dont-underline"
-                      data-modal-edit
-                    >
+                    <a :href="`/admin/edit_task/${id}`" title="Edytuj zadanie" class="dont-underline" data-modal-edit>
                       ✎
                     </a>
                     <button type="button" @click="przesun(sekcja.klucz, i, -1)" :disabled="i === 0">
@@ -251,11 +225,7 @@
                   </span>
                 </div>
               </template>
-              <p
-                class="task-picker-hint"
-                x-show="listy[sekcja.klucz].length === 0"
-                style="margin: 2px 0;"
-              >
+              <p class="task-picker-hint" x-show="listy[sekcja.klucz].length === 0" style="margin: 2px 0;">
                 Brak zadań. Wyszukaj poniżej, żeby dodać.
               </p>
             </div>
@@ -270,11 +240,7 @@
               />
               <div class="task-picker-results" x-show="szukaj[sekcja.klucz].trim() !== ''">
                 <template x-for="z in wyniki(sekcja.klucz)" :key="z.id">
-                  <button
-                    type="button"
-                    class="task-picker-result"
-                    @click="dodaj(sekcja.klucz, z.id)"
-                  >
+                  <button type="button" class="task-picker-result" @click="dodaj(sekcja.klucz, z.id)">
                     <span class="diff-badge" :style="badgeStyle(z.id)" x-text="z.skrot"></span>
                     <span class="task-picker-hint" x-text="'#' + z.id"></span>
                     <span class="task-picker-nazwa" x-text="z.nazwa"></span>
@@ -288,11 +254,7 @@
                     ></span>
                   </button>
                 </template>
-                <p
-                  class="task-picker-hint"
-                  x-show="wyniki(sekcja.klucz).length === 0"
-                  style="margin: 6px 10px;"
-                >
+                <p class="task-picker-hint" x-show="wyniki(sekcja.klucz).length === 0" style="margin: 6px 10px;">
                   Brak wyników.
                 </p>
               </div>

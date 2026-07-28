@@ -1,13 +1,23 @@
 @if(paginator.isEmpty)
-  <p class="empty-state">Brak zadań dla wybranych filtrów.</p>
+  <p class="empty-state">
+    Brak zadań dla wybranych filtrów.
+  </p>
 @else
   <table class="zadania-table">
     <thead>
       <tr>
-        <th class="col-id">#</th>
-        <th>Nazwa</th>
-        <th>Źródło</th>
-        <th style="width: 200px;"><span style="float: right">Trudność</span></th>
+        <th class="col-id">
+          #
+        </th>
+        <th>
+          Nazwa
+        </th>
+        <th>
+          Źródło
+        </th>
+        <th style="width: 200px;">
+          <span style="float: right">Trudność</span>
+        </th>
       </tr>
     </thead>
     @each(z in paginator)

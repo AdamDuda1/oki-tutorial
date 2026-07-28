@@ -1,35 +1,67 @@
 <header style="display: flex">
-  <nav x-data="{ open: !!$el.querySelector('.nav-links')?.classList.contains('open') }" style="width: 100%" @click.outside="open = false">
+  <nav
+    x-data="{ open: !!$el.querySelector('.nav-links')?.classList.contains('open') }"
+    style="width: 100%"
+    @click.outside="open = false"
+  >
     <div style="width: 100%">
       <a href="/" class="dont-underline">
-        <img src="/logo.png" alt="Logo OKI" height="100%">
-        <h1>Kurs</h1>
+        <img src="/logo.png" alt="Logo OKI" height="100%" />
+        <h1>
+          Kurs
+        </h1>
       </a>
-      <div class="nav-links" :class="{ open: open }" style="flex: 1; display: flex; justify-content: space-between;">
+      <div
+        class="nav-links"
+        :class="{ open: open }"
+        style="flex: 1; display: flex; justify-content: space-between;"
+      >
         <div class="nav-content">
           <!--@if(auth?.user)
             <span class="nav-separator">/</span>
             <a class="{{ $props.get('title') === 'Moja ścieżka' ? 'bold' : '' }}" href="/moja_sciezka">Moja ścieżka</a>
           @end-->
-            <span class="nav-separator">/</span>
-          <a class="{{ ($props.get('title') === 'Materiały' && !request.url().includes('/admin/')) ? 'bold' : '' }}"  href="/">Kurs</a>
-            <span class="nav-separator">/</span>
-          <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}"  href="/lista_zadan">Zadania</a>
+          <span class="nav-separator">/</span>
+          <a
+            class="{{ ($props.get('title') === 'Materiały' && !request.url().includes('/admin/')) ? 'bold' : '' }}"
+            href="/"
+          >Kurs</a>
+          <span class="nav-separator">/</span>
+          <a class="{{ $props.get('title') === 'Lista zadań' ? 'bold' : '' }}" href="/lista_zadan">Zadania</a>
           <!--@if (process.env.VITE_FEATURE_LINK_TO_ZAJECIA === 'true')-->
           <span class="nav-separator">/</span>
-          <a href="https://zajecia.oki.org.pl" target="_blank" rel="noopener">Zajęcia OKI<svg width="9" height="9" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 5px" aria-label="nowa karta" role="img"><path d="M11 0.999999C11 0.447714 10.5523 -1.17941e-06 10 -7.11386e-07L0.999999 -1.63477e-07C0.447715 -1.16923e-07 -5.18088e-07 0.447715 -4.71534e-07 1C-4.2498e-07 1.55228 0.447715 2 1 2L9 2L9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10L11 0.999999ZM1 10L1.70711 10.7071L10.7071 1.70711L10 0.999999L9.29289 0.292892L0.292893 9.29289L1 10Z" fill="currentColor"/></svg></a>
+          <a href="https://zajecia.oki.org.pl" target="_blank" rel="noopener">Zajęcia OKI
+            <svg
+              width="9"
+              height="9"
+              viewBox="0 0 11 11"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style="margin-left: 5px"
+              aria-label="nowa karta"
+              role="img"
+            >
+              <path
+                d="M11 0.999999C11 0.447714 10.5523 -1.17941e-06 10 -7.11386e-07L0.999999 -1.63477e-07C0.447715 -1.16923e-07 -5.18088e-07 0.447715 -4.71534e-07 1C-4.2498e-07 1.55228 0.447715 2 1 2L9 2L9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10L11 0.999999ZM1 10L1.70711 10.7071L10.7071 1.70711L10 0.999999L9.29289 0.292892L0.292893 9.29289L1 10Z"
+                fill="currentColor"
+              />
+            </svg></a>
           <!--@end-->
           @if(auth?.user && auth?.user?.canAccessAdmin)
             <span class="nav-separator">/</span>
             <!--a class="{{ $props.get('title') === 'Admin' ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a-->
-            <a class="{{ request.url().includes('/admin/') ? 'bold' : '' }}"  href="/admin" style="color: var(--brand)">Admin</a>
+            <a
+              class="{{ request.url().includes('/admin/') ? 'bold' : '' }}"
+              href="/admin"
+              style="color: var(--brand)"
+            >Admin</a>
           @endif
-      </div>
+        </div>
 
         @if(auth?.user)
           <div>
             @!avatar({ initials: auth?.user?.initials })
-              @form({ route: 'session.destroy', method: 'POST' })
+            @form({ route: 'session.destroy', method: 'POST' })
               @!button({ text: 'Wyloguj' })
             @end
           </div>
@@ -41,7 +73,13 @@
     </div>
 
     <div>
-      <button class="nav-hamburger" data-toggle=".nav-links" @click="open = !open" :aria-expanded="open.toString()" aria-label="Menu">
+      <button
+        class="nav-hamburger"
+        data-toggle=".nav-links"
+        @click="open = !open"
+        :aria-expanded="open.toString()"
+        aria-label="Menu"
+      >
         <span x-text="open ? '✕' : '☰'">☰</span>
       </button>
     </div>

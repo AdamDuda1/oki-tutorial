@@ -1,8 +1,10 @@
 @layout({ title: 'Lista zadań' })
   <div class="lista-zadan-page">
     <div class="lista-header">
-      <h1>Lista zadań</h1>
-      <!--span class="task-count">__EDGE_EXPR_1__ zadań</span-->
+      <h1>
+        Lista zadań
+      </h1>
+      <!--span class="task-count">{{ paginator.total }} zadań</span-->
     </div>
 
     <div class="filters">
@@ -11,11 +13,9 @@
           @each(pt in poziomyTrudnosci)
             <option
               value="{{ pt.idPoziomuTrudnosci }}"
-              {{
-                filters.poziom?.includes(pt.idPoziomuTrudnosci)
+              {{ filters.poziom?.includes(pt.idPoziomuTrudnosci)
                   ? 'selected'
-                  : ''
-              }}
+                  : '' }}
             >
               {{ pt.skrot }}
               –
@@ -56,13 +56,7 @@
           }
           }"
       >
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Szukaj zadań..."
-          x-model="q"
-          @input="search()"
-        />
+        <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()" />
       </div>
     </div>
 

@@ -1,6 +1,8 @@
 @layout({ title: 'Zaloguj' })
   <div class="form-container">
-    <h1>Zaloguj się</h1>
+    <h1>
+      Zaloguj się
+    </h1>
     <br />
     <div style="max-width: 90vw; min-width: 50vw;">
       @form({ route: 'session.store', method: 'POST' })
@@ -30,13 +32,10 @@
   </div>
 
   <div style="background: #efefef; text-align: center; font-size: 12px; padding: 3px;">
-    
     build
     <code>{{ appVersion }}</code>
     @if(appVersionAge())
-      (
-      {{ appVersionAge() }}
-      )
+      <span>( {{ appVersionAge() }} )</span>
     @end
   </div>
 @end

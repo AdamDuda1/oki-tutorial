@@ -31,7 +31,7 @@
           </a>
         @end
       @end
-
+      
       <span
         class="mobile-menu-handle"
         onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'"
@@ -41,12 +41,16 @@
     </nav>
     @let(ustawienia = await siteSettings())
     @if(ustawienia.banner)
-      <div class="site-banner">{{ ustawienia.banner }}</div>
+      <div class="site-banner">
+        {{ ustawienia.banner }}
+      </div>
     @end
-
+    
     <div class="content">
       @if(poziomHtml)
-        <div class="level-html">{{{ poziomHtml }}}</div>
+        <div class="level-html">
+          {{{ poziomHtml }}}
+        </div>
       @end
       @each(temat in tematy)
         <div
@@ -62,7 +66,9 @@
             @click="open = !open; if (open) { history.replaceState(null, '', '#{{ temat.idTematu }}'); $store.topic.current = {{ temat.idTematu }} }"
           >
             <span class="box-arrow" :class="{ open }"></span>
-            <h2 class="bold">{{ temat.nazwa }}</h2>
+            <h2 class="bold">
+              {{ temat.nazwa }}
+            </h2>
           </button>
           <div class="box" :class="{ open }">
             <div class="box-inner">
@@ -78,29 +84,22 @@
                       : null,
                 })
               @end
-
+              
               <div class="topic-header">
                 <div>
                   @if(temat.linkYt)
                     @let(ytId = (temat.linkYt.split('/embed/')[1] || '').split('?')[0])
-                    <button
-                      type="button"
-                      class="yt-facade"
-                      data-embed="{{ temat.linkYt }}"
-                      title="Odtwórz wideo"
-                    >
-                      <img
-                        src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg"
-                        alt="Miniatura wideo"
-                        loading="lazy"
-                      />
+                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo">
+                      <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy" />
                       <span class="yt-play"></span>
                     </button>
                   @end
                 </div>
                 <div class="learning-materials">
                   @if(temat.krotkiOpis)
-                    <div data-katex>{{{ temat.krotkiOpis }}}</div>
+                    <div data-katex>
+                      {{{ temat.krotkiOpis }}}
+                    </div>
                   @end
                   @each(material in temat.$extras.materialy)
                     <a href="{{ material.link }}" class="medium" target="_blank" rel="noopener">
@@ -111,7 +110,9 @@
                 </div>
               </div>
               @if(temat.customHtml)
-                <div class="topic-html" data-katex>{{{ temat.$extras.customHTML }}}</div>
+                <div class="topic-html" data-katex>
+                  {{{ temat.$extras.customHTML }}}
+                </div>
               @end
               @!custom.sciezka.grupaZadan({
                 zadanie: temat.$extras.zadaniaCwiczeniowe,
@@ -150,16 +151,14 @@
         fix for the flashing topic box
       --}}
       <script>
-
-                (() => {
-                  const hash = window.location.hash.slice(1)
-                  const target = document.getElementById(hash || '{{ autoOpenId || '' }}')
-                  if (!target || !target.classList.contains('topic-box')) return
-                  target.querySelector('.box')?.classList.add('open')
-                  target.querySelector('.box-arrow')?.classList.add('open')
-                  if (hash) target.scrollIntoView()
-                })()
-
+        (() => {
+          const hash = window.location.hash.slice(1);
+          const target = document.getElementById(hash || "{{ autoOpenId || '' }}");
+          if (!target || !target.classList.contains("topic-box")) return;
+          target.querySelector(".box")?.classList.add("open");
+          target.querySelector(".box-arrow")?.classList.add("open");
+          if (hash) target.scrollIntoView();
+        })();
       </script>
     </div>
   </div>

@@ -1,35 +1,34 @@
 @layout({ title: 'Materiały' })
   @layoutAdminSidebar({ page: 'Edytuj tematy' })
     <div class="admin-edit-task">
-      <h1>Materiały (ctrl+shift+R jak coś się nie ładuje)</h1>
+      <h1>
+        Materiały (ctrl+shift+R jak coś się nie ładuje)
+      </h1>
 
-      <script id="materialy-data" type="application/json">
-        {
-          {
-            {
-              JSON.stringify(
-                poziomy.map((p) => ({
-                  id: p.idPoziomu,
-                  nazwa: p.nazwa,
-                  tematy: p.tematy.map((t) => ({
-                    id: t.idTematu,
-                    nazwa: t.nazwa,
-                    published: t.published,
-                    canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
-                    autor: t.autor ? t.autor.fullName || t.autor.email : null,
-                  })),
-                })),
-              );
-            }
-          }
-        }
-      </script>
-
-      <form
-        method="POST"
-        action="{{ route('admin.materialy.update_positions') }}"
-        x-data="materialyEditor"
+      {{--
+        Dane w atrybucie, nie w <script>: prettier formatuje wnętrze <script> jako JS
+        i rozbija `{{{ }}}` na osobne nawiasy (tak popsuła się ta strona w d1d6e57).
+      --}}
+      <div
+        id="materialy-data"
+        hidden
+        data-json="{{ JSON.stringify(
+          poziomy.map((p) => ({
+            id: p.idPoziomu,
+            nazwa: p.nazwa,
+            tematy: p.tematy.map((t) => ({
+              id: t.idTematu,
+              nazwa: t.nazwa,
+              published: t.published,
+              canEdit: auth.user.canEditAllContent || t.idAutora === auth.user.id,
+              autor: t.autor ? t.autor.fullName || t.autor.email : null,
+            })),
+          }))
+        ) }}"
       >
+      </div>
+
+      <form method="POST" action="{{ route('admin.materialy.update_positions') }}" x-data="materialyEditor">
         {{ csrfField() }}
         {{-- Hidden position inputs --}}
         <template x-for="(p, pi) in poziomy" :key="p.id">
@@ -63,10 +62,7 @@
           >
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
               @if(auth.user.canEditAllContent)
-                <span
-                  class="drag-handle"
-                  @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true"
-                >
+                <span class="drag-handle" @mousedown.stop="$el.closest('.materialy-poziom-block').draggable = true">
                   ⠿
                 </span>
               @end
@@ -81,7 +77,7 @@
               @else
                 <strong x-text="p.nazwa"></strong>
               @end
-
+              
               <span class="admin-debug-hint" x-text="'#' + p.id"></span>
               <a
                 :href="`/admin/materialy/temat/new?poziom=${p.id}`"
@@ -110,14 +106,11 @@
                   @mouseup.stop="$el.draggable = false"
                 >
                   @if(auth.user.canEditAllContent)
-                    <span
-                      class="drag-handle"
-                      @mousedown.stop="$el.closest('.diff-level-row').draggable = true"
-                    >
+                    <span class="drag-handle" @mousedown.stop="$el.closest('.diff-level-row').draggable = true">
                       ⠿
                     </span>
                   @end
-
+                  
                   <a
                     x-show="t.canEdit"
                     :href="`/admin/materialy/temat/${t.id}`"
@@ -126,16 +119,10 @@
                     data-modal-edit
                   ></a>
                   <span x-show="!t.canEdit" x-text="t.nazwa"></span>
-                  <span
-                    x-show="!t.published"
-                    style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;"
-                  >
+                  <span x-show="!t.published" style="font-size: 12px; color: var(--text-secondary); margin-left: 4px;">
                     (ukryte)
                   </span>
-                  <span
-                    class="admin-debug-hint"
-                    x-text="'#' + t.id + (t.autor ? ' · ' + t.autor : '')"
-                  ></span>
+                  <span class="admin-debug-hint" x-text="'#' + t.id + (t.autor ? ' · ' + t.autor : '')"></span>
                 </div>
               </template>
             </div>
@@ -149,10 +136,10 @@
       </form>
       {{-- Add poziom --}}
       @if(auth.user.canEditAllContent)
-        <div
-          style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);"
-        >
-          <h2>Dodaj nowy poziom</h2>
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+          <h2>
+            Dodaj nowy poziom
+          </h2>
           <form method="POST" action="{{ route('admin.materialy.store_poziom') }}">
             {{ csrfField() }}
             <div style="display: flex; gap: 12px; align-items: flex-end;">
@@ -164,20 +151,18 @@
       @end
       {{-- Uncategorised --}}
       @if(uncategorised.length > 0)
-        <div
-          style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);"
-        >
-          <h2>Bez przypisanego poziomu</h2>
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
+          <h2>
+            Bez przypisanego poziomu
+          </h2>
           <div class="diff-level-list">
             @each(temat in uncategorised)
               <div class="diff-level-row">
                 @if(auth.user.canEditAllContent || temat.idAutora === auth.user.id)
                   <a
-                    href="{{
-                      route('admin.materialy.edit_temat', {
+                    href="{{ route('admin.materialy.edit_temat', {
                         id: temat.idTematu,
-                      })
-                    }}"
+                      }) }}"
                     data-modal-edit
                   >
                     {{ temat.nazwa }}
@@ -185,7 +170,7 @@
                 @else
                   <span>{{ temat.nazwa }}</span>
                 @end
-
+                
                 <span class="admin-debug-hint">
                   #{{ temat.idTematu }}{{
                     temat.autor

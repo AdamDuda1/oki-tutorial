@@ -1,24 +1,23 @@
 @layout({ title: 'Edytuj poziomy trudności' })
   @layoutAdminSidebar({ page: 'Edytuj poziomy trudności' })
     <div class="admin-edit-task">
-      <h1>Edytuj poziomy trudności</h1>
+      <h1>
+        Edytuj poziomy trudności
+      </h1>
 
-      <script id="levels-data" type="application/json">
-        {
-          {
-            {
-              JSON.stringify(
-                poziomyTrudnosci.map((pt) => ({
-                  id: pt.idPoziomuTrudnosci,
-                  skrot: pt.skrot,
-                  rozwiniecie: pt.rozwiniecie,
-                  color: pt.color,
-                })),
-              );
-            }
-          }
-        }
-      </script>
+      <div
+        id="levels-data"
+        hidden
+        data-json="{{ JSON.stringify(
+          poziomyTrudnosci.map((pt) => ({
+            id: pt.idPoziomuTrudnosci,
+            skrot: pt.skrot,
+            rozwiniecie: pt.rozwiniecie,
+            color: pt.color,
+          }))
+        ) }}"
+      >
+      </div>
 
       <form
         method="POST"
@@ -48,18 +47,8 @@
               </span>
               <input type="hidden" :name="`levels[${i}][id]`" :value="level.id" />
               <input type="hidden" :name="`levels[${i}][position]`" :value="i + 1" />
-              <input
-                type="color"
-                :name="`levels[${i}][color]`"
-                x-model="level.color"
-                class="diff-color-picker"
-              />
-              <input
-                :name="`levels[${i}][skrot]`"
-                x-model="level.skrot"
-                placeholder="Skrót"
-                class="diff-input-skrot"
-              />
+              <input type="color" :name="`levels[${i}][color]`" x-model="level.color" class="diff-color-picker" />
+              <input :name="`levels[${i}][skrot]`" x-model="level.skrot" placeholder="Skrót" class="diff-input-skrot" />
               <input
                 :name="`levels[${i}][rozwiniecie]`"
                 x-model="level.rozwiniecie"
@@ -91,19 +80,16 @@
       class="admin-edit-task"
       style="padding-top: 35px; margin-top: 25px; border-top: 1px solid black;"
     >
-      <h1>Dodaj nowy</h1>
+      <h1>
+        Dodaj nowy
+      </h1>
 
       <form method="POST" action="{{ route('admin.difficulty_levels.store') }}">
         {{ csrfField() }}
         <div class="diff-level-row">
           <input type="color" name="color" value="#cccccc" class="diff-color-picker" />
           <input name="skrot" placeholder="Skrót" class="diff-input-skrot" required />
-          <input
-            name="rozwiniecie"
-            placeholder="Rozwinięcie"
-            class="diff-input-rozwiniecie"
-            required
-          />
+          <input name="rozwiniecie" placeholder="Rozwinięcie" class="diff-input-rozwiniecie" required />
         </div>
         <div class="admin-form-actions">
           @!button({ text: 'Dodaj', type: 'submit' })

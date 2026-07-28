@@ -3,12 +3,12 @@
 @if($props.get('src'))
   <img {{ $props.except(['initials', 'name']).merge({ class: classes }).toAttrs() }} />
 @elseif(nameInitials)
-  <span {{
-    $props
+  <span
+    {{ $props
       .except(['initials', 'name', 'src'])
       .merge({ class: classes })
-      .toAttrs()
-  }}>
+      .toAttrs() }}
+  >
     {{ nameInitials.toUpperCase() }}
   </span>
 @end

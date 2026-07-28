@@ -4,7 +4,8 @@ import Setting from '#models/setting'
 
 export default class MaintenanceMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    if ((await Setting.getAll()).maintenance !== '1') return next()
+    const ustawienia = await Setting.getAll()
+    if (ustawienia.maintenance !== '1') return next()
     if (ctx.auth.user?.canAccessAdmin) return next()
 
     const url = ctx.request.url()

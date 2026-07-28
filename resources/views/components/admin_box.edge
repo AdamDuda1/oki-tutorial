@@ -4,12 +4,18 @@
 
 <div class="admin-box-wrap">
   <div class="admin-box">
-    <div>#{{ $props.get('id') }}{{ autor ? ' · autor: ' + autor : '' }}</div>
+    <div>
+      #{{ $props.get('id') }}{{ autor ? ' · autor: ' + autor : '' }}
+    </div>
     @if(dodano)
-      <div>dodano: {{ dodano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}</div>
+      <div>
+        dodano: {{ dodano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+      </div>
     @end
     @if(edytowano)
-      <div>edytowano: {{ edytowano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}</div>
+      <div>
+        edytowano: {{ edytowano.setLocale('pl').toFormat('d.LL.yyyy HH:mm') }}
+      </div>
     @end
     @if($props.get('href'))
       <a href="{{ $props.get('href') }}" data-modal-edit>(edytuj)</a>

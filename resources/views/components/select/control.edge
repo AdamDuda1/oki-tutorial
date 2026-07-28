@@ -1,7 +1,7 @@
 @let(classes = [])
 
-<select {{
-  $props
+<select
+  {{ $props
     .except(['options'])
     .merge({
       name: $context.name,
@@ -11,12 +11,12 @@
       'data-invalid': $context.hasErrors ? 'true' : false,
       'aria-describedby': $context.hasErrors ? `${$context.id}-error` : '',
     })
-    .toAttrs()
-}}>
+    .toAttrs() }}
+>
   @each(option in $props.get('options'))
     @let(isSelected = option.isSelected
       ? true
-      : $context.oldValue && $context.oldValue === option.value)
+    : $context.oldValue && $context.oldValue === option.value)
     <option value="{{ option.value }}" {{ isSelected ? 'selected' : '' }}>
       {{ option.name ?? option.value }}
     </option>

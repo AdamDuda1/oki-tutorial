@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ $props.get('title', 'Home') }} | OKI Tutorial</title>
+    <title>
+      {{ $props.get('title', 'Home') }} | OKI Tutorial
+    </title>
     <link rel="preload" as="image" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +19,9 @@
         src="{{ umami.url }}/script.js"
         data-website-id="{{ umami.websiteId }}"
         data-tag="{{ auth?.user?.role ?? 'guest' }}"
-      ></script>
+      >
+
+      </script>
     @end
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
@@ -25,20 +29,20 @@
       /* Awaryjne otwieranie boxów/menu zanim załaduje się bundle z Alpine */
       (() => {
         let alpineUp = false;
-        document.addEventListener('alpine:init', () => {
+        document.addEventListener("alpine:init", () => {
           alpineUp = true;
         });
-        document.addEventListener('click', (e) => {
+        document.addEventListener("click", e => {
           if (alpineUp) return;
-          const trigger = e.target.closest('[data-toggle]');
+          const trigger = e.target.closest("[data-toggle]");
           if (!trigger) return;
-          const interactive = e.target.closest('a, button');
+          const interactive = e.target.closest("a, button");
           if (interactive && interactive !== trigger) return;
-          const root = trigger.closest('[x-data]');
+          const root = trigger.closest("[x-data]");
           if (!root) return;
-          const selector = trigger.getAttribute('data-toggle') || '.box, .box-arrow';
+          const selector = trigger.getAttribute("data-toggle") || ".box, .box-arrow";
           for (const el of root.querySelectorAll(selector)) {
-            if (el.closest('[x-data]') === root) el.classList.toggle('open');
+            if (el.closest("[x-data]") === root) el.classList.toggle("open");
           }
         });
       })();
@@ -48,9 +52,11 @@
     @include('partials/header')
     @let(ustawienia = await siteSettings())
     @if(ustawienia.banner)
-      <div class="site-banner">{{ ustawienia.banner }}</div>
+      <div class="site-banner">
+        {{ ustawienia.banner }}
+      </div>
     @end
-
+    
     <main>
       @if(!$props.get('noAlerts'))
         @include('partials/flash_alerts')
@@ -74,10 +80,15 @@
         <p
           x-show="!$store.modal.code"
           x-effect="if (!$store.modal.code) (window.renderRichText ? window.renderRichText($el, $store.modal.body) : $el.textContent = $store.modal.body)"
-        ></p>
+        >
+        </p>
         <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
           {{-- $store.modal.code to nazwa języka (np. 'cpp'); highlightCode escapuje treść --}}
-          <pre><code x-effect="if ($store.modal.code) $el.innerHTML = window.highlightCode($store.modal.body, $store.modal.code)"></code></pre>
+          <pre>
+            <code
+              x-effect="if ($store.modal.code) $el.innerHTML = window.highlightCode($store.modal.body, $store.modal.code)"
+            ></code>
+          </pre>
           <button
             type="button"
             class="copy-btn"

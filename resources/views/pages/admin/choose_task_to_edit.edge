@@ -3,15 +3,23 @@
     <table class="zadania-table">
       <thead>
         <tr>
-          <th class="col-id">#</th>
-          <th>Nazwa</th>
-          <th style="width: 100px; text-align: right;">co zrobić?</th>
+          <th class="col-id">
+            #
+          </th>
+          <th>
+            Nazwa
+          </th>
+          <th style="width: 100px; text-align: right;">
+            co zrobić?
+          </th>
         </tr>
       </thead>
       @each(z in zadania)
         <tbody class="task-row">
           <tr>
-            <td>{{ z.idZadania }}</td>
+            <td>
+              {{ z.idZadania }}
+            </td>
             <td>
               {{ z.nazwa }}
               @if(!z.published)
@@ -23,22 +31,16 @@
             <td>
               @if(auth.user.canEditAllContent || z.idAutora === auth.user.id)
                 <div style="display: flex; gap: 6px; align-items: center;">
-                  <a
-                    class="underlinable"
-                    style="color: var(--brand)"
-                    href="/admin/edit_task/{{ z.idZadania }}"
-                  >
+                  <a class="underlinable" style="color: var(--brand)" href="/admin/edit_task/{{ z.idZadania }}">
                     edytuj
                   </a>
                   @if(auth.user.canEditAllContent)
                     /
                     <form
                       method="POST"
-                      action="{{
-                        route('admin.edit_task.toggle_published', {
+                      action="{{ route('admin.edit_task.toggle_published', {
                           id: z.idZadania,
-                        })
-                      }}"
+                        }) }}"
                       data-turbo="false"
                     >
                       {{ csrfField() }}
@@ -51,10 +53,7 @@
                       </button>
                     </form>
                   @end
-                  
-
-              /
-
+                  /
                   <form
                     method="POST"
                     action="{{ route('admin.edit_task.destroy', { id: z.idZadania }) }}"

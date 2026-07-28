@@ -1,7 +1,9 @@
 @layout({ title: 'Statystyki i historia zmian' })
   @layoutAdminSidebar({ page: 'Statystyki i historia zmian' })
     <div class="admin-edit-task" style="margin-bottom: 24px;">
-      <h1>Statystyki</h1>
+      <h1>
+        Statystyki
+      </h1>
       <ul
         style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;"
       >
@@ -17,12 +19,16 @@
           (opublikowane:
           {{ stats.tematyOpublikowane }})
         </li>
-        <li><strong>Konta:</strong> {{ stats.uzytkownicy }}</li>
+        <li>
+          <strong>Konta:</strong>{{ stats.uzytkownicy }}
+        </li>
       </ul>
     </div>
     @if(umami.enabled)
       <div class="admin-edit-task" style="margin-bottom: 24px;">
-        <h1>Ruch na stronie</h1>
+        <h1>
+          Ruch na stronie
+        </h1>
         <a
           href="{{ umami.url }}/websites/{{ umami.websiteId }}"
           target="_blank"
@@ -36,30 +42,48 @@
     @end
     @if(leaderboard.length > 0)
       <div class="admin-edit-task" style="margin-bottom: 24px;">
-        <h1>Ranking zmian</h1>
+        <h1>
+          Ranking zmian
+        </h1>
         <ul
           style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;"
         >
           @each(wpis in leaderboard)
-            <li><strong>{{ wpis.email }}:</strong> {{ wpis.zmiany }}</li>
+            <li>
+              <strong>{{ wpis.email }}:</strong>{{ wpis.zmiany }}
+            </li>
           @end
         </ul>
       </div>
     @end
-
+    
     <div class="admin-edit-task">
-      <h1>Audit log</h1>
+      <h1>
+        Audit log
+      </h1>
       @if(paginator.total === 0)
-        <p class="empty-state">Brak wpisów.</p>
+        <p class="empty-state">
+          Brak wpisów.
+        </p>
       @else
         <table class="zadania-table">
           <thead>
             <tr>
-              <th>Kiedy</th>
-              <th>Kto</th>
-              <th>Akcja</th>
-              <th>Co</th>
-              <th>Zmiany</th>
+              <th>
+                Kiedy
+              </th>
+              <th>
+                Kto
+              </th>
+              <th>
+                Akcja
+              </th>
+              <th>
+                Co
+              </th>
+              <th>
+                Zmiany
+              </th>
             </tr>
           </thead>
           @each(wpis in paginator)
@@ -68,9 +92,15 @@
                 <td style="white-space: nowrap;">
                   {{ wpis.createdAt.toFormat('dd.MM.yyyy HH:mm') }}
                 </td>
-                <td>{{ wpis.uzytkownik }}</td>
-                <td>{{ wpis.akcja }}</td>
-                <td>{{ wpis.opis }}</td>
+                <td>
+                  {{ wpis.uzytkownik }}
+                </td>
+                <td>
+                  {{ wpis.akcja }}
+                </td>
+                <td>
+                  {{ wpis.opis }}
+                </td>
                 <td>
                   @if(wpis.zmiany)
                     <form

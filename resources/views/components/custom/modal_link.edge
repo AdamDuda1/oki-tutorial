@@ -12,12 +12,10 @@
   data-title="{{ title }}"
   data-body="{{ body }}"
   @click="$store.modal.show($el.dataset.title, $el.dataset.body, {{ code ? 'true' : 'false' }})"
-  {{
-    $props
+  {{ $props
       .except(['title', 'text', 'body', 'code', 'variant'])
       .merge({ class: ['custom-modal-link', variant] })
-      .toAttrs()
-  }}
+      .toAttrs() }}
 >
   {{{ text }}}
 </button>

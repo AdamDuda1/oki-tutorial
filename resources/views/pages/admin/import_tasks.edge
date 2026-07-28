@@ -1,23 +1,28 @@
 @layout({ title: 'Import zadań z CSV' })
   @layoutAdminSidebar({ page: 'Import CSV' })
-    <h1>Import zadań z CSV</h1>
+    <h1>
+      Import zadań z CSV
+    </h1>
     @if(bledy)
       <div class="import-error-box">
         <strong>Nie zaimportowano. Popraw błędy i spróbuj ponownie:</strong>
         <ul>
           @each(b in bledy)
-            <li>{{ b }}</li>
+            <li>
+              {{ b }}
+            </li>
           @end
         </ul>
       </div>
     @end
-
-    <h2>Format danych</h2>
+    
+    <h2>
+      Format danych
+    </h2>
     Pobierz szablon, wypełnij go w arkuszu (jeden wiersz = jedno zadanie) i wgraj poniżej.
     <p style="margin: 16px 0;">
       <a href="{{ route('admin.edit_task.import_template') }}" style="color: var(--brand)">
-        >> Pobierz szablon CSV <<
-      </a>
+        >> Pobierz szablon CSV </a>
     </p>
 
     <p class="import-help">
@@ -46,14 +51,8 @@
     })
       <input type="file" name="csv" accept=".csv,text/csv" required id="csv" />
       @if(auth.user.canEditAllContent)
-        <label
-          style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; cursor: pointer;"
-        >
-          <input
-            type="checkbox"
-            name="published"
-            style="width: auto; height: 18px; cursor: pointer;"
-          />
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; cursor: pointer;">
+          <input type="checkbox" name="published" style="width: auto; height: 18px; cursor: pointer;" />
           <span>Opublikuj zaimportowane zadania od razu</span>
         </label>
       @else

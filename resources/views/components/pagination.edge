@@ -1,11 +1,11 @@
 @if(totalPages > 1)
   <nav class="pagination">
     @if(prevUrl)
-      <a href="{{ prevUrl }}" class="page-btn">< prev</a>
+      <a href="{{ prevUrl }}" class="page-btn">&lt; prev</a>
     @else
-      <span class="page-btn disabled">< prev</span>
+      <span class="page-btn disabled">&lt; prev</span>
     @end
-
+    
     <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
     @if(nextUrl)
       <a href="{{ nextUrl }}" class="page-btn">next ></a>

@@ -1,6 +1,8 @@
 @layout({ title: 'Rejestracja' })
   <div class="form-container">
-    <h1>Rejestracja</h1>
+    <h1>
+      Rejestracja
+    </h1>
     <br />
     <div style="max-width: 90vw; min-width: 50vw;">
       @form({ route: 'new_account.store', method: 'POST' })
@@ -46,13 +48,10 @@
   </div>
 
   <div style="background: #efefef; text-align: center; font-size: 12px; padding: 3px;">
-    
     build
     <code>{{ appVersion }}</code>
     @if(appVersionAge())
-      (
-      {{ appVersionAge() }}
-      )
+      <span>( {{ appVersionAge() }} )</span>
     @end
   </div>
 @end

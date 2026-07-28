@@ -7,9 +7,10 @@ export default class Setting extends SettingSchema {
   static selfAssignPrimaryKey = true
 
   static async getAll(): Promise<Record<string, string | null>> {
-    const c = cache ?? Object.fromEntries((await Setting.query()).map((s) => [s.key, s.val]))
-    cache = c
-    return c
+    if (cache) return cache
+    const wiersze = await Setting.query()
+    cache = Object.fromEntries(wiersze.map((s) => [s.key, s.val]))
+    return cache
   }
 
   static async set(key: string, val: string | null) {

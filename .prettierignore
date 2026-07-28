@@ -1,3 +1,4 @@
 .adonisjs
 node_modules
 build
+resources/views/components/custom/header.edge

@@ -1,7 +1,9 @@
 @layout({ title: 'Konsola SQL' })
   @layoutAdminSidebar({ page: 'Konsola SQL' })
     <div class="admin-edit-task" style="margin-bottom: 24px;">
-      <h1>Konsola SQL</h1>
+      <h1>
+        Konsola SQL
+      </h1>
       <p style="margin: 0 0 16px;">
         Zapytanie leci prosto do bazy, bez cofania. Jedno zapytanie na raz. Ctrl+Enter wykonuje. Każde wykonanie trafia do
         <a href="/admin/stats_and_audit_log" style="color: var(--brand);" class="underlinable">
@@ -38,15 +40,21 @@
     </div>
     @if(blad)
       <div class="admin-edit-task" style="margin-bottom: 24px;">
-        <h2>Błąd</h2>
+        <h2>
+          Błąd
+        </h2>
         <pre
           style="white-space: pre-wrap; word-break: break-word; color: var(--destructive, #b91c1c); margin: 0;"
-        >{{ blad }}</pre>
+        >
+          {{ blad }}
+        </pre>
       </div>
     @end
     @if(wynik)
       <div class="admin-edit-task">
-        <h2>Wynik</h2>
+        <h2>
+          Wynik
+        </h2>
         <p style="color: var(--text-secondary); font-size: 14px; margin: 0 0 12px;">
           {{ wynik.info }}
           @if(czas !== null)
@@ -64,7 +72,9 @@
               <thead>
                 <tr>
                   @each(kolumna in wynik.kolumny)
-                    <th style="white-space: nowrap;">{{ kolumna }}</th>
+                    <th style="white-space: nowrap;">
+                      {{ kolumna }}
+                    </th>
                   @end
                 </tr>
               </thead>

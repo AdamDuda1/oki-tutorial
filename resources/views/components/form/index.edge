@@ -3,14 +3,14 @@
   : {
       method: $props.get('method'),
       action: $props.get('action'),
-    })
-<form {{
-  $props
+})
+<form
+  {{ $props
     .except(['action', 'method', 'route', 'routeParams', 'routeOptions'])
     .merge(formProps)
     .merge(formProps.method !== 'GET' ? { 'data-turbo': 'false' } : {})
-    .toAttrs()
-}}>
+    .toAttrs() }}
+>
   @if(formProps.method !== 'GET')
     {{ csrfField() }}
   @end

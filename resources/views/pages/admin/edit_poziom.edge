@@ -5,10 +5,12 @@
       class="back-link"
       style="margin-bottom: -15px; color: var(--brand);"
     >
-      < wróć
+      &lt; wróć
     </a>
 
-    <h1>Edytuj: {{ poziom.nazwa }}</h1>
+    <h1>
+      Edytuj: {{ poziom.nazwa }}
+    </h1>
     @form({
       route: 'admin.materialy.update_poziom',
       routeParams: { id: poziom.idPoziomu },
@@ -16,13 +18,15 @@
       'data-save-shortcut': true,
     })
       <div class="admin-form-section">
-        <h2>Podstawowe informacje</h2>
+        <h2>
+          Podstawowe informacje
+        </h2>
         @field.root({ name: 'nazwa' })
           @!field.label({ text: 'Nazwa' })
           @!input.control({ value: poziom.nazwa })
           @!field.error()
         @end
-
+        
         <div style="display: flex; align-items: center; gap: 10px; margin-top: 12px;">
           <input
             type="checkbox"
@@ -47,14 +51,14 @@
             'data-code-editor': 'html',
           })
         @end
-
+        
         <a
           style="color: var(--brand); cursor: pointer;"
           x-data
-          @click.stop="$store.modal.show('Formatowanie',
-            'Możesz używać standardowego formatowania HTML (<b>, <i>, <u>, <a href>, <img>, <table>, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np: \n\nRozwijana sekcja, tak jak sekcje na zadania:\n \@custom.sciezka.expandableBox(__EDGE_TAGARG_0__)"
+          data-help="Możesz używać standardowego formatowania HTML (&lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;a href&gt;, &lt;img&gt;, &lt;table&gt;, ect.). Poza standardowymi tagami, możesz także używać naszych niestandardowych komponentów, np:&#10;&#10;Rozwijana sekcja, tak jak sekcje na zadania:&#10; &#64;custom.sciezka.expandableBox({ title: 'tutaj idzie nagłówek sekcji' })&#10;   tutaj idzie treść&#10; &#64;end"
+          @click.stop="$store.modal.show('Formatowanie', $el.dataset.help)"
         >
-          Pomoc z formatowaniem >
+          Pomoc z formatowaniem &gt;
         </a>
       </div>
 
@@ -62,9 +66,11 @@
         @!button({ text: 'Zapisz zmiany', type: 'submit' })
       </div>
     @end
-
+            
     <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--brand-lighter);">
-      <h2>Usuń poziom</h2>
+      <h2>
+        Usuń poziom
+      </h2>
       <p style="font-size: 14px; color: var(--text-secondary); margin: 8px 0 12px;">
         Poziom zniknie ze ścieżki, a jego tematy zostaną odpięte i trafią do sekcji „Bez przypisanego poziomu” (nie zostaną usunięte).
       </p>

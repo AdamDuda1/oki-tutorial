@@ -4,7 +4,9 @@
 
 <tbody x-data="expandable" class="task-row">
   <tr data-toggle @click="open = !open">
-    <td class="col-id">{{ z.idZadania }}</td>
+    <td class="col-id">
+      {{ z.idZadania }}
+    </td>
     <td class="col-nazwa">
       <div class="toggle-left">
         <span class="box-arrow" :class="{ open }"></span>
@@ -19,11 +21,14 @@
       @end
     </td>
     <td class="col-difficulty">
-      <span class="diff-badge" style="
+      <span
+        class="diff-badge"
+        style="
       color: {{ poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color || '#000' }};
-      background-color: {{ withAlpha(poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color, 0.1) || '#ffffff' }};">
+      background-color: {{ withAlpha(poziomyTrudnosci.find(pt => pt.idPoziomuTrudnosci === z.idPoziomuTrudnosci)?.color, 0.1) || '#ffffff' }};"
+      >
         {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}
-        {{--<span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span>--}}
+        {{-- <span class="rozwiniecie"> - {{ z.poziomuTrudnosci ? z.poziomuTrudnosci.rozwiniecie : '??' }}</span> --}}
       </span>
     </td>
   </tr>
@@ -46,23 +51,35 @@
               <a href="{{ z.linkWyslij }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
             @end-->
             @if(z.hint)
-              <button class="task-action underlinable" @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
-                data-hint="{{ z.hint }}"><img src="/icons/i_hint.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Hint</span></button>
+              <button
+                class="task-action underlinable"
+                @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
+                data-hint="{{ z.hint }}"
+              >                <img src="/icons/i_hint.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Hint</span></button>
             @end
             @if(z.linkOmowienieVid)
-              <a href="{{ z.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_vid.svg" alt=""> Omówienie</a>
+              <a href="{{ z.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener">                <img src="/icons/i_vid.svg" alt="" />Omówienie</a>
             @end
             @if(z.omowienieText)
-              <button class="task-action underlinable" @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
-                data-omowienie="{{ z.omowienieText }}"><img src="/icons/i_note.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Omówienie</span></button>
+              <button
+                class="task-action underlinable"
+                @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
+                data-omowienie="{{ z.omowienieText }}"
+              >                <img src="/icons/i_note.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Omówienie</span></button>
             @end
             @if(z.kodCpp)
-              <button class="task-action underlinable" @click.stop="$store.modal.show('Kod C++', $el.dataset.code, 'cpp')"
-                data-code="{{ z.kodCpp }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
+              <button
+                class="task-action underlinable"
+                @click.stop="$store.modal.show('Kod C++', $el.dataset.code, 'cpp')"
+                data-code="{{ z.kodCpp }}"
+              >                <img src="/icons/i_code.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
             @end
             @if(z.kodPython)
-              <button class="task-action underlinable" @click.stop="$store.modal.show('Kod Python', $el.dataset.code, 'python')"
-                data-code="{{ z.kodPython }}"><img src="/icons/i_code.svg" alt=""> <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
+              <button
+                class="task-action underlinable"
+                @click.stop="$store.modal.show('Kod Python', $el.dataset.code, 'python')"
+                data-code="{{ z.kodPython }}"
+              >                <img src="/icons/i_code.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
             @end
             @if(z.linkDodatkoweMaterialy)
               <a href="{{ z.linkDodatkoweMaterialy }}" class="task-action" target="_blank" rel="noopener">Dodatkowe materiały</a>
