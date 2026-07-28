@@ -66,6 +66,7 @@
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^5.1.1",
     "@codemirror/lang-html": "^6.4.11",
+    "@codemirror/lang-sql": "^6.10.0",
     "@hotwired/turbo": "^8.0.23",
     "@shikijs/langs-precompiled": "^4.3.1",
     "@vinejs/vine": "^4.4.0",

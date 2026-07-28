@@ -29,6 +29,7 @@ export default defineConfig({
       '@shikijs/themes/dark-plus',
       'codemirror',
       '@codemirror/lang-html',
+      '@codemirror/lang-sql',
       '@codemirror/autocomplete',
       '@codemirror/commands',
       '@codemirror/view',

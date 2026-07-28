@@ -4,13 +4,11 @@ document.addEventListener('turbo:load', async () => {
 
   const [
     { basicSetup, EditorView },
-    { html, htmlLanguage },
     { acceptCompletion, snippetCompletion },
     { indentWithTab },
-    { keymap },
+    { keymap, placeholder },
   ] = await Promise.all([
     import('codemirror'),
-    import('@codemirror/lang-html'),
     import('@codemirror/autocomplete'),
     import('@codemirror/commands'),
     import('@codemirror/view'),
@@ -66,16 +64,38 @@ document.addEventListener('turbo:load', async () => {
     return { from: word ? word.from : context.pos, options: edgeSnippets, validFor: /^@!?[\w.]*$/ }
   }
 
+  /* Język ładowany dopiero dla tych pól, które go faktycznie używają. */
+  const jezyki = {
+    html: async () => {
+      const { html, htmlLanguage } = await import('@codemirror/lang-html')
+      return [html(), htmlLanguage.data.of({ autocomplete: edgeComponents })]
+    },
+    sql: async () => {
+      const { sql, MySQL } = await import('@codemirror/lang-sql')
+      return [sql({ dialect: MySQL, upperCaseKeywords: false })]
+    },
+  }
+
+  /* Ctrl/Cmd+Enter wysyła formularz - w konsoli SQL wygodniej niż celowanie w przycisk. */
+  const wyslijFormularz = (area) => ({
+    key: 'Mod-Enter',
+    run: () => {
+      area.form?.requestSubmit()
+      return true
+    },
+  })
+
   for (const area of areas) {
     if (area.nextElementSibling?.classList.contains('cm-editor')) area.nextElementSibling.remove()
 
+    const jezyk = jezyki[area.dataset.codeEditor] ?? jezyki.html
     const view = new EditorView({
       doc: area.value,
       extensions: [
         basicSetup,
-        html(),
-        htmlLanguage.data.of({ autocomplete: edgeComponents }),
-        keymap.of([{ key: 'Tab', run: acceptCompletion }, indentWithTab]),
+        ...(await jezyk()),
+        area.placeholder ? placeholder(area.placeholder) : [],
+        keymap.of([wyslijFormularz(area), { key: 'Tab', run: acceptCompletion }, indentWithTab]),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) area.value = update.state.doc.toString()
         }),
@@ -93,5 +113,6 @@ document.addEventListener('turbo:load', async () => {
     })
     area.after(view.dom)
     area.hidden = true
+    if (area.autofocus) view.focus()
   }
 })
