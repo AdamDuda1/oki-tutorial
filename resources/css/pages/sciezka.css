@@ -147,8 +147,8 @@
 
   iframe,
   .yt-facade {
-    float: left;
-    margin-right: 12px;
+    float: right;
+    margin-left: 12px;
     border-radius: 8px;
     width: 35vw;
     aspect-ratio: 16 / 9;
