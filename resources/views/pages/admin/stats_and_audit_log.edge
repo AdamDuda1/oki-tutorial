@@ -56,7 +56,7 @@
         </ul>
       </div>
     @end
-    
+
     <div class="admin-edit-task">
       <h1>
         Audit log
@@ -131,7 +131,7 @@
             </tr>
           </thead>
           @each(wpis in paginator)
-            <tbody>
+            <tbody x-data>
               <tr>
                 <td style="white-space: nowrap;">
                   {{ wpis.createdAt.toFormat('dd.MM.yyyy HH:mm') }}
@@ -146,26 +146,64 @@
                   {{ wpis.opis }}
                 </td>
                 <td>
-                  @if(wpis.zmiany)
-                    <form
-                      method="POST"
-                      action="https://text-compare.com/"
-                      target="_blank"
-                      rel="noopener"
-                      data-turbo="false"
-                      style="display: inline;"
-                    >
-                      <input type="hidden" name="text1" value="{{ wpis.zmianyTeksty.przed }}" />
-                      <input type="hidden" name="text2" value="{{ wpis.zmianyTeksty.po }}" />
+                  <div style="display: flex; gap: 6px; align-items: center;">
+                    @if(roznice[wpis.id])
                       <button
-                        type="submit"
-                        style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; color: var(--brand);"
-                        class="underlinable"
+                        type="button"
+                        class="audit-diff-toggle underlinable"
+                        @click="$store.modal.showHtml($el.dataset.tytul, $el.nextElementSibling.innerHTML)"
+                        data-tytul="Zmiany #{{ wpis.id }} — {{ wpis.opis }}"
                       >
-                        zmiany
+                        zmiany ({{ roznice[wpis.id].length }})
                       </button>
-                    </form>
-                  @end
+                      <template>
+                        <div class="audit-diff">
+                          @each(pozycja in roznice[wpis.id])
+                            <div class="audit-diff-pole">
+                              <span class="audit-diff-nazwa">{{ pozycja.pole }}</span>
+                              @if(pozycja.roznica.rodzaj === 'linie')
+                                <div class="audit-diff-linie">
+                                  @each(l in pozycja.roznica.linie)
+                                    <div class="audit-diff-linia {{ l.klasa }}">
+                                      <span class="audit-diff-znak">{{ l.znak }}</span>                                      <span class="audit-diff-tekst">{{ l.tekst }}</span>
+                                    </div>
+                                  @end
+                                </div>
+                              @else
+                                <div class="audit-diff-surowe">
+                                  <div class="audit-diff-linia usuniete">
+                                    <span class="audit-diff-znak">-</span>                                    <span class="audit-diff-tekst">{{ pozycja.roznica.przed }}</span>
+                                  </div>
+                                  <div class="audit-diff-linia dodane">
+                                    <span class="audit-diff-znak">+</span>                                    <span class="audit-diff-tekst">{{ pozycja.roznica.po }}</span>
+                                  </div>
+                                </div>
+                              @end
+                            </div>
+                          @end
+                        </div>
+                      </template>
+                    @end
+                    @if(wpis.czyOdwracalny)
+                      /
+                      <form
+                        method="POST"
+                        action="{{ route('admin.stats_and_audit_log.revert', { id: wpis.id }) }}"
+                        data-turbo="false"
+                        style="display: inline;"
+                        onsubmit="return confirm('Cofnąć zmianę #{{ wpis.id }} ({{ wpis.opis }})? Pola {{ wpis.polaDoCofniecia.map(([pole]) => pole).join(', ') }} wrócą do stanu sprzed tej edycji.')"
+                      >
+                        {{ csrfField() }}
+                        <button
+                          type="submit"
+                          style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; color: var(--brand);"
+                          class="underlinable"
+                        >
+                          cofnij
+                        </button>
+                      </form>
+                    @end
+                  </div>
                 </td>
               </tr>
             </tbody>

@@ -302,10 +302,6 @@
     align-items: center;
     gap: 7px;
     min-width: 0;
-
-    h3 a:hover {
-      color: var(--brand);
-    }
   }
 
   .task-action-sm {

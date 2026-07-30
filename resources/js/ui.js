@@ -5,10 +5,19 @@ Alpine.store('modal', {
   title: '',
   body: '',
   code: false, // false = zwykły tekst; nazwa języka (np. 'cpp') = blok kodu
+  html: '',
   show(title, body, code = false) {
     this.title = title
     this.body = body
     this.code = code
+    this.html = ''
+    this.open = true
+  },
+  showHtml(title, html) {
+    this.title = title
+    this.body = ''
+    this.code = false
+    this.html = html
     this.open = true
   },
   hide() {

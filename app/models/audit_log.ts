@@ -6,12 +6,22 @@ import type { TransactionClientContract } from '@adonisjs/lucid/types/database'
 
 export type Zmiany = Record<string, { przed: unknown; po: unknown }>
 
-const UKRYTE_POLA = new Set(['password']) // TODO
+export const UKRYTE_POLA = new Set(['password']) // TODO
 
-function formatValue(value: unknown): string {
-  if (value === null || value === undefined || value === '') return '-'
-  if (typeof value === 'boolean') return value ? 'tak' : 'nie'
-  return typeof value === 'string' ? value : JSON.stringify(value, null, 2)
+export const TYPY_ODWRACALNE = new Set([
+  'zadanie',
+  'temat',
+  'poziom',
+  'poziom trudności',
+  'użytkownik',
+])
+
+export function tozsameWartosci(a: unknown, b: unknown): boolean {
+  let x = a ?? null
+  let y = b ?? null
+  if (typeof x === 'number' && typeof y === 'boolean') x = Boolean(x)
+  if (typeof y === 'number' && typeof x === 'boolean') y = Boolean(y)
+  return JSON.stringify(x) === JSON.stringify(y)
 }
 
 export default class AuditLog extends AuditLogSchema {
@@ -24,11 +34,17 @@ export default class AuditLog extends AuditLogSchema {
   })
   declare zmiany: Zmiany | null
 
-  get zmianyTeksty() {
-    const wpisy = Object.entries(this.zmiany ?? {})
-    const strona = (ktora: 'przed' | 'po') =>
-      wpisy.map(([pole, z]) => `=== ${pole} ===\n${formatValue(z[ktora])}`).join('\n\n')
-    return { przed: strona('przed'), po: strona('po') }
+  get polaDoCofniecia() {
+    return Object.entries(this.zmiany ?? {}).filter(([pole]) => !UKRYTE_POLA.has(pole))
+  }
+
+  get czyOdwracalny() {
+    return (
+      this.akcja === 'zaktualizowano' &&
+      this.idObiektu !== null &&
+      TYPY_ODWRACALNE.has(this.typObiektu) &&
+      this.polaDoCofniecia.length > 0
+    )
   }
 
   static async record(wpis: {
@@ -79,7 +95,7 @@ export default class AuditLog extends AuditLogSchema {
       let po = poRaw ?? null
       if (typeof po === 'boolean' && typeof przed === 'number') przed = Boolean(przed)
       if (typeof przed === 'boolean' && typeof po === 'number') po = Boolean(po)
-      if (JSON.stringify(przed) === JSON.stringify(po)) continue
+      if (tozsameWartosci(przed, po)) continue
       zmiany[pole] = UKRYTE_POLA.has(pole) ? { przed: '(ukryte)', po: '(ukryte)' } : { przed, po }
     }
     return Object.keys(zmiany).length > 0 ? zmiany : null

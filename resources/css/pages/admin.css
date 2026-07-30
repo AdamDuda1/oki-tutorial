@@ -39,6 +39,74 @@
   color: #b91c1c;
 }
 
+.audit-diff-toggle {
+  width: auto;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--brand);
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+}
+
+.audit-diff-toggle:hover {
+  background: none;
+}
+
+.audit-diff {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.audit-diff-nazwa {
+  display: inline-block;
+  margin-bottom: 3px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.audit-diff-linie,
+.audit-diff-surowe {
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.audit-diff-linia {
+  display: flex;
+  padding: 1px 8px;
+  line-height: 1.5;
+}
+
+.audit-diff-znak {
+  flex: 0 0 1.2em;
+  opacity: 0.6;
+  user-select: none;
+}
+
+.audit-diff-tekst {
+  min-width: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.audit-diff .usuniete {
+  background: oklch(0.94 0.05 25);
+}
+
+.audit-diff .dodane {
+  background: oklch(0.94 0.06 150);
+}
+
+.audit-diff .pominiete {
+  background: var(--background-darker);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 .audit-filters {
   display: flex;
   flex-direction: row;

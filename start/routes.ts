@@ -127,6 +127,9 @@ router
     router
       .get('stats_and_audit_log', [AdminController, 'stats_and_audit_log'])
       .as('admin.stats_and_audit_log')
+    router
+      .post('stats_and_audit_log/:id/revert', [AdminController, 'revert_audit_entry'])
+      .as('admin.stats_and_audit_log.revert')
     router.get('sql', [AdminSqlController, 'index']).as('admin.sql')
     router.post('sql', [AdminSqlController, 'execute']).as('admin.sql.execute')
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')

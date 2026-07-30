@@ -3,14 +3,54 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import User, { USER_ROLES } from '#models/user'
-import AuditLog from '#models/audit_log'
+import AuditLog, { tozsameWartosci } from '#models/audit_log'
 import Setting from '#models/setting'
 import ListaZadan from '#models/lista_zadan'
 import Tematy from '#models/tematy'
+import Poziomy from '#models/poziomy'
+import PoziomTrudnosci from '#models/poziom_trudnosci'
+import type { LucidRow } from '@adonisjs/lucid/types/model'
+import { policzRoznice, sformatujWartosc, type Roznica } from '#services/roznice'
 
 async function countRows(query: { count: (c: string) => any }): Promise<number> {
   const row = await query.count('* as total').first()
   return Number(row?.$extras.total ?? 0)
+}
+
+const ODWRACALNE: Record<
+  string,
+  {
+    znajdz: (id: number) => Promise<LucidRow | null>
+    dostep: (model: any, user: User) => string | null
+  }
+> = {
+  'zadanie': {
+    znajdz: (id) => ListaZadan.find(id),
+    dostep: (m, u) =>
+      u.canEditAllContent || m.idAutora === u.id ? null : 'Brak dostępu do tego zadania.',
+  },
+  'temat': {
+    znajdz: (id) => Tematy.find(id),
+    dostep: (m, u) =>
+      u.canEditAllContent || m.idAutora === u.id ? null : 'Brak dostępu do tego tematu.',
+  },
+  'poziom': {
+    znajdz: (id) => Poziomy.find(id),
+    dostep: (_, u) => (u.canEditAllContent ? null : 'Brak dostępu do poziomów.'),
+  },
+  'poziom trudności': {
+    znajdz: (id) => PoziomTrudnosci.find(id),
+    dostep: (_, u) => (u.canEditAllContent ? null : 'Brak dostępu do poziomów trudności.'),
+  },
+  'użytkownik': {
+    znajdz: (id) => User.find(id),
+    dostep: (m, u) =>
+      !u.isAdmin
+        ? 'Tylko admin może cofać zmiany na kontach.'
+        : m.id === u.id
+          ? 'Nie możesz cofnąć zmiany na własnym koncie.'
+          : null,
+  },
 }
 
 export default class AdminController {
@@ -155,6 +195,15 @@ export default class AdminController {
       typy: await kolumnaWartosci('typ_obiektu'),
     }
 
+    const roznice: Record<number, { pole: string; roznica: Roznica }[]> = {}
+    for (const wpis of paginator.all()) {
+      if (!wpis.zmiany) continue
+      roznice[wpis.id] = Object.entries(wpis.zmiany).map(([pole, z]) => ({
+        pole,
+        roznica: policzRoznice(sformatujWartosc(z.przed), sformatujWartosc(z.po)),
+      }))
+    }
+
     const leaderboard = await db
       .from('audit_log')
       .join('users', 'users.id', 'audit_log.id_uzytkownika')
@@ -185,6 +234,61 @@ export default class AdminController {
       leaderboard,
       filtry,
       opcje,
+      roznice,
     })
+  }
+
+  async revert_audit_entry({ params, response, session, auth }: HttpContext) {
+    const user = auth.user!
+    const wpis = await AuditLog.findOrFail(params.id)
+
+    if (!wpis.czyOdwracalny) {
+      session.flash('error', 'Tego wpisu nie da się cofnąć.')
+      return response.redirect().back()
+    }
+
+    const definicja = ODWRACALNE[wpis.typObiektu]
+    const model = await definicja.znajdz(wpis.idObiektu!)
+    if (!model) {
+      session.flash('error', 'Obiekt z tego wpisu już nie istnieje.')
+      return response.redirect().back()
+    }
+
+    const brakDostepu = definicja.dostep(model, user)
+    if (brakDostepu) {
+      session.flash('error', brakDostepu)
+      return response.redirect().back()
+    }
+
+    const przestarzale: string[] = []
+    const doCofniecia: [string, unknown][] = []
+    for (const [pole, z] of wpis.polaDoCofniecia) {
+      if (tozsameWartosci((model as any)[pole], z.po)) doCofniecia.push([pole, z.przed ?? null])
+      else przestarzale.push(pole)
+    }
+
+    if (przestarzale.length > 0) {
+      session.flash(
+        'error',
+        `Nie cofnięto — pola (${przestarzale.join(', ')}) zmieniły się już po tej edycji. Cofnij najpierw nowsze wpisy dla tego obiektu.`
+      )
+      return response.redirect().back()
+    }
+
+    for (const [pole, przed] of doCofniecia) (model as any)[pole] = przed
+
+    await AuditLog.recordUpdate({
+      user,
+      typObiektu: wpis.typObiektu,
+      idObiektu: wpis.idObiektu,
+      opis: `cofnięcie zmiany #${wpis.id}: ${wpis.opis}`,
+      model,
+    })
+
+    session.flash(
+      'success',
+      `Cofnięto zmianę #${wpis.id} (${doCofniecia.map(([pole]) => pole).join(', ')}).`
+    )
+    return response.redirect().back()
   }
 }
