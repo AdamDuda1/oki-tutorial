@@ -5,7 +5,7 @@ Alpine.store('topic', { current: null })
 
 /* same-page #anchor links (topic list in the /sciezka sidenav): skip the
    turbo visit and its transition animation, smooth-scroll to the target instead.
-   Capture phase, so this runs before turbo's own click listener. */
+   Capture phase, so this runs before turbo's own click listener. ~adamd */
 document.addEventListener(
   'click',
   (event) => {
@@ -30,10 +30,24 @@ document.addEventListener(
       if (handle) handle.textContent = 'Rozwiń ścieżkę v'
     }
 
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    scrollTopicIntoView(target)
   },
   true
 )
+
+function scrollTopicIntoView(target) {
+  const scroll = () => target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  scroll()
+
+  const box = target.querySelector(':scope > .box')
+  if (!box || box.classList.contains('open')) return
+  const settle = (event) => {
+    if (event.target !== box || event.propertyName !== 'grid-template-rows') return
+    box.removeEventListener('transitionend', settle)
+    scroll()
+  }
+  box.addEventListener('transitionend', settle)
+}
 
 document.addEventListener('click', (event) => {
   const facade = event.target.closest('.yt-facade')
@@ -48,6 +62,24 @@ document.addEventListener('click', (event) => {
   iframe.allowFullscreen = true
   facade.replaceWith(iframe)
 })
+
+function keepScrollSlack() {
+  const content = document.querySelector('.sciezka-app > .content')
+  const last = [...(content?.querySelectorAll('.topic-box') ?? [])].pop()
+  if (!last) return
+
+  const basePadding = 20
+  const update = () => {
+    const slack = content.clientHeight - last.offsetHeight - basePadding
+    const padding = `${Math.max(basePadding, slack)}px`
+    if (content.style.paddingBottom !== padding) content.style.paddingBottom = padding
+  }
+
+  const observer = new ResizeObserver(update)
+  observer.observe(last)
+  observer.observe(content)
+  update()
+}
 
 function initSciezkaUrlSync() {
   const boxes = [...document.querySelectorAll('.topic-box')]
@@ -72,4 +104,5 @@ function initSciezkaUrlSync() {
 
 document.addEventListener('turbo:load', () => {
   // initSciezkaUrlSync()
+  keepScrollSlack()
 })

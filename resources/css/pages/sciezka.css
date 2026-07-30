@@ -119,6 +119,10 @@
   > .toggle {
     padding: 10px 14px;
     gap: 10px;
+
+    h2 {
+      font-family: var(--font-mono), monospace;
+    }
   }
 
   > .box > .box-inner {
