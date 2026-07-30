@@ -185,6 +185,8 @@ form.filters {
 }
 
 .task-row {
+  font-family: var(--font-mono), monospace;
+
   > tr {
     cursor: pointer;
   }

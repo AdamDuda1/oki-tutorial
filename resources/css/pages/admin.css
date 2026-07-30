@@ -1,3 +1,9 @@
+.admin-content,
+.admin-nav-separator,
+.admin-nav-topic {
+  font-family: var(--font-mono), monospace;
+}
+
 .admin-nav-separator {
   font-weight: 500;
   color: gray;
