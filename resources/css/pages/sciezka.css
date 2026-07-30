@@ -301,6 +301,17 @@
     display: flex;
     align-items: center;
     gap: 7px;
+    min-width: 0;
+
+    h3 a:hover {
+      color: var(--brand);
+    }
+  }
+
+  .task-action-sm {
+    padding: 2px 10px;
+    font-size: 13px;
+    flex-shrink: 0;
   }
 
   .toggle-right {

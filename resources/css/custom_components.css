@@ -91,7 +91,6 @@
   transition: padding-bottom 0.22s ease;
 }
 
-/* ---------- Bloki kodu + przycisk kopiowania ---------- */
 
 .code-block {
   position: relative;
@@ -106,8 +105,11 @@
   background: var(--code-background);
   border-radius: 8px;
   padding: 12px 14px;
+  white-space: normal;
 }
 .code-block code {
+  display: block;
+  white-space: pre;
   font-family: inherit;
   color: var(--code-text);
 }

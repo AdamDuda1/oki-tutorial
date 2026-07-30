@@ -2,15 +2,38 @@
 @let(dodatkowe = $props.get('dodatkowe'))
 
 <div class="task-box" x-data="expandable">
-  <button class="toggle" data-toggle @click="open = !open">
+  <div
+    class="toggle"
+    role="button"
+    tabindex="0"
+    :aria-expanded="open.toString()"
+    @click="open = !open"
+    @keydown.enter.prevent="open = !open"
+    @keydown.space.prevent="open = !open"
+  >
     <div class="toggle-left">
       <span class="box-arrow" :class="{ open }"></span>
       <h3 class="medium">
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
         @end
-        {{ zadanie.nazwa }}
+        @if(zadanie.linkWyslij)
+          <a href="{{ zadanie.linkWyslij }}" target="_blank" rel="noopener" @click.stop>
+            {{ zadanie.nazwa }}
+          </a>
+        @else
+          {{ zadanie.nazwa }}
+        @end
       </h3>
+      <a
+        href="{{ zadanie.linkTresc }}"
+        class="task-action task-action-sm"
+        target="_blank"
+        rel="noopener"
+        @click.stop
+      >
+        Treść
+      </a>
     </div>
     <span
       class="toggle-right"
@@ -20,7 +43,7 @@
     >
       {{ zadanie.poziomuTrudnosci ? zadanie.poziomuTrudnosci.rozwiniecie : '' }}
     </span>
-  </button>
+  </div>
   <div class="box" :class="{ open }">
     <div class="box-inner">
       @if(auth.user && auth.user.canAccessAdmin)
@@ -35,8 +58,7 @@
               : null,
         })
       @end
-      
-      <a href="{{ zadanie.linkTresc }}" class="task-action" target="_blank" rel="noopener">Treść</a>
+
       @if(zadanie.linkWyslij)
         <a href="{{ zadanie.linkWyslij }}" class="task-action" target="_blank" rel="noopener">
           <img src="/icons/i_send.svg" alt="" />

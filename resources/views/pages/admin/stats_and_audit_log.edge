@@ -61,11 +61,55 @@
       <h1>
         Audit log
       </h1>
+      @let(aktywneFiltry = Object.values(filtry).some(Boolean))
+      <form method="GET" action="/admin/stats_and_audit_log" class="audit-filters">
+        <input type="search" name="q" value="{{ filtry.q }}" placeholder="Szukaj w opisie, autorze lub #id…" />
+        <select name="akcja">
+          <option value="">
+            każda akcja
+          </option>
+          @each(a in opcje.akcje)
+            <option value="{{ a }}" {{ filtry.akcja === a ? 'selected' : '' }}>
+              {{ a }}
+            </option>
+          @end
+        </select>
+        <select name="typ">
+          <option value="">
+            każdy typ
+          </option>
+          @each(t in opcje.typy)
+            <option value="{{ t }}" {{ filtry.typ === t ? 'selected' : '' }}>
+              {{ t }}
+            </option>
+          @end
+        </select>
+        <label>
+          od
+          <input type="date" name="od" value="{{ filtry.od }}" />
+        </label>
+        <label>
+          do
+          <input type="date" name="do" value="{{ filtry.do }}" />
+        </label>
+        <button type="submit">
+          Szukaj
+        </button>
+        @if(aktywneFiltry)
+          <a href="/admin/stats_and_audit_log" class="clear-link">wyczyść</a>
+        @end
+      </form>
+
       @if(paginator.total === 0)
         <p class="empty-state">
-          Brak wpisów.
+          {{ aktywneFiltry ? 'Brak wpisów dla tych filtrów.' : 'Brak wpisów.' }}
         </p>
       @else
+        @if(aktywneFiltry)
+          <p class="task-count" style="margin-bottom: 8px;">
+            Znaleziono {{ paginator.total }}
+          </p>
+        @end
         <table class="zadania-table">
           <thead>
             <tr>

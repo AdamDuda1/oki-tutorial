@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import User, { USER_ROLES } from '#models/user'
 import AuditLog from '#models/audit_log'
@@ -113,9 +114,46 @@ export default class AdminController {
   }
 
   async stats_and_audit_log({ view, request }: HttpContext) {
-    const page = Math.max(1, Number(request.qs().page) || 1)
-    const paginator = await AuditLog.query().orderBy('id', 'desc').paginate(page, 50)
+    const qs = request.qs()
+    const q = qs.q ? String(qs.q).trim() : ''
+    const akcja = qs.akcja ? String(qs.akcja) : ''
+    const typ = qs.typ ? String(qs.typ) : ''
+    const od = qs.od ? String(qs.od) : ''
+    const doDnia = qs.do ? String(qs.do) : ''
+    const page = Math.max(1, Number(qs.page) || 1)
+
+    const query = AuditLog.query().orderBy('id', 'desc')
+    if (q) {
+      query.where((grupa) => {
+        grupa.where('opis', 'like', `%${q}%`).orWhere('uzytkownik', 'like', `%${q}%`)
+        if (/^\d+$/.test(q)) grupa.orWhere('id_obiektu', Number(q))
+      })
+    }
+    if (akcja) query.where('akcja', akcja)
+    if (typ) query.where('typ_obiektu', typ)
+    if (od) query.where('created_at', '>=', od)
+    if (doDnia) {
+      const nastepnyDzien = DateTime.fromISO(doDnia).plus({ days: 1 }).toFormat('yyyy-MM-dd')
+      if (nastepnyDzien !== 'Invalid DateTime') query.where('created_at', '<', nastepnyDzien)
+    }
+
+    let paginator = await query.clone().paginate(page, 50)
+    if (page > paginator.lastPage) {
+      paginator = await query.clone().paginate(paginator.lastPage, 50)
+    }
     paginator.baseUrl('/admin/stats_and_audit_log')
+
+    const filtry = { q, akcja, typ, od, do: doDnia }
+    paginator.queryString(Object.fromEntries(Object.entries(filtry).filter(([, v]) => v)))
+
+    const kolumnaWartosci = async (kolumna: string) => {
+      const wiersze = await db.from('audit_log').distinct(kolumna).orderBy(kolumna)
+      return wiersze.map((r) => r[kolumna])
+    }
+    const opcje = {
+      akcje: await kolumnaWartosci('akcja'),
+      typy: await kolumnaWartosci('typ_obiektu'),
+    }
 
     const leaderboard = await db
       .from('audit_log')
@@ -141,6 +179,12 @@ export default class AdminController {
       uzytkownicy: await countRows(User.query()),
     }
 
-    return view.render('pages/admin/stats_and_audit_log', { paginator, stats, leaderboard })
+    return view.render('pages/admin/stats_and_audit_log', {
+      paginator,
+      stats,
+      leaderboard,
+      filtry,
+      opcje,
+    })
   }
 }
