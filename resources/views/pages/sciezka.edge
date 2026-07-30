@@ -110,13 +110,29 @@
                 </div>
               </div>
               @if(temat.customHtml)
-                <div class="topic-html" data-katex>
-                  {{{ temat.$extras.customHTML }}}
+                <div
+                  class="tasks-box first {{ temat.$extras.zadaniaCwiczeniowe.length === 0 && temat.$extras.zadaniaNaPomysl.length === 0 && temat.$extras.zadaniaTreningowe.length === 0 ? 'last' : '' }}"
+                  x-data="expandable"
+                >
+                  <button class="toggle" data-toggle @click="open = !open">
+                    <span class="box-arrow" :class="{ open }"></span>
+                    <h3 class="bold">
+                      Teoria
+                    </h3>
+                  </button>
+                  <div class="box" :class="{ open }">
+                    <div class="box-inner">
+                      <div class="topic-html" data-katex>
+                        {{{ temat.$extras.customHTML }}}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               @end
               @!custom.sciezka.grupaZadan({
                 zadanie: temat.$extras.zadaniaCwiczeniowe,
                 dodatkowe: temat.$extras.dodatkoweIds,
+                first: !temat.customHtml,
                 header: 'Zadania ćwiczeniowe',
                 description:
                   'Zadania na rozgrzewkę. Pozwolą zapoznać Ci się konceptem i przygotują cię do kolejnych zadań.',
@@ -130,7 +146,7 @@
                 header: 'Zadania na pomysł',
                 description:
                   'Zadania wymagające, czasami wręcz ostentacyjnie nietrywialnej, ilości pomyślunku, której skala pozostaje niewspółmierna do liczby linijek kodu prowadzących do rozwiązania.',
-                first: temat.$extras.zadaniaCwiczeniowe.length === 0,
+                first: !temat.customHtml && temat.$extras.zadaniaCwiczeniowe.length === 0,
                 last: temat.$extras.zadaniaTreningowe.length === 0,
               })
               @!custom.sciezka.grupaZadan({
@@ -140,6 +156,7 @@
                 description:
                   'Zadania z materiału do tego tematu włącznie. Niekoniecznie muszą zawierać materiały z tego tematu, ale zalecamy zrobienie wszystkich dla powtórzenia i treningu!',
                 first:
+                  !temat.customHtml &&
                   temat.$extras.zadaniaCwiczeniowe.length === 0 &&
                   temat.$extras.zadaniaNaPomysl.length === 0,
               })

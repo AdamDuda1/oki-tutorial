@@ -37,6 +37,10 @@ button {
   font: inherit;
 }
 
+select {
+  font: inherit;
+}
+
 input {
   height: 40px;
   padding: 0 16px;

@@ -28,7 +28,7 @@
             spellcheck="false"
             autofocus
             data-code-editor="sql"
-            style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; width: 100%;"
+            style="font-family: var(--font-mono), monospace; width: 100%;"
             placeholder="select id, email, role, last_login_at from users order by last_login_at desc"
           >{{ sql }}</textarea>
         </div>
@@ -82,7 +82,7 @@
                 @each(wiersz in wynik.wiersze)
                   <tr>
                     @each(komorka in wiersz)
-                      <td style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">
+                      <td style="font-family: var(--font-mono), monospace;">
                         {{ komorka }}
                       </td>
                     @end

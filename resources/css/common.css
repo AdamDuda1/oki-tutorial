@@ -33,27 +33,15 @@ body {
   font-weight: 500;
 }
 
-nav *,
-h1,
-h2,
-h3,
 code,
-button,
-a,
-.admin-content *,
-.level-html,
-tbody *,
-.toggle-right,
-.modal-header {
+pre,
+kbd,
+samp {
   font-family: var(--font-mono), monospace;
 }
 
 .katex * {
   font-family: inherit;
-}
-
-code {
-  font-family: var(--font-mono), monospace !important;
 }
 
 .katex {
@@ -125,7 +113,6 @@ header nav div img {
 
 header nav div h1 {
   /*font-family: var(--font-accent), serif;*/
-  font-family: var(--font-quicksand), sans-serif;
   font-size: 40px;
   letter-spacing: -0.5px;
   color: var(--oki-gray);

@@ -142,14 +142,14 @@
           <div>
             @field.root({ name: 'kodCpp' })
               @!field.label({ text: 'Kod C++' })
-              @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodCpp : '' })
+              @!textarea.control({ rows: 8, style: 'font-family: var(--font-mono), monospace; font-size: 13px;', value: task ? task.kodCpp : '' })
               @!field.error()
             @end
           </div>
           <div>
             @field.root({ name: 'kodPython' })
               @!field.label({ text: 'Kod Python' })
-              @!textarea.control({ rows: 8, style: 'font-family: monospace; font-size: 13px;', value: task ? task.kodPython : '' })
+              @!textarea.control({ rows: 8, style: 'font-family: var(--font-mono), monospace; font-size: 13px;', value: task ? task.kodPython : '' })
               @!field.error()
             @end
           </div>
