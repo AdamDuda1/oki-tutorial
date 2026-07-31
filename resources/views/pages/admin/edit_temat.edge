@@ -17,7 +17,7 @@
         &lt; wróć
       </a>
     @end
-
+    
     <h1>
       {{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}
     </h1>
@@ -32,7 +32,7 @@
         @end
       </div>
     @end
-
+    
     <div
       id="materials-data"
       hidden
@@ -133,7 +133,7 @@
               'data-code-editor': 'html',
             })
           @end
-
+          
           <a
             style="color: var(--brand); cursor: pointer;"
             x-data
@@ -144,7 +144,7 @@
           </a>
         </div>
       @end
-
+      
       <div class="admin-form-section" x-data="taskPicker">
         <h2>
           Zadania

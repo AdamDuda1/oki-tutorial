@@ -9,6 +9,7 @@ const AdminMaterialyController = () => import('#controllers/admin_materialy_cont
 const AdminSqlController = () => import('#controllers/admin_sql_controller')
 const AdminSzkopulController = () => import('#controllers/admin_szkopul_controller')
 const KontoController = () => import('#controllers/konto_controller')
+const SzkopulController = () => import('#controllers/szkopul_controller')
 
 router
   .get('/', async ({ response }) => {
@@ -42,6 +43,9 @@ router
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())
+
+// Dostępne też dla gościa — token może siedzieć w sesji, nie tylko w bazie.
+router.post('/szkopul/odswiez', [SzkopulController, 'odswiez']).as('szkopul.odswiez')
 
 router.get('/konto', [KontoController, 'index']).as('konto')
 router.post('/konto/szkopul', [KontoController, 'polaczSzkopul']).as('konto.szkopul.polacz')

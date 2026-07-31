@@ -13,6 +13,7 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'szkopul.odswiez': { paramsTuple?: []; params?: {} }
     'konto': { paramsTuple?: []; params?: {} }
     'konto.szkopul.polacz': { paramsTuple?: []; params?: {} }
     'konto.szkopul.rozlacz': { paramsTuple?: []; params?: {} }
@@ -113,6 +114,7 @@ export type ScannedRoutes = {
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'szkopul.odswiez': { paramsTuple?: []; params?: {} }
     'konto.szkopul.polacz': { paramsTuple?: []; params?: {} }
     'konto.szkopul.rozlacz': { paramsTuple?: []; params?: {} }
     'konto.dane': { paramsTuple?: []; params?: {} }

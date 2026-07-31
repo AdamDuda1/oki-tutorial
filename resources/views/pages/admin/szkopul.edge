@@ -76,7 +76,7 @@
             @end
           </table>
         @end
-
+        
         @if(raport.bledy.length > 0)
           <div class="szkopul-map-warning">
             @each(b in raport.bledy)
@@ -86,7 +86,7 @@
             @end
           </div>
         @end
-
+        
         @if(raport.duplikaty.length > 0)
           <div class="szkopul-map-warning">
             <strong>Kilka zadań wskazuje na ten sam problem:</strong>
@@ -101,7 +101,7 @@
             </div>
           </div>
         @end
-
+        
         @if(raport.doZapisu.length > 0)
           <h2 style="margin-top: 25px">
             Zostanie zapisane
@@ -155,7 +155,7 @@
             @end
           </table>
         @end
-
+        
         @if(raport.bezDopasowania.length > 0)
           <h2 style="margin-top: 25px">
             Bez dopasowania; uzupełnij ręcznie przy zadaniu
@@ -168,7 +168,7 @@
             @end
           </ul>
         @end
-
+        
         @if(raport.pozaSzkopulem.length > 0)
           <h2 style="margin-top: 25px">
             Poza Szkopułem; nigdy się nie zmapują
@@ -181,7 +181,7 @@
             @end
           </ul>
         @end
-
+        
         <form
           method="POST"
           action="{{ route('admin.szkopul.store') }}"

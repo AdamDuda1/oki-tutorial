@@ -432,3 +432,22 @@
     color: var(--easy);
   }
 }
+
+.postep-prawa {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.postep-odswiez {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: max-content;
+  cursor: pointer;
+  font-family: var(--font-brand), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand);
+  :hover { background: transparent !important; }
+}

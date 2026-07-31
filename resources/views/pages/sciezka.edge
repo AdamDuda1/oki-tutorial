@@ -51,10 +51,23 @@
         <div class="postep-poziom">
           <div class="postep-naglowek">
             <span class="bold">Twój postęp</span>
-            <span class="postep-liczby">
-              {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
-              · {{ postepPoziomu.procent }}%
-            </span>
+            <div class="postep-prawa">
+              <span class="postep-liczby">
+                {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
+                · {{ postepPoziomu.procent }}%
+              </span>
+              <form method="POST" action="{{ route('szkopul.odswiez') }}">
+                {{ csrfField() }}
+                <div style="position: relative; top: 1px">
+                  <button
+                    type="submit"
+                    class="postep-odswiez"
+                    title="Pobierz wyniki ze Szkopuła teraz"
+                    style="font-size: large;"
+                  > &#x21bb; </button>
+                </div>
+              </form>
+            </div>
           </div>
           <div
             class="postep-tor"
