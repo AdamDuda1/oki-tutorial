@@ -315,7 +315,7 @@ export function odznakaWyniku(wynik: Wynik | undefined | null): Odznaka | null {
     return {
       tekst: String(wynik.score),
       klasa: wynik.score >= 100 ? 'pelny' : wynik.score > 0 ? 'czesciowy' : 'zerowy',
-      tytul: opis ? `${wynik.score} pkt — ${opis}` : `${wynik.score} pkt`,
+      tytul: opis ? `${wynik.score} pkt - ${opis}` : `${wynik.score} pkt`,
     }
   }
 

@@ -31,7 +31,7 @@
           </a>
         @end
       @end
-
+      
       <span
         class="mobile-menu-handle"
         onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'"
@@ -45,27 +45,29 @@
         {{ ustawienia.banner }}
       </div>
     @end
-
+    
     <div class="content">
       @if(postepPoziomu)
         <div class="postep-poziom">
           <div class="postep-naglowek">
-            <span class="bold">Twój postęp</span>
+            <span class="postep-tytul">Twój postęp</span>
             <div class="postep-prawa">
               <span class="postep-liczby">
-                {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
-                · {{ postepPoziomu.procent }}%
+                <span class="postep-procent">{{ postepPoziomu.procent }}%</span>
+                <span class="postep-ulamek">
+                  {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
+                </span>
               </span>
-              <form method="POST" action="{{ route('szkopul.odswiez') }}">
+              <form method="POST" action="{{ route('szkopul.odswiez') }}" class="postep-form">
                 {{ csrfField() }}
-                <div style="position: relative; top: 1px">
-                  <button
-                    type="submit"
-                    class="postep-odswiez"
-                    title="Pobierz wyniki ze Szkopuła teraz"
-                    style="font-size: large;"
-                  > &#x21bb; </button>
-                </div>
+                <button
+                  type="submit"
+                  class="postep-odswiez"
+                  title="Pobierz wyniki ze Szkopuła teraz"
+                  aria-label="Odśwież wyniki ze Szkopuła"
+                >
+                  <span aria-hidden="true">&#x21bb;</span>
+                </button>
               </form>
             </div>
           </div>
@@ -113,7 +115,7 @@
                 <span class="postep-tor mini">
                   <span class="postep-wypelnienie" style="width: {{ p.procent }}%"></span>
                 </span>
-                {{ p.procent }}%
+                <span class="postep-temat-procent">{{ p.procent }}%</span>
               </span>
             @end
           </button>
@@ -131,7 +133,7 @@
                       : null,
                 })
               @end
-
+              
               <div class="topic-header">
                 <div>
                   @if(temat.linkYt)

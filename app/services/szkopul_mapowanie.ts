@@ -124,7 +124,7 @@ export async function przygotujMapowanie(token: string): Promise<Raport> {
 
     const wynik = await pobierzProblemy(token, konkurs)
     if (!wynik.ok) {
-      raport.bledy.push(`${konkurs}: ${wynik.powod} — pomijam`)
+      raport.bledy.push(`${konkurs}: ${wynik.powod}, pomijam`)
       for (const c of nasze) raport.bezDopasowania.push(`#${c.id} ${c.nazwa} → ${wynik.powod}`)
       continue
     }

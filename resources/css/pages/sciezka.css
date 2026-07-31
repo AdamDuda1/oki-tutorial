@@ -330,81 +330,98 @@
 }
 
 .wynik-badge {
+  --wynik: var(--text-secondary);
+
   display: inline-block;
   flex-shrink: 0;
-  padding: 1px 8px;
-  border-radius: 12px;
+  min-width: 36px;
+  padding: 1px 7px;
+  border: 1px solid color-mix(in oklch, var(--wynik) 40%, transparent);
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--wynik) 12%, transparent);
+  color: var(--wynik);
   font-family: var(--font-mono), monospace;
   font-size: 12px;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   line-height: 1.5;
+  text-align: center;
   white-space: nowrap;
-  border: 1px solid transparent;
 
   &.pelny {
-    color: var(--text-inverted);
+    --wynik: var(--easy);
     background: var(--easy);
+    border-color: var(--easy);
+    color: var(--text-inverted);
   }
 
   &.czesciowy {
-    color: var(--medium);
-    background: color-mix(in oklch, var(--medium) 18%, transparent);
-    border-color: color-mix(in oklch, var(--medium) 45%, transparent);
+    --wynik: var(--medium);
+    color: color-mix(in oklch, var(--medium) 75%, var(--text));
   }
 
   &.zerowy,
   &.blad {
-    color: var(--hard);
-    background: color-mix(in oklch, var(--hard) 12%, transparent);
-    border-color: color-mix(in oklch, var(--hard) 40%, transparent);
+    --wynik: var(--hard);
   }
 
   &.oczekuje {
-    color: var(--text-secondary);
     background: transparent;
     border-color: var(--border);
   }
 }
 
 .postep-poziom {
-  border: 1px solid var(--border-light);
+  outline: 1px solid var(--border-light);
   border-radius: 8px;
-  padding: 12px 14px;
-  margin-bottom: 14px;
+  padding: 9px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 .postep-naglowek {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
 
-.postep-liczby {
+.postep-tytul {
   font-family: var(--font-mono), monospace;
   font-size: 13px;
-  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.postep-liczby {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.postep-stopka {
+.postep-procent {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.postep-ulamek {
   font-size: 12px;
   color: var(--text-secondary);
 }
 
 .postep-tor {
   display: block;
-  height: 8px;
+  height: 6px;
   border-radius: 999px;
-  background: var(--background-darker);
+  background: color-mix(in oklch, var(--border) 45%, var(--background-darker));
   overflow: hidden;
 
   &.mini {
-    width: 46px;
-    height: 5px;
+    width: 42px;
+    height: 4px;
     flex-shrink: 0;
   }
 }
@@ -414,40 +431,69 @@
   height: 100%;
   border-radius: inherit;
   background: var(--easy);
-  transition: width 0.3s ease;
+  transition: width 0.35s ease;
 }
 
 .postep-temat {
   margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   flex-shrink: 0;
   font-family: var(--font-mono), monospace;
   font-size: 12px;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
+
+  .postep-temat-procent {
+    min-width: 30px;
+    text-align: right;
+  }
 
   &.ukonczony {
     color: var(--easy);
+    font-weight: 700;
   }
 }
 
 .postep-prawa {
   display: inline-flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+.postep-form {
+  display: contents;
 }
 
 .postep-odswiez {
-  background: transparent;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  width: max-content;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1;
   cursor: pointer;
-  font-family: var(--font-brand), sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--brand);
-  :hover { background: transparent !important; }
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background: var(--background-darker);
+    border-color: var(--border-light);
+    color: var(--brand);
+  }
+
+  &:active {
+    background: var(--brand-lighter);
+    border-color: var(--brand-lighter-hovered);
+  }
 }

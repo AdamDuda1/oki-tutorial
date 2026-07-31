@@ -27,7 +27,7 @@ export default class AdminSzkopulController {
 
     ctx.session.flash(
       'success',
-      ile > 0 ? `Zmapowano ${ile} zadań.` : 'Nie było nic do zmiany — mapowanie jest aktualne.'
+      ile > 0 ? `Zmapowano ${ile} zadań.` : 'Nie było nic do zmiany; mapowanie jest aktualne.'
     )
     return ctx.response.redirect().toRoute('admin.szkopul')
   }
