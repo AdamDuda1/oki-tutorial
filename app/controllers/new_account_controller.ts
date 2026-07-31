@@ -13,6 +13,6 @@ export default class NewAccountController {
 
     await auth.use('web').login(user)
     await user.recordLogin()
-    response.redirect().toRoute('home')
+    response.redirect().toRoute('konto')
   }
 }

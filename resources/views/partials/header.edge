@@ -59,15 +59,37 @@
         </div>
 
         @if(auth?.user)
-          <div>
-            @!avatar({ initials: auth?.user?.initials })
+          <div class="nav-konto">
+            <span style="position: relative; top: 1px;">
+              @!avatar({ initials: auth?.user?.initials })
+            </span>
+            <a
+              href="/konto"
+              class="nav-ikona dont-underline"
+              title="Ustawienia konta"
+              aria-label="Ustawienia konta"
+            >
+              @!ikona.ustawienia()
+            </a>
             @form({ route: 'session.destroy', method: 'POST' })
-              @!button({ text: 'Wyloguj' })
+              <button type="submit" class="nav-ikona" title="Wyloguj się" aria-label="Wyloguj się">
+                @!ikona.wyloguj()
+              </button>
             @end
           </div>
         @else
-          <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
-          @!link({ route: 'session.create', text: 'Zaloguj' })
+          <div class="nav-konto">
+            <a
+              href="/konto"
+              class="nav-ikona dont-underline"
+              title="Połącz ze Szkopułem"
+              aria-label="Połącz ze Szkopułem"
+            >
+              @!ikona.ustawienia()
+            </a>
+            <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
+            @!link({ route: 'session.create', text: 'Zaloguj' })
+          </div>
         @end
       </div>
     </div>

@@ -7,6 +7,7 @@ const AdminController = () => import('#controllers/admin_controller')
 const AdminTasksController = () => import('#controllers/admin_tasks_controller')
 const AdminMaterialyController = () => import('#controllers/admin_materialy_controller')
 const AdminSqlController = () => import('#controllers/admin_sql_controller')
+const KontoController = () => import('#controllers/konto_controller')
 
 router
   .get('/', async ({ response }) => {
@@ -38,6 +39,18 @@ router
 router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy'])
+  })
+  .use(middleware.auth())
+
+router.get('/konto', [KontoController, 'index']).as('konto')
+router.post('/konto/szkopul', [KontoController, 'polaczSzkopul']).as('konto.szkopul.polacz')
+router
+  .post('/konto/szkopul/rozlacz', [KontoController, 'rozlaczSzkopul'])
+  .as('konto.szkopul.rozlacz')
+
+router
+  .group(() => {
+    router.post('/konto/dane', [KontoController, 'zapiszDane']).as('konto.dane')
   })
   .use(middleware.auth())
 

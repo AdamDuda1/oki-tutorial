@@ -8,6 +8,7 @@ export const controllers = {
   AdminMaterialy: () => import('#controllers/admin_materialy_controller'),
   AdminSql: () => import('#controllers/admin_sql_controller'),
   AdminTasks: () => import('#controllers/admin_tasks_controller'),
+  Konto: () => import('#controllers/konto_controller'),
   ListaZadan: () => import('#controllers/lista_zadan_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Sciezka: () => import('#controllers/sciezka_controller'),

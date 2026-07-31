@@ -89,7 +89,7 @@
                 <div>
                   @if(temat.linkYt)
                     @let(ytId = (temat.linkYt.split('/embed/')[1] || '').split('?')[0])
-                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo" style="box-shadow: 0 0 20px 0 black;" >
+                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo" style="box-shadow: 0 0 3px 0 black;" >
                       <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy"/>
                       <span class="yt-play"></span>
                     </button>
@@ -117,7 +117,7 @@
                   <button class="toggle" data-toggle @click="open = !open">
                     <span class="box-arrow" :class="{ open }"></span>
                     <h3 class="bold">
-                      Podsumowanie teorii
+                      Materiały
                     </h3>
                   </button>
                   <div class="box" :class="{ open }">

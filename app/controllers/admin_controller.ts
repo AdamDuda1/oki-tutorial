@@ -270,7 +270,7 @@ export default class AdminController {
     if (przestarzale.length > 0) {
       session.flash(
         'error',
-        `Nie cofnięto — pola (${przestarzale.join(', ')}) zmieniły się już po tej edycji. Cofnij najpierw nowsze wpisy dla tego obiektu.`
+        `Nie cofnięto; pola (${przestarzale.join(', ')}) zmieniły się już po tej edycji. Cofnij najpierw nowsze wpisy dla tego obiektu.`
       )
       return response.redirect().back()
     }

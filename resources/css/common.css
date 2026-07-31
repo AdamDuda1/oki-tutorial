@@ -121,6 +121,31 @@ header nav div h1 {
   padding: 0 10px;
 }
 
+.nav-konto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  button:hover {
+    background: transparent !important;
+  }
+}
+
+.nav-ikona {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 6px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
 .site-banner {
   background: var(--brand-lighter);
   text-align: center;

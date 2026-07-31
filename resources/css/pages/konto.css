@@ -1,0 +1,100 @@
+.konto-page {
+  padding: 24px 32px;
+  /*max-width: 720px;*/
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+
+  h1 {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+}
+
+.konto-page > .konto-sekcja + .konto-sekcja {
+  margin-top: 20px;
+}
+
+.konto-sekcja {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+
+  h2 {
+    font-size: 20px;
+  }
+}
+
+.konto-status {
+  font-size: 16px;
+
+  strong {
+    font-family: var(--font-mono), monospace;
+    color: var(--brand);
+  }
+}
+
+.konto-opis {
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+.konto-kroki {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 20px;
+  font-size: 15px;
+}
+
+.konto-link {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: var(--brand);
+  overflow-wrap: anywhere;
+}
+
+.konto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 420px;
+
+  button {
+    width: auto;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.konto-rozlacz {
+  width: max-content;
+  background: transparent;
+  color: var(--brand);
+  border: 1px solid var(--brand-lighter);
+}
+
+.konto-uwaga {
+  border-top: 1px solid var(--border-light);
+  padding-top: 12px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .konto-page {
+    padding: 16px 12px;
+  }
+
+  .konto-sekcja {
+    padding: 16px;
+  }
+}

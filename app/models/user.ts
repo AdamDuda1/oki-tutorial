@@ -1,12 +1,40 @@
 import { UserSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
+import encryption from '@adonisjs/core/services/encryption'
 import { compose } from '@adonisjs/core/helpers'
+import { column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DateTime } from 'luxon'
 
 export const USER_ROLES = ['user', 'editor1', 'editor2', 'admin'] as const
 
 export default class User extends compose(UserSchema, withAuthFinder(hash)) {
+  @column({ serializeAs: null })
+  declare szkopulToken: string | null
+
+  get szkopulPolaczony() {
+    return Boolean(this.szkopulToken)
+  }
+
+  get szkopulTokenJawny(): string | null {
+    if (!this.szkopulToken) return null
+    try {
+      return encryption.decrypt<string>(this.szkopulToken)
+    } catch {
+      return null
+    }
+  }
+
+  polaczSzkopul(token: string, username: string | null) {
+    this.szkopulToken = encryption.encrypt(token)
+    this.szkopulUsername = username
+  }
+
+  rozlaczSzkopul() {
+    this.szkopulToken = null
+    this.szkopulUsername = null
+  }
+
   async recordLogin() {
     this.lastLoginAt = DateTime.now()
     await this.save()

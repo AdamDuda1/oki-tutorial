@@ -13,6 +13,10 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'konto': { paramsTuple?: []; params?: {} }
+    'konto.szkopul.polacz': { paramsTuple?: []; params?: {} }
+    'konto.szkopul.rozlacz': { paramsTuple?: []; params?: {} }
+    'konto.dane': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -58,6 +62,7 @@ export type ScannedRoutes = {
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'konto': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -82,6 +87,7 @@ export type ScannedRoutes = {
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'konto': { paramsTuple?: []; params?: {} }
     'admin': { paramsTuple?: []; params?: {} }
     'admin.edit_task.index': { paramsTuple?: []; params?: {} }
     'admin.edit_task.create': { paramsTuple?: []; params?: {} }
@@ -103,6 +109,9 @@ export type ScannedRoutes = {
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'konto.szkopul.polacz': { paramsTuple?: []; params?: {} }
+    'konto.szkopul.rozlacz': { paramsTuple?: []; params?: {} }
+    'konto.dane': { paramsTuple?: []; params?: {} }
     'admin.edit_task.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.import_store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

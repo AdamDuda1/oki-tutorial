@@ -262,6 +262,8 @@ export class UserSchema extends BaseModel {
     'lastLoginAt',
     'password',
     'role',
+    'szkopulToken',
+    'szkopulUsername',
     'updatedAt',
   ] as const
   $columns = UserSchema.$columns
@@ -279,6 +281,10 @@ export class UserSchema extends BaseModel {
   declare password: string
   @column()
   declare role: string
+  @column()
+  declare szkopulToken: string | null
+  @column()
+  declare szkopulUsername: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
