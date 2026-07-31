@@ -17,7 +17,7 @@
         &lt; wróć
       </a>
     @end
-    
+
     <h1>
       {{ isNew ? 'Nowy temat' : 'Edytuj: ' + temat.nazwa }}
     </h1>
@@ -32,8 +32,7 @@
         @end
       </div>
     @end
-    
-    {{-- Dane w atrybucie, nie w <script> - patrz komentarz w materialy.edge. --}}
+
     <div
       id="materials-data"
       hidden
@@ -74,7 +73,7 @@
           </div>
           <div class="span-2">
             @field.root({ name: 'krotkiOpis' })
-              @!field.label({ text: 'Krótki opis' })
+              @!field.label({ text: 'Krótki opis (katex + html)' })
               @!textarea.control({
                 rows: 3,
                 value: temat ? (temat.krotkiOpis ?? '') : '',
@@ -84,7 +83,7 @@
           </div>
           <div>
             @field.root({ name: 'linkYt' })
-              @!field.label({ text: 'Link YouTube' })
+              @!field.label({ text: 'Link YouTube (katex + html z customowymi komponentami)' })
               @!input.control({ type: 'url', value: temat ? (temat.linkYt ?? '') : '' })
               @!field.error()
             @end
@@ -134,7 +133,7 @@
               'data-code-editor': 'html',
             })
           @end
-          
+
           <a
             style="color: var(--brand); cursor: pointer;"
             x-data
@@ -145,7 +144,7 @@
           </a>
         </div>
       @end
-              
+
       <div class="admin-form-section" x-data="taskPicker">
         <h2>
           Zadania
