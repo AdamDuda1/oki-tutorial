@@ -83,7 +83,7 @@
           </div>
           <div>
             @field.root({ name: 'linkYt' })
-              @!field.label({ text: 'Link YouTube (katex + html z customowymi komponentami)' })
+              @!field.label({ text: 'Link YouTube (EMBED! tj. https://www.youtube.com/embed/id_filmu, opcjonalnie ?start=xs)' })
               @!input.control({ type: 'url', value: temat ? (temat.linkYt ?? '') : '' })
               @!field.error()
             @end
@@ -125,7 +125,7 @@
       @if(auth.user.canEditAllContent)
         <div class="admin-form-section">
           @field.root({ name: 'customHtml' })
-            @!field.label({ text: 'Customowy HTML (opcjonalnie)' })
+            @!field.label({ text: 'Sekcja "teoria" (katex + html z customowymi komponentami)' })
             @!textarea.control({
               rows: 15,
               value: temat ? (temat.customHtml ?? '') : '',
