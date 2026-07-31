@@ -17,8 +17,8 @@
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
         @end
-        @if(zadanie.linkWyslij)
-          <a href="{{ zadanie.linkWyslij }}" target="_blank" rel="noopener" @click.stop>
+        @if(zadanie.urlWyslij)
+          <a href="{{ zadanie.urlWyslij }}" target="_blank" rel="noopener" @click.stop>
             {{ zadanie.nazwa }}
           </a>
         @else
@@ -60,8 +60,8 @@
         })
       @end
       
-      @if(zadanie.linkWyslij && false)
-        <a href="{{ zadanie.linkWyslij }}" class="task-action" target="_blank" rel="noopener">
+      @if(zadanie.urlWyslij && false)
+        <a href="{{ zadanie.urlWyslij }}" class="task-action" target="_blank" rel="noopener">
           <img src="/icons/i_send.svg" alt="" />
           Wyślij w konkursie
         </a>

@@ -3,6 +3,7 @@ import User from '#models/user'
 import { daneKontaValidator } from '#validators/user'
 import { sprawdzToken, SZKOPUL_TOKEN_URL } from '#services/szkopul'
 import { pobierzPolaczenie, usunPolaczenie, zapiszPolaczenie } from '#services/szkopul_polaczenie'
+import { wyczyscWyniki } from '#services/szkopul_wyniki'
 
 export default class KontoController {
   async index(ctx: HttpContext) {
@@ -28,6 +29,7 @@ export default class KontoController {
     }
 
     await zapiszPolaczenie(ctx, token, wynik.username)
+    await wyczyscWyniki(ctx)
 
     session.flash('success', `Połączono ze Szkopułem jako ${wynik.username}.`)
     if (!ctx.auth.user) {
@@ -40,6 +42,7 @@ export default class KontoController {
   }
 
   async rozlaczSzkopul(ctx: HttpContext) {
+    await wyczyscWyniki(ctx)
     await usunPolaczenie(ctx)
 
     ctx.session.flash('success', 'Odłączono konto Szkopuła.')

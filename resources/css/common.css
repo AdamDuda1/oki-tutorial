@@ -139,7 +139,7 @@ header nav div h1 {
   background: none;
   border: none;
   border-radius: 6px;
-  color: var(--text-secondary);
+  color: var(--text);
   cursor: pointer;
   transition:
     color 0.15s ease,

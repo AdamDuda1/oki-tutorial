@@ -9,6 +9,8 @@ import AuditLog from '#models/audit_log'
 import type User from '#models/user'
 import { taskValidator } from '#validators/task'
 import { parseCsv, toCsv, detectDelimiter } from '#services/csv'
+import { mapowanieDlaZapisu, mapowanieDlaImportu } from '#services/szkopul_mapowanie'
+import { pobierzToken } from '#services/szkopul_polaczenie'
 
 const CSV_COLUMNS = [
   { key: 'nazwa', label: 'Nazwa', required: true, kind: 'text' },
@@ -24,6 +26,9 @@ const CSV_COLUMNS = [
     required: false,
     kind: 'url',
   },
+  { key: 'szkopul_contest', label: 'Szkopuł – konkurs', required: false, kind: 'text' },
+  { key: 'szkopul_pi_id', label: 'Szkopuł – numer problemu', required: false, kind: 'number' },
+  { key: 'szkopul_short_name', label: 'Szkopuł – slug zadania', required: false, kind: 'text' },
   { key: 'trudnosc', label: 'Trudność (skrót lub nazwa)', required: false, kind: 'text' },
   { key: 'hint', label: 'Podpowiedź', required: false, kind: 'text' },
   { key: 'kod_cpp', label: 'Kod C++', required: false, kind: 'text' },
@@ -79,13 +84,30 @@ export default class AdminTasksController {
     return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci, tagi })
   }
 
-  async store({ request, response, session, auth }: HttpContext) {
+  async store(ctx: HttpContext) {
+    const { request, response, session, auth } = ctx
     const user = auth.user!
     const payload = await request.validateUsing(taskValidator)
     const published = user.canEditAllContent && request.input('published') === 'on'
     const tagi = await normalizeTagi(payload.tagi, user)
 
-    const task = await ListaZadan.create({ ...payload, published, tagi, idAutora: user.id })
+    const mapowanie = await mapowanieDlaZapisu({
+      link: payload.linkWyslij,
+      podane: {
+        szkopulContest: payload.szkopulContest ?? null,
+        szkopulPiId: payload.szkopulPiId ?? null,
+        szkopulShortName: payload.szkopulShortName ?? null,
+      },
+      token: pobierzToken(ctx),
+    })
+
+    const task = await ListaZadan.create({
+      ...payload,
+      ...mapowanie,
+      published,
+      tagi,
+      idAutora: user.id,
+    })
     await AuditLog.record({
       user,
       akcja: 'utworzono',
@@ -110,7 +132,8 @@ export default class AdminTasksController {
     return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi })
   }
 
-  async update({ params, request, response, session, auth }: HttpContext) {
+  async update(ctx: HttpContext) {
+    const { params, request, response, session, auth } = ctx
     const user = auth.user!
     const task = await ListaZadan.findOrFail(params.id)
     if (!user.canEditAllContent && task.idAutora !== user.id) {
@@ -121,7 +144,22 @@ export default class AdminTasksController {
     const published = user.canEditAllContent ? request.input('published') === 'on' : task.published
     const tagi = await normalizeTagi(payload.tagi, user)
 
-    task.merge({ ...payload, published, tagi })
+    const mapowanie = await mapowanieDlaZapisu({
+      link: payload.linkWyslij,
+      podane: {
+        szkopulContest: payload.szkopulContest ?? null,
+        szkopulPiId: payload.szkopulPiId ?? null,
+        szkopulShortName: payload.szkopulShortName ?? null,
+      },
+      poprzednie: {
+        szkopulContest: task.szkopulContest,
+        szkopulPiId: task.szkopulPiId,
+        szkopulShortName: task.szkopulShortName,
+      },
+      token: pobierzToken(ctx),
+    })
+
+    task.merge({ ...payload, ...mapowanie, published, tagi })
     await AuditLog.recordUpdate({
       user,
       typObiektu: 'zadanie',
@@ -189,7 +227,8 @@ export default class AdminTasksController {
     return response.send(csv)
   }
 
-  async import_csv({ request, response, session, view, auth }: HttpContext) {
+  async import_csv(ctx: HttpContext) {
+    const { request, response, session, view, auth } = ctx
     const user = auth.user!
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
 
@@ -248,6 +287,9 @@ export default class AdminTasksController {
         const v = get(row, col.key)
         if (col.required && !v) rowErr.push(`brak: ${col.label}`)
         else if (col.kind === 'url' && v && !isUrl(v)) rowErr.push(`niepoprawny URL: ${col.label}`)
+        else if (col.kind === 'number' && v && !/^\d+$/.test(v)) {
+          rowErr.push(`oczekiwano liczby: ${col.label}`)
+        }
       }
 
       const trudnosc = get(row, 'trudnosc')
@@ -273,6 +315,9 @@ export default class AdminTasksController {
           linkOmowienieVid: get(row, 'link_omowienie_vid') || null,
           omowienieText: get(row, 'omowienie_text') || null,
           linkDodatkoweMaterialy: get(row, 'link_dodatkowe_materialy') || null,
+          szkopulContest: get(row, 'szkopul_contest') || null,
+          szkopulPiId: Number(get(row, 'szkopul_pi_id')) || null,
+          szkopulShortName: get(row, 'szkopul_short_name') || null,
           idPoziomuTrudnosci,
           hint: get(row, 'hint') || null,
           kodCpp: get(row, 'kod_cpp') || null,
@@ -289,10 +334,24 @@ export default class AdminTasksController {
 
     const opublikuj = user.canEditAllContent && request.input('published') === 'on'
 
+    const mapowania = await mapowanieDlaImportu(
+      przygotowane.map((p) =>
+        p.dane.szkopulContest ? null : (p.dane.linkWyslij as string | null)
+      ),
+      pobierzToken(ctx)
+    )
+
     const daneDoZapisu = []
-    for (const p of przygotowane) {
+    for (const [i, p] of przygotowane.entries()) {
       const tagi = await normalizeTagi(p.tagi, user)
-      daneDoZapisu.push({ ...p.dane, tagi, published: opublikuj, idAutora: user.id })
+      const mapowanie = p.dane.szkopulContest ? {} : mapowania[i]
+      daneDoZapisu.push({
+        ...p.dane,
+        ...mapowanie,
+        tagi,
+        published: opublikuj,
+        idAutora: user.id,
+      })
     }
 
     const utworzone = await ListaZadan.createMany(daneDoZapisu)

@@ -1,0 +1,202 @@
+@layout({ title: 'Mapowanie Szkopuła' })
+  @layoutAdminSidebar({ page: 'Mapowanie Szkopuła' })
+    <div class="admin-edit-task">
+      <h1>
+        Mapowanie zadań na Szkopuł
+      </h1>
+      <span>
+        Przypisuje każdemu zadaniu konkurs, numer problemu i slug ze Szkopuła. Bez tego przy zadaniach
+        nie pokaże się postęp. Dane bierzemy z linków „wyślij”, a slugi z API, dlatego potrzebny jest
+        Twój token. Nic nie jest wysyłane w Twoim imieniu, komenda tylko czyta listę zadań konkursu.
+      </span>
+
+      @if(blad)
+        <p class="empty-state" style="margin-top: 20px">
+          {{ blad }}
+          @if(tokenUrl)
+            <br />
+            <a href="/konto" style="color: var(--brand)">Przejdź do konta</a>
+          @end
+        </p>
+      @else
+        <div class="szkopul-map-summary">
+          <div>
+            <strong>{{ raport.doZapisu.length }}</strong>
+            do zapisania
+          </div>
+          <div>
+            <strong>{{ raport.bezZmian.length }}</strong>
+            już poprawnych
+          </div>
+          <div>
+            <strong>{{ raport.bezDopasowania.length }}</strong>
+            bez dopasowania
+          </div>
+          <div>
+            <strong>{{ raport.pozaSzkopulem.length }}</strong>
+            poza Szkopułem
+          </div>
+        </div>
+
+        @if(raport.konkursy.length > 0)
+          <table class="zadania-table" style="margin-top: 20px">
+            <thead>
+              <tr>
+                <th>
+                  Konkurs
+                </th>
+                <th>
+                  Problemów w API
+                </th>
+                <th>
+                  Naszych zadań
+                </th>
+                <th>
+                  Dopasowanych
+                </th>
+              </tr>
+            </thead>
+            @each(k in raport.konkursy)
+              <tbody class="task-row">
+                <tr>
+                  <td>
+                    <code>{{ k.konkurs }}</code>
+                  </td>
+                  <td>
+                    {{ k.problemowWApi }}
+                  </td>
+                  <td>
+                    {{ k.nasze }}
+                  </td>
+                  <td>
+                    {{ k.dopasowane }}
+                  </td>
+                </tr>
+              </tbody>
+            @end
+          </table>
+        @end
+
+        @if(raport.bledy.length > 0)
+          <div class="szkopul-map-warning">
+            @each(b in raport.bledy)
+              <div>
+                {{ b }}
+              </div>
+            @end
+          </div>
+        @end
+
+        @if(raport.duplikaty.length > 0)
+          <div class="szkopul-map-warning">
+            <strong>Kilka zadań wskazuje na ten sam problem:</strong>
+            @each(d in raport.duplikaty)
+              <div>
+                <code>{{ d.klucz }}</code>
+                — {{ d.zadania.join(' | ') }}
+              </div>
+            @end
+            <div>
+              Zmapują się, ale pokażą identyczny wynik — popraw link przy jednym z nich.
+            </div>
+          </div>
+        @end
+
+        @if(raport.doZapisu.length > 0)
+          <h2 style="margin-top: 25px">
+            Zostanie zapisane
+          </h2>
+          <table class="zadania-table">
+            <thead>
+              <tr>
+                <th class="col-id">
+                  #
+                </th>
+                <th>
+                  Zadanie
+                </th>
+                <th>
+                  Konkurs
+                </th>
+                <th>
+                  Problem
+                </th>
+                <th>
+                  Slug
+                </th>
+                <th>
+                  Było
+                </th>
+              </tr>
+            </thead>
+            @each(w in raport.doZapisu)
+              <tbody class="task-row">
+                <tr>
+                  <td>
+                    {{ w.id }}
+                  </td>
+                  <td>
+                    {{ w.nazwa }}
+                  </td>
+                  <td>
+                    <code>{{ w.konkurs }}</code>
+                  </td>
+                  <td>
+                    {{ w.pi }}
+                  </td>
+                  <td>
+                    <code>{{ w.short }}</code>
+                  </td>
+                  <td>
+                    {{ w.bylo.pi ? w.bylo.konkurs + '/' + w.bylo.pi : '—' }}
+                  </td>
+                </tr>
+              </tbody>
+            @end
+          </table>
+        @end
+
+        @if(raport.bezDopasowania.length > 0)
+          <h2 style="margin-top: 25px">
+            Bez dopasowania; uzupełnij ręcznie przy zadaniu
+          </h2>
+          <ul class="szkopul-map-list">
+            @each(w in raport.bezDopasowania)
+              <li>
+                {{ w }}
+              </li>
+            @end
+          </ul>
+        @end
+
+        @if(raport.pozaSzkopulem.length > 0)
+          <h2 style="margin-top: 25px">
+            Poza Szkopułem; nigdy się nie zmapują
+          </h2>
+          <ul class="szkopul-map-list">
+            @each(w in raport.pozaSzkopulem)
+              <li>
+                {{ w }}
+              </li>
+            @end
+          </ul>
+        @end
+
+        <form
+          method="POST"
+          action="{{ route('admin.szkopul.store') }}"
+          onsubmit="return confirm('Zapisać mapowanie dla {{ raport.doZapisu.length }} zadań?')"
+        >
+          {{ csrfField() }}
+          <div class="admin-form-actions" style="margin-top: 25px">
+            @if(raport.doZapisu.length > 0)
+              @!button({ text: 'Zapisz mapowanie', type: 'submit' })
+            @else
+              <span class="empty-state">Nie ma nic do zmiany, mapowanie jest aktualne.</span>
+            @end
+          </div>
+        </form>
+      @end
+    </div>
+  @end
+@end
