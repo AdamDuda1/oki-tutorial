@@ -56,7 +56,7 @@
         {{ ustawienia.banner }}
       </div>
     @end
-    
+
     <main>
       @if(!$props.get('noAlerts'))
         @include('partials/flash_alerts')
@@ -85,7 +85,6 @@
         >
         </p>
         <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
-          {{-- $store.modal.code to nazwa języka (np. 'cpp'); highlightCode escapuje treść --}}
           <pre>
             <code
               x-effect="if ($store.modal.code) $el.innerHTML = window.highlightCode($store.modal.body, $store.modal.code)"
