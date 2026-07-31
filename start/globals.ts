@@ -37,6 +37,11 @@ edge.global('umami', {
   enabled: Boolean(umamiUrl && umamiWebsiteId),
 })
 
+edge.global('odznakaWyniku', async (wynik: unknown) => {
+  const { odznakaWyniku } = await import('#services/szkopul_wyniki')
+  return odznakaWyniku(wynik as any)
+})
+
 edge.global('appVersion', versionInfo.hash)
 edge.global('appVersionAge', () => {
   if (!versionInfo.timestamp) return null

@@ -13,6 +13,25 @@
     })),
     ])
 
+    @let(konkursySzkopul = [
+    'oki-olimpiada-zaawansowana',
+    'oki-olimpiada-srednio-zaawansowa',
+    'oki-olimpiada-od-podstaw',
+    'oki-programowanie-od-podstaw',
+    ])
+
+    @let(contestOptions = [
+    { value: '', name: '- brak -', isSelected: !task || !task.szkopulContest },
+    ...konkursySzkopul.map(k => ({
+      value: k,
+      name: k,
+      isSelected: task && task.szkopulContest === k,
+    })),
+    ...(task && task.szkopulContest && !konkursySzkopul.includes(task.szkopulContest)
+      ? [{ value: task.szkopulContest, name: task.szkopulContest + ' (spoza listy)', isSelected: true }]
+      : []),
+    ])
+
     @if (!isNew)
       <a href="/admin/edit_task" class="back-link" style="margin-bottom: -15px; color: var(--brand);">&lt; wróć</a>
     @end
@@ -110,6 +129,27 @@
             @field.root({ name: 'linkWyslij' })
               @!field.label({ text: 'Link do wysłania (widok zadania wewnątrz konkursu (kliknij na nazwę zadania w Administracja konkursem > Zadania (<a href="https://szkopul.edu.pl/c/oki-olimpiada-od-podstaw/problemset/problem/9hctKrB7-jbGkh2QhWKQ4hz9/site/?key=statement" style="color: var(--brand)" target="_blank">przykład</a>)))' })
               @!input.control({ type: 'url', value: task ? task.linkWyslij : '' })
+              @!field.error()
+            @end
+          </div>
+          <div>
+            @field.root({ name: 'szkopulContest' })
+              @!field.label({ text: 'Szkopuł – konkurs. Razem z numerem problemu zastępuje link do wysłania. Zwykle wypełnia się sam z linku „wyślij” przy zapisie — ustaw ręcznie tylko, gdy chcesz nadpisać' })
+              @!select.control({ options: contestOptions })
+              @!field.error()
+            @end
+          </div>
+          <div>
+            @field.root({ name: 'szkopulPiId' })
+              @!field.label({ text: 'Szkopuł – numer problemu w konkursie (ten z linku <code>/submit/…/</code>)' })
+              @!input.control({ type: 'number', value: task ? task.szkopulPiId : '' })
+              @!field.error()
+            @end
+          </div>
+          <div>
+            @field.root({ name: 'szkopulShortName' })
+              @!field.label({ text: 'Szkopuł – skrócona nazwa zadania (slug, np. <code>sum</code>). Potrzebna dopiero do wysyłania ze strony' })
+              @!input.control({ type: 'text', value: task ? task.szkopulShortName : '' })
               @!field.error()
             @end
           </div>

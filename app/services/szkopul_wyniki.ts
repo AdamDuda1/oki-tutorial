@@ -162,3 +162,73 @@ export async function wyczyscWyniki(ctx: HttpContext) {
 export function czyZrobione(wynik: Wynik | undefined) {
   return Boolean(wynik && wynik.score !== null && wynik.score >= 100)
 }
+
+export function czyRozwiazane(wynik: Wynik | undefined | null) {
+  if (!wynik) return false
+  return wynik.status === 'OK' || (wynik.score !== null && wynik.score >= 100)
+}
+
+export type Postep = { zrobione: number; wszystkich: number; procent: number }
+
+type ZadanieDoPostepu = { idZadania: number; szkopulPiId: number | null }
+
+export function policzPostep(
+  zadania: ZadanieDoPostepu[],
+  wyniki: Map<number, Wynik>,
+  pomijane: Set<number> = new Set()
+): Postep | null {
+  const sledzone = new Map<number, ZadanieDoPostepu>()
+  for (const z of zadania) {
+    if (z.szkopulPiId === null || z.szkopulPiId === undefined) continue
+    if (pomijane.has(z.idZadania)) continue
+    sledzone.set(z.idZadania, z)
+  }
+
+  if (sledzone.size === 0) return null
+
+  let zrobione = 0
+  for (const id of sledzone.keys()) if (czyRozwiazane(wyniki.get(id))) zrobione++
+
+  return {
+    zrobione,
+    wszystkich: sledzone.size,
+    procent: Math.round((zrobione / sledzone.size) * 100),
+  }
+}
+
+const OPISY_STATUSOW: Record<string, string> = {
+  'OK': 'Rozwiązanie zaakceptowane',
+  'WA': 'Zła odpowiedź',
+  'TLE': 'Przekroczony limit czasu',
+  'MLE': 'Przekroczony limit pamięci',
+  'RE': 'Błąd wykonania',
+  'RV': 'Naruszenie regulaminu',
+  'CE': 'Błąd kompilacji',
+  'IGN': 'Zgłoszenie zignorowane',
+  'INI_OK': 'Testy przykładowe zaliczone',
+  'INI_ERR': 'Testy przykładowe niezaliczone',
+  '?': 'W trakcie sprawdzania',
+}
+
+export type Odznaka = { tekst: string; klasa: string; tytul: string }
+
+export function odznakaWyniku(wynik: Wynik | undefined | null): Odznaka | null {
+  if (!wynik) return null
+
+  const opis = wynik.status ? (OPISY_STATUSOW[wynik.status] ?? wynik.status) : null
+
+  if (wynik.score !== null) {
+    return {
+      tekst: String(wynik.score),
+      klasa: wynik.score >= 100 ? 'pelny' : wynik.score > 0 ? 'czesciowy' : 'zerowy',
+      tytul: opis ? `${wynik.score} pkt — ${opis}` : `${wynik.score} pkt`,
+    }
+  }
+
+  if (!wynik.status) return null
+  return {
+    tekst: wynik.status,
+    klasa: wynik.status === '?' ? 'oczekuje' : 'blad',
+    tytul: opis ?? wynik.status,
+  }
+}

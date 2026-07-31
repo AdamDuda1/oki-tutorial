@@ -58,6 +58,9 @@ export class ListaZadanSchema extends BaseModel {
     'nazwa',
     'omowienieText',
     'published',
+    'szkopulContest',
+    'szkopulPiId',
+    'szkopulShortName',
     'tagi',
     'updatedAt',
     'zrodlo',
@@ -95,6 +98,12 @@ export class ListaZadanSchema extends BaseModel {
   declare omowienieText: string | null
   @column()
   declare published: boolean
+  @column()
+  declare szkopulContest: string | null
+  @column()
+  declare szkopulPiId: number | null
+  @column()
+  declare szkopulShortName: string | null
   @column()
   declare tagi: any | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })

@@ -1,5 +1,6 @@
 @let(zadanie = $props.get('zadanie'))
 @let(dodatkowe = $props.get('dodatkowe'))
+@let(odznaka = await odznakaWyniku($props.get('wynik')))
 
 <div class="task-box" x-data="expandable">
   <div
@@ -25,6 +26,11 @@
           {{ zadanie.nazwa }}
         @end
       </h3>
+      @if(odznaka)
+        <span class="wynik-badge {{ odznaka.klasa }}" title="{{ odznaka.tytul }}">
+          {{ odznaka.tekst }}
+        </span>
+      @end
       <a
         href="{{ zadanie.linkTresc }}"
         class="task-action task-action-sm"

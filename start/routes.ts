@@ -7,6 +7,7 @@ const AdminController = () => import('#controllers/admin_controller')
 const AdminTasksController = () => import('#controllers/admin_tasks_controller')
 const AdminMaterialyController = () => import('#controllers/admin_materialy_controller')
 const AdminSqlController = () => import('#controllers/admin_sql_controller')
+const AdminSzkopulController = () => import('#controllers/admin_szkopul_controller')
 const KontoController = () => import('#controllers/konto_controller')
 
 router
@@ -145,6 +146,10 @@ router
       .as('admin.stats_and_audit_log.revert')
     router.get('sql', [AdminSqlController, 'index']).as('admin.sql')
     router.post('sql', [AdminSqlController, 'execute']).as('admin.sql.execute')
+    // Mapowanie Szkopuła: jedyna droga, żeby wypełnić kolumny szkopul_* na
+    // produkcji — tam nie ma dostępu do `node ace`.
+    router.get('szkopul', [AdminSzkopulController, 'index']).as('admin.szkopul')
+    router.post('szkopul', [AdminSzkopulController, 'store']).as('admin.szkopul.store')
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
     router
       .post('site_settings', [AdminController, 'update_site_settings'])

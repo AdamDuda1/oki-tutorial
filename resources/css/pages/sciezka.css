@@ -328,3 +328,107 @@
     color: oklch(0.42 0.18 35);
   }
 }
+
+.wynik-badge {
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 1px 8px;
+  border-radius: 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  &.pelny {
+    color: var(--text-inverted);
+    background: var(--easy);
+  }
+
+  &.czesciowy {
+    color: var(--medium);
+    background: color-mix(in oklch, var(--medium) 18%, transparent);
+    border-color: color-mix(in oklch, var(--medium) 45%, transparent);
+  }
+
+  &.zerowy,
+  &.blad {
+    color: var(--hard);
+    background: color-mix(in oklch, var(--hard) 12%, transparent);
+    border-color: color-mix(in oklch, var(--hard) 40%, transparent);
+  }
+
+  &.oczekuje {
+    color: var(--text-secondary);
+    background: transparent;
+    border-color: var(--border);
+  }
+}
+
+.postep-poziom {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.postep-naglowek {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.postep-liczby {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.postep-stopka {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.postep-tor {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--background-darker);
+  overflow: hidden;
+
+  &.mini {
+    width: 46px;
+    height: 5px;
+    flex-shrink: 0;
+  }
+}
+
+.postep-wypelnienie {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--easy);
+  transition: width 0.3s ease;
+}
+
+.postep-temat {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+
+  &.ukonczony {
+    color: var(--easy);
+  }
+}

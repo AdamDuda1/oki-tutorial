@@ -2,12 +2,14 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Tematy from '#models/tematy'
 import Poziomy from '#models/poziomy'
 import ListaZadan from '#models/lista_zadan'
+import { pobierzWyniki, policzPostep } from '#services/szkopul_wyniki'
+import { pobierzToken } from '#services/szkopul_polaczenie'
 
 export default class SciezkaController {
-  async index({ params, view, response }: HttpContext) {
+  async index(ctx: HttpContext) {
+    const { params, view, response } = ctx
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
 
-    /* fallback to the first non-deleted level by position, not by id */
     if (!poziomy.some((p) => p.idPoziomu === Number(params.id)) && poziomy.length > 0) {
       return response.redirect().toRoute('sciezka', { id: poziomy[0].idPoziomu })
     }
@@ -45,6 +47,10 @@ export default class SciezkaController {
       }
     }
 
+    const wynikiMapa = await pobierzWyniki(ctx)
+    const pokazPostep = Boolean(pobierzToken(ctx))
+    const sledzoneWPoziomie = new Map<number, InstanceType<typeof ListaZadan>>()
+
     for (const temat of tematy) {
       const dodatkoweSet = new Set(temat.zadaniaDodatkowe ?? [])
       temat.$extras.dodatkoweIds = temat.zadaniaDodatkowe ?? []
@@ -65,7 +71,25 @@ export default class SciezkaController {
       temat.$extras.zadaniaCwiczeniowe = posortuj(temat.zadaniaCwiczeniowe)
       temat.$extras.zadaniaNaPomysl = posortuj(temat.zadaniaNaPomysl)
       temat.$extras.zadaniaTreningowe = posortuj(temat.zadaniaTreningowe)
+
+      const wszystkieTematu = [
+        ...temat.$extras.zadaniaCwiczeniowe,
+        ...temat.$extras.zadaniaNaPomysl,
+        ...temat.$extras.zadaniaTreningowe,
+      ] as InstanceType<typeof ListaZadan>[]
+
+      temat.$extras.postep = pokazPostep
+        ? policzPostep(wszystkieTematu, wynikiMapa, dodatkoweSet)
+        : null
+
+      for (const z of wszystkieTematu) {
+        if (!dodatkoweSet.has(z.idZadania)) sledzoneWPoziomie.set(z.idZadania, z)
+      }
     }
+
+    const postepPoziomu = pokazPostep
+      ? policzPostep([...sledzoneWPoziomie.values()], wynikiMapa)
+      : null
 
     const renderCustom = async (html: string | null | undefined) => {
       if (!html) return null
@@ -85,6 +109,16 @@ export default class SciezkaController {
     const poziom = poziomy.find((p) => p.idPoziomu === Number(params.id))
     const poziomHtml = await renderCustom(poziom?.customHtml)
 
-    return view.render('pages/sciezka', { params, tematy, poziomy, autoOpenId, poziomHtml })
+    const wyniki = Object.fromEntries(wynikiMapa)
+
+    return view.render('pages/sciezka', {
+      params,
+      tematy,
+      poziomy,
+      autoOpenId,
+      poziomHtml,
+      wyniki,
+      postepPoziomu,
+    })
   }
 }

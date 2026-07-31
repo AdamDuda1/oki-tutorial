@@ -47,6 +47,28 @@
     @end
 
     <div class="content">
+      @if(postepPoziomu)
+        <div class="postep-poziom">
+          <div class="postep-naglowek">
+            <span class="bold">Twój postęp</span>
+            <span class="postep-liczby">
+              {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
+              · {{ postepPoziomu.procent }}%
+            </span>
+          </div>
+          <div
+            class="postep-tor"
+            role="progressbar"
+            aria-valuenow="{{ postepPoziomu.procent }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Postęp w tym poziomie"
+          >
+            <div class="postep-wypelnienie" style="width: {{ postepPoziomu.procent }}%">
+            </div>
+          </div>
+        </div>
+      @end
       @if(poziomHtml)
         <div class="level-html">
           {{{ poziomHtml }}}
@@ -69,6 +91,18 @@
             <h2 class="bold">
               {{ temat.nazwa }}
             </h2>
+            @if(temat.$extras.postep)
+              @let(p = temat.$extras.postep)
+              <span
+                class="postep-temat {{ p.procent === 100 ? 'ukonczony' : '' }}"
+                title="Rozwiązane {{ p.zrobione }} z {{ p.wszystkich }} śledzonych zadań"
+              >
+                <span class="postep-tor mini">
+                  <span class="postep-wypelnienie" style="width: {{ p.procent }}%"></span>
+                </span>
+                {{ p.procent }}%
+              </span>
+            @end
           </button>
           <div class="box" :class="{ open }">
             <div class="box-inner">
@@ -89,8 +123,14 @@
                 <div>
                   @if(temat.linkYt)
                     @let(ytId = (temat.linkYt.split('/embed/')[1] || '').split('?')[0])
-                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo" style="box-shadow: 0 0 3px 0 black;" >
-                      <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy"/>
+                    <button
+                      type="button"
+                      class="yt-facade"
+                      data-embed="{{ temat.linkYt }}"
+                      title="Odtwórz wideo"
+                      style="box-shadow: 0 0 3px 0 black;"
+                    >
+                      <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy" />
                       <span class="yt-play"></span>
                     </button>
                   @end
@@ -132,6 +172,7 @@
               @!custom.sciezka.grupaZadan({
                 zadanie: temat.$extras.zadaniaCwiczeniowe,
                 dodatkowe: temat.$extras.dodatkoweIds,
+                wyniki: wyniki,
                 first: !temat.customHtml,
                 header: 'Zadania ćwiczeniowe',
                 description:
@@ -143,6 +184,7 @@
               @!custom.sciezka.grupaZadan({
                 zadanie: temat.$extras.zadaniaNaPomysl,
                 dodatkowe: temat.$extras.dodatkoweIds,
+                wyniki: wyniki,
                 header: 'Zadania na pomysł',
                 description:
                   'Zadania wymagające, czasami wręcz ostentacyjnie nietrywialnej, ilości pomyślunku, której skala pozostaje niewspółmierna do liczby linijek kodu prowadzących do rozwiązania.',
@@ -152,6 +194,7 @@
               @!custom.sciezka.grupaZadan({
                 zadanie: temat.$extras.zadaniaTreningowe,
                 dodatkowe: temat.$extras.dodatkoweIds,
+                wyniki: wyniki,
                 header: 'Zadania z dotychczasowego materiału',
                 description:
                   'Zadania z materiału do tego tematu włącznie. Niekoniecznie muszą zawierać materiały z tego tematu, ale zalecamy zrobienie wszystkich dla powtórzenia i treningu!',

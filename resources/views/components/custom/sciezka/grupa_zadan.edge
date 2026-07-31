@@ -1,5 +1,6 @@
 @let(zadania = $props.get('zadanie'))
 @let(dodatkowe = $props.get('dodatkowe') ?? [])
+@let(wyniki = $props.get('wyniki') ?? {})
 @let(header = $props.get('header'))
 @let(description = $props.get('description'))
 @let(isFirst = $props.get('first', true))
@@ -19,6 +20,7 @@
           @!custom.sciezka.zadanie({
             zadanie: zadanie,
             dodatkowe: dodatkowe.includes(zadanie.idZadania),
+            wynik: wyniki[zadanie.idZadania],
           })
         @end
       </div>

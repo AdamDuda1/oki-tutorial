@@ -52,6 +52,8 @@ export type ScannedRoutes = {
     'admin.stats_and_audit_log.revert': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.sql': { paramsTuple?: []; params?: {} }
     'admin.sql.execute': { paramsTuple?: []; params?: {} }
+    'admin.szkopul': { paramsTuple?: []; params?: {} }
+    'admin.szkopul.store': { paramsTuple?: []; params?: {} }
     'admin.site_settings': { paramsTuple?: []; params?: {} }
     'admin.site_settings.update': { paramsTuple?: []; params?: {} }
   }
@@ -78,6 +80,7 @@ export type ScannedRoutes = {
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
     'admin.sql': { paramsTuple?: []; params?: {} }
+    'admin.szkopul': { paramsTuple?: []; params?: {} }
     'admin.site_settings': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
@@ -103,6 +106,7 @@ export type ScannedRoutes = {
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
     'admin.sql': { paramsTuple?: []; params?: {} }
+    'admin.szkopul': { paramsTuple?: []; params?: {} }
     'admin.site_settings': { paramsTuple?: []; params?: {} }
   }
   POST: {
@@ -132,6 +136,7 @@ export type ScannedRoutes = {
     'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.stats_and_audit_log.revert': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.sql.execute': { paramsTuple?: []; params?: {} }
+    'admin.szkopul.store': { paramsTuple?: []; params?: {} }
     'admin.site_settings.update': { paramsTuple?: []; params?: {} }
   }
 }
