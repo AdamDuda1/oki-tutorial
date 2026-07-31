@@ -31,7 +31,7 @@
           </a>
         @end
       @end
-      
+
       <span
         class="mobile-menu-handle"
         onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'"
@@ -45,7 +45,7 @@
         {{ ustawienia.banner }}
       </div>
     @end
-    
+
     <div class="content">
       @if(poziomHtml)
         <div class="level-html">
@@ -84,13 +84,13 @@
                       : null,
                 })
               @end
-              
+
               <div class="topic-header">
                 <div>
                   @if(temat.linkYt)
                     @let(ytId = (temat.linkYt.split('/embed/')[1] || '').split('?')[0])
-                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo">
-                      <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy" />
+                    <button type="button" class="yt-facade" data-embed="{{ temat.linkYt }}" title="Odtwórz wideo" style="box-shadow: 0 0 20px 0 black;" >
+                      <img src="https://i.ytimg.com/vi/{{ ytId }}/hqdefault.jpg" alt="Miniatura wideo" loading="lazy"/>
                       <span class="yt-play"></span>
                     </button>
                   @end
