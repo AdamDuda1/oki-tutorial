@@ -9,7 +9,11 @@ import AuditLog from '#models/audit_log'
 import type User from '#models/user'
 import { taskValidator } from '#validators/task'
 import { parseCsv, toCsv, detectDelimiter } from '#services/csv'
-import { mapowanieDlaZapisu, mapowanieDlaImportu } from '#services/szkopul_mapowanie'
+import {
+  mapowanieDlaZapisu,
+  mapowanieDlaImportu,
+  sprawdzZadanie,
+} from '#services/szkopul_mapowanie'
 import { pobierzToken } from '#services/szkopul_polaczenie'
 
 const CSV_COLUMNS = [
@@ -18,17 +22,17 @@ const CSV_COLUMNS = [
   { key: 'link_tresc', label: 'Link do treści', required: true, kind: 'url' },
   { key: 'link_wyslij', label: 'Link do wysłania', required: false, kind: 'url' },
   { key: 'link_zrodlo', label: 'Link do źródła', required: false, kind: 'url' },
-  { key: 'link_omowienie_vid', label: 'Omówienie – wideo (URL)', required: false, kind: 'url' },
-  { key: 'omowienie_text', label: 'Omówienie – tekst', required: false, kind: 'text' },
+  { key: 'link_omowienie_vid', label: 'Omówienie - wideo (URL)', required: false, kind: 'url' },
+  { key: 'omowienie_text', label: 'Omówienie - tekst', required: false, kind: 'text' },
   {
     key: 'link_dodatkowe_materialy',
     label: 'Dodatkowe materiały (URL)',
     required: false,
     kind: 'url',
   },
-  { key: 'szkopul_contest', label: 'Szkopuł – konkurs', required: false, kind: 'text' },
-  { key: 'szkopul_pi_id', label: 'Szkopuł – numer problemu', required: false, kind: 'number' },
-  { key: 'szkopul_short_name', label: 'Szkopuł – slug zadania', required: false, kind: 'text' },
+  { key: 'szkopul_contest', label: 'Szkopuł - konkurs', required: false, kind: 'text' },
+  { key: 'szkopul_pi_id', label: 'Szkopuł - numer problemu', required: false, kind: 'number' },
+  { key: 'szkopul_short_name', label: 'Szkopuł - skrót zadania', required: false, kind: 'text' },
   { key: 'trudnosc', label: 'Trudność (skrót lub nazwa)', required: false, kind: 'text' },
   { key: 'hint', label: 'Podpowiedź', required: false, kind: 'text' },
   { key: 'kod_cpp', label: 'Kod C++', required: false, kind: 'text' },
@@ -81,7 +85,12 @@ export default class AdminTasksController {
   async create({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
-    return view.render('pages/admin/edit_task', { task: null, poziomyTrudnosci, tagi })
+    return view.render('pages/admin/edit_task', {
+      task: null,
+      poziomyTrudnosci,
+      tagi,
+      sprawdzenie: null,
+    })
   }
 
   async store(ctx: HttpContext) {
@@ -119,7 +128,8 @@ export default class AdminTasksController {
     return response.redirect().toRoute('lista_zadan')
   }
 
-  async edit({ params, view, response, session, auth }: HttpContext) {
+  async edit(ctx: HttpContext) {
+    const { params, view, response, session, auth } = ctx
     const user = auth.user!
     const task = await ListaZadan.findOrFail(params.id)
     if (!user.canEditAllContent && task.idAutora !== user.id) {
@@ -129,7 +139,16 @@ export default class AdminTasksController {
     await task.load('autor')
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
-    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi })
+
+    const sprawdzenie = await sprawdzZadanie({
+      konkurs: task.szkopulContest,
+      pi: task.szkopulPiId,
+      short: task.szkopulShortName,
+      link: task.linkWyslij,
+      token: pobierzToken(ctx),
+    })
+
+    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi, sprawdzenie })
   }
 
   async update(ctx: HttpContext) {

@@ -5,7 +5,7 @@
   @let(formParams = isNew ? {} : { id: task.idZadania })
 
   @let(diffOptions = [
-  { value: '', name: '- brak -', isSelected: !task || task.idPoziomuTrudnosci === null },
+  { value: '', name: '- wybierz -', isSelected: !task || task.idPoziomuTrudnosci === null },
   ...poziomyTrudnosci.map(pt => ({
   value: pt.idPoziomuTrudnosci,
   name: pt.rozwiniecie,
@@ -21,7 +21,7 @@
   ])
 
   @let(contestOptions = [
-  { value: '', name: '- brak -', isSelected: !task || !task.szkopulContest },
+  { value: '', name: '- wybierz -', isSelected: !task || !task.szkopulContest },
   ...konkursySzkopul.map(k => ({
   value: k,
   name: k,
@@ -59,15 +59,15 @@
   <div class="admin-form-grid">
   <div class="span-2">
     @field.root({ name: 'nazwa' })
-      @!field.label({ text: 'Nazwa' })
-      @!input.control({ value: task ? task.nazwa : '' })
+      @!field.label({ text: 'Nazwa', required: true })
+      @!input.control({ value: task ? task.nazwa : '', required: true })
       @!field.error()
     @end
   </div>
   <div>
     @field.root({ name: 'zrodlo' })
-      @!field.label({ text: 'Źródło' })
-      @!input.control({ value: task ? task.zrodlo : '' })
+      @!field.label({ text: 'Źródło', required: true })
+      @!input.control({ value: task ? task.zrodlo : '', required: true })
       @!field.error()
     @end
     <details>
@@ -85,8 +85,8 @@
   </div>
   <div>
     @field.root({ name: 'idPoziomuTrudnosci' })
-      @!field.label({ text: 'Trudność' })
-      @!select.control({ options: diffOptions })
+      @!field.label({ text: 'Trudność', required: true })
+      @!select.control({ options: diffOptions, required: true })
       @!field.error()
     @end
   </div>
@@ -113,8 +113,8 @@
   <div class="admin-form-grid">
   <div>
     @field.root({ name: 'linkTresc' })
-      @!field.label({ text: '<br>Treść zadania (Z PROBLEMSETU)' })
-      @!input.control({ type: 'url', value: task ? task.linkTresc : '' })
+      @!field.label({ text: '<br>Treść zadania (Z PROBLEMSETU)', required: true })
+      @!input.control({ type: 'url', value: task ? task.linkTresc : '', required: true })
       @!field.error()
     @end
   </div>
@@ -125,34 +125,52 @@
       @!field.error()
     @end
   </div-->
-  <div>
+  <!--div>
     @field.root({ name: 'linkWyslij' })
       @!field.label({ text: 'Link do wysłania NIE UZUPEŁNIAJ (widok zadania wewnątrz konkursu (kliknij na nazwę zadania w Administracja konkursem > Zadania (<a href="https://szkopul.edu.pl/c/oki-olimpiada-od-podstaw/problemset/problem/9hctKrB7-jbGkh2QhWKQ4hz9/site/?key=statement" style="color: var(--brand)" target="_blank">przykład</a>)))' })
       @!input.control({ type: 'url', value: task ? task.linkWyslij : '' })
       @!field.error()
     @end
-  </div>
+  </div-->
   <div>
     @field.root({ name: 'szkopulContest' })
-      @!field.label({ text: 'Szkopuł - konkurs. Razem z numerem problemu zastępuje link do wysłania. Uzupełnia się sam z linku.' })
-      @!select.control({ options: contestOptions })
+      @!field.label({ text: 'Szkopuł - konkurs. Razem z numerem problemu zastępuje link do wysłania. Uzupełnia się sam z linku.', required: true })
+      @!select.control({ options: contestOptions, required: true })
       @!field.error()
     @end
   </div>
   <div>
     @field.root({ name: 'szkopulPiId' })
-      @!field.label({ text: 'Szkopuł – numer problemu w konkursie (ten z linku <code>/submit/.../</code>)' })
-      @!input.control({ type: 'number', value: task ? task.szkopulPiId : '' })
+      @!field.label({ text: 'Szkopuł - numer problemu w konkursie (ten z linku <code>/submit/.../</code>)', required: true })
+      @!input.control({ type: 'number', value: task ? task.szkopulPiId : '', required: true })
       @!field.error()
     @end
   </div>
   <div>
     @field.root({ name: 'szkopulShortName' })
-      @!field.label({ text: 'Szkopuł – skrócona nazwa zadania (slug, np. <code>sum</code>). Potrzebna dopiero do wysyłania ze strony' })
-      @!input.control({ type: 'text', value: task ? task.szkopulShortName : '' })
+      @!field.label({ text: 'Szkopuł - skrócona nazwa zadania', required: true })
+      @!input.control({ type: 'text', value: task ? task.szkopulShortName : '', required: true })
       @!field.error()
     @end
   </div>
+  @if(sprawdzenie)
+  <div class="span-2 szkopul-check szkopul-check-{{ sprawdzenie.stan }}">
+    <strong>
+      Szkopuł: {{ sprawdzenie.tytul }}
+    </strong>
+    @each(s in sprawdzenie.szczegoly)
+      <div>
+        {{ s }}
+      </div>
+    @end
+    @if(task.urlWyslij)
+      <div>
+        link „wyślij”:
+        <a href="{{ task.urlWyslij }}" target="_blank" rel="noopener">{{ task.urlWyslij }}</a>
+      </div>
+    @end
+  </div>
+  @end
   <div>
     @field.root({ name: 'linkOmowienieVid' })
       @!field.label({ text: 'Omówienie wideo (LINK do youtube, najlepiej OKI, ale jeśli nie ma to innego, np olimpiady)' })

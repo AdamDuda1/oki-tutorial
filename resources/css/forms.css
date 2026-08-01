@@ -29,6 +29,18 @@ label {
   font-weight: 500;
 }
 
+.field-required {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgb(251 44 54 / 0.12);
+  color: #b91c1c;
+}
+
+input:required:invalid,
+select:required:invalid {
+  border-color: #fca5a5;
+}
+
 input,
 textarea,
 button {

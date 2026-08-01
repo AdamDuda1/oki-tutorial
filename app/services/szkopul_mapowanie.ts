@@ -261,6 +261,197 @@ export async function mapowanieDlaImportu(
   })
 }
 
+export type Sprawdzenie = {
+  stan: 'ok' | 'uwaga' | 'blad' | 'nieznane' | 'brak'
+  tytul: string
+  szczegoly: string[]
+}
+
+async function pobierzProblem(
+  token: string,
+  konkurs: string,
+  short: string
+): Promise<{ ok: true; dane: any } | { ok: false; status: number | null }> {
+  try {
+    const odp = await fetch(
+      `${SZKOPUL_URL}/api/c/${konkurs}/problems/${encodeURIComponent(short)}/`,
+      {
+        headers: { Authorization: `Token ${token}` },
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      }
+    )
+    if (!odp.ok) return { ok: false, status: odp.status }
+    return { ok: true, dane: await odp.json() }
+  } catch {
+    return { ok: false, status: null }
+  }
+}
+
+async function podpowiedzDlaNumeru(
+  token: string,
+  konkurs: string,
+  pi: number | null
+): Promise<{ zdanie: string | null; short: string | null }> {
+  if (!pi) return { zdanie: null, short: null }
+
+  const problemy = await pobierzProblemy(token, konkurs)
+  if (!problemy.ok) return { zdanie: null, short: null }
+
+  const p = problemy.poId.get(pi)
+  if (!p) {
+    return {
+      zdanie: `Nie znaleziono ${pi} w tym konkursie.`,
+      short: null,
+    }
+  }
+  return {
+    zdanie: `Znaleziono ${pi} jako „${p.short_name}”.`,
+    short: p.short_name as string,
+  }
+}
+
+function powodHttp(status: number | null): string {
+  if (status === 401) return 'Szkopuł nie rozpoznaje Twojego tokenu'
+  if (status === 403) return 'nie jesteś zapisany na ten konkurs'
+  if (status === null) return 'Szkopuł nie odpowiedział'
+  return `HTTP ${status}`
+}
+
+export async function sprawdzZadanie(opts: {
+  konkurs: string | null
+  pi: number | null
+  short: string | null
+  link: string | null
+  token: string | null
+}): Promise<Sprawdzenie> {
+  const { konkurs, pi, short, link, token } = opts
+
+  if (!konkurs && !pi && !short) {
+    const zLinku = celZLinku(link ?? '')
+    if (zLinku) {
+      return {
+        stan: 'uwaga',
+        tytul: 'Link prowadzi na Szkopuł, ale pola poniżej są puste.',
+        szczegoly: [
+          `Z linku da się odczytać konkurs ${zLinku.konkurs}${zLinku.pi ? ` i problem ${zLinku.pi}` : ''}. Zapisz zadanie ponownie, a wypełnią się same.`,
+        ],
+      }
+    }
+    return {
+      stan: 'brak',
+      tytul: 'Zadanie nie jest na Szkopule.',
+      szczegoly: ['Postęp i wynik przy tym zadaniu się nie pokażą.'],
+    }
+  }
+
+  if (!konkurs) {
+    return {
+      stan: 'blad',
+      tytul: 'Brakuje konkursu.',
+      szczegoly: ['...'],
+    }
+  }
+
+  if (!pi && !short) {
+    return {
+      stan: 'blad',
+      tytul: 'Jest konkurs, ale nic więcej...',
+      szczegoly: ['Uzupełnij numer problemu z linku /submit/.../ lub z edycji zadania (także po dodaniu).'],
+    }
+  }
+
+  if (!token) {
+    return {
+      stan: 'nieznane',
+      tytul: 'Połącz konto ze szkopułem w ustawieniach.',
+      szczegoly: ['w /konto'],
+    }
+  }
+
+  if (short) {
+    const odp = await pobierzProblem(token, konkurs, short)
+
+    if (!odp.ok && odp.status === 404) {
+      const podpowiedz = await podpowiedzDlaNumeru(token, konkurs, pi)
+
+      return {
+        stan: 'blad',
+        tytul: `W konkursie ${konkurs} nie ma zadania ze skrótem „${short}”.`,
+        szczegoly: [
+          'Skrót albo konkurs jest zły.',
+          ...(podpowiedz.zdanie ? [podpowiedz.zdanie] : []),
+          ...(podpowiedz.short
+            ? [`Prawdopodobnie skrót powinien brzmieć „${podpowiedz.short}”.`]
+            : []),
+        ],
+      }
+    }
+    if (!odp.ok) {
+      return {
+        stan: 'nieznane',
+        tytul: `err ${powodHttp(odp.status)} :((`,
+        szczegoly: [],
+      }
+    }
+
+    const piZApi = odp.dane.problem_instance_id as number | undefined
+    if (!pi) {
+      return {
+        stan: 'uwaga',
+        tytul: `Skrót „${short}” istnieje w konkursie ${konkurs}, ale brakuje ID.`,
+        szczegoly: [`Według API to ${piZApi ?? '?'}.`],
+      }
+    }
+    if (piZApi !== pi) {
+      const podpowiedz = await podpowiedzDlaNumeru(token, konkurs, pi)
+
+      return {
+        stan: 'blad',
+        tytul: `ID problemu się nie zgadza: zapisane ${pi}, a API daje ${piZApi ?? '?'}.`,
+        szczegoly: [
+          `Link "wyślij" prowadzi do innego zadania niż skrót „${short}”.`,
+          ...(podpowiedz.zdanie ? [podpowiedz.zdanie] : []),
+          podpowiedz.short
+            ? `Popraw jedno z dwojga: id na ${piZApi}, jeśli chodziło o "${short}", albo skrót na „${podpowiedz.short}”, jeśli o problem ${pi}.`
+            : `Jeśli skrót jest dobry, wpisz id ${piZApi}.`,
+        ],
+      }
+    }
+    return {
+      stan: 'ok',
+      tytul: `Zgadza się z API: ${konkurs} / problem ${pi} / „${short}”.`,
+      szczegoly: [],
+    }
+  }
+
+  const problemy = await pobierzProblemy(token, konkurs)
+  if (!problemy.ok) {
+    return {
+      stan: 'nieznane',
+      tytul: `Nie udało się sprawdzić: ${problemy.powod}.`,
+      szczegoly: [
+        'bardzo możliwe że to wina szkopuła',
+      ],
+    }
+  }
+
+  const p = problemy.poId.get(pi!)
+  if (!p) {
+    return {
+      stan: 'blad',
+      tytul: `W konkursie ${konkurs} nie ma problemu o id ${pi}.`,
+      szczegoly: [`API zna ${problemy.ile} problemów w tym konkursie.`],
+    }
+  }
+  return {
+    stan: 'uwaga',
+    tytul: `Konkurs i id problemu się zgadzają, ale brakuje skrótu.`,
+    szczegoly: [
+      `Według API to "${p.short_name}".`,
+    ],
+  }
+}
+
 export async function zapiszMapowanie(doZapisu: Dopasowane[]): Promise<number> {
   for (const w of doZapisu) {
     await db.from('lista_zadan').where('id_zadania', w.id).update({

@@ -1,16 +1,23 @@
 @let(labelTextFromSlot = await $slots.main())
 @let(labelText = labelTextFromSlot.trim() ? labelTextFromSlot : $props.get('text'))
+@let(isRequired = !!$props.get('required'))
 @let(classes = [])
 
 <label
   {{ $props
-    .except(['text'])
+    .except(['text', 'required'])
     .merge({
       for: $context.id,
       class: classes,
       'data-invalid': $context.hasErrors ? 'true' : false,
+      'data-required': isRequired ? 'true' : false,
     })
     .toAttrs() }}
 >
   {{{ labelText }}}
+  @if(isRequired)
+    <span class="field-required" title="pole wymagane">
+      *
+    </span>
+  @end
 </label>
