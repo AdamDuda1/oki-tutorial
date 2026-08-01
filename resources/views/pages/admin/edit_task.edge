@@ -127,7 +127,7 @@
   </div-->
   <div>
     @field.root({ name: 'linkWyslij' })
-      @!field.label({ text: 'Link do wysłania (widok zadania wewnątrz konkursu (kliknij na nazwę zadania w Administracja konkursem > Zadania (<a href="https://szkopul.edu.pl/c/oki-olimpiada-od-podstaw/problemset/problem/9hctKrB7-jbGkh2QhWKQ4hz9/site/?key=statement" style="color: var(--brand)" target="_blank">przykład</a>)))' })
+      @!field.label({ text: 'Link do wysłania NIE UZUPEŁNIAJ (widok zadania wewnątrz konkursu (kliknij na nazwę zadania w Administracja konkursem > Zadania (<a href="https://szkopul.edu.pl/c/oki-olimpiada-od-podstaw/problemset/problem/9hctKrB7-jbGkh2QhWKQ4hz9/site/?key=statement" style="color: var(--brand)" target="_blank">przykład</a>)))' })
       @!input.control({ type: 'url', value: task ? task.linkWyslij : '' })
       @!field.error()
     @end
@@ -141,7 +141,7 @@
   </div>
   <div>
     @field.root({ name: 'szkopulPiId' })
-      @!field.label({ text: 'Szkopuł – numer problemu w konkursie (ten z linku <code>/submit/…/</code>)' })
+      @!field.label({ text: 'Szkopuł – numer problemu w konkursie (ten z linku <code>/submit/.../</code>)' })
       @!input.control({ type: 'number', value: task ? task.szkopulPiId : '' })
       @!field.error()
     @end
