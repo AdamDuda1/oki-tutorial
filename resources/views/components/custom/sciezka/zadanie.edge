@@ -26,21 +26,21 @@
           {{ zadanie.nazwa }}
         @end
       </h3>
-      @if(odznaka)
-        <span class="wynik-badge {{ odznaka.klasa }}" title="{{ odznaka.tytul }}">
-          {{ odznaka.tekst }}
-        </span>
-      @end
       <a
         href="{{ zadanie.linkWyslij }}"
         class="task-action task-action-sm"
         target="_blank"
         rel="noopener"
-        style="DISPLAY:NONE; content: '#FIXME;'"
         @click.stop
       >
-        Treść
+        Wyślij
+        <img src="/icons/i_send.svg" alt="" />
       </a>
+      @if(odznaka)
+        <span class="wynik-badge {{ odznaka.klasa }}" title="{{ odznaka.tytul }}">
+          {{ odznaka.tekst }}
+        </span>
+      @end
     </div>
     <span
       class="toggle-right"

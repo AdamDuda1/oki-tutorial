@@ -1,13 +1,43 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import router from '@adonisjs/core/services/router'
 import Tematy from '#models/tematy'
 import Poziomy from '#models/poziomy'
 import ListaZadan from '#models/lista_zadan'
 import { pobierzWyniki, policzPostep } from '#services/szkopul_wyniki'
 import { pobierzToken } from '#services/szkopul_polaczenie'
 
+const OSTATNIA_SCIEZKA_KEY = 'ostatnia_sciezka'
+
 export default class SciezkaController {
+  async home({ request, response }: HttpContext) {
+    const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
+    if (poziomy.length === 0) return response.redirect().toRoute('sciezka', { id: 1 })
+
+    const zapamietane = String(request.plainCookie(OSTATNIA_SCIEZKA_KEY, { encoded: false }) ?? '')
+    const [idPoziomu, idTematu] = zapamietane.split('.').map(Number)
+    const poziom = poziomy.find((p) => p.idPoziomu === idPoziomu) ?? poziomy[0]
+
+    const temat =
+      poziom.idPoziomu === idPoziomu && Number.isInteger(idTematu)
+        ? await Tematy.query()
+            .where('id_tematu', idTematu)
+            .where('id_poziomu', poziom.idPoziomu)
+            .where('published', true)
+            .whereNull('deleted_at')
+            .first()
+        : null
+
+    return response.redirect(
+      router.makeUrl(
+        'sciezka',
+        { id: poziom.idPoziomu },
+        temat ? { qs: { temat: temat.idTematu } } : {}
+      )
+    )
+  }
+
   async index(ctx: HttpContext) {
-    const { params, view, response } = ctx
+    const { params, view, response, request } = ctx
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
 
     if (!poziomy.some((p) => p.idPoziomu === Number(params.id)) && poziomy.length > 0) {
@@ -104,7 +134,9 @@ export default class SciezkaController {
     for (const temat of tematy)
       if (temat.customHtml) temat.$extras.customHTML = await renderCustom(temat.customHtml)
 
-    const autoOpenId = tematy[0]?.idTematu ?? null // refer to line 11 as the time of writing
+    const zapamietany = Number(request.qs().temat)
+    const autoOpenId =
+      tematy.find((t) => t.idTematu === zapamietany)?.idTematu ?? tematy[0]?.idTematu ?? null // refer to line 11 as the time of writing
 
     const poziom = poziomy.find((p) => p.idPoziomu === Number(params.id))
     const poziomHtml = await renderCustom(poziom?.customHtml)

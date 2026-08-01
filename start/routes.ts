@@ -11,13 +11,7 @@ const AdminSzkopulController = () => import('#controllers/admin_szkopul_controll
 const KontoController = () => import('#controllers/konto_controller')
 const SzkopulController = () => import('#controllers/szkopul_controller')
 
-router
-  .get('/', async ({ response }) => {
-    const { default: Poziomy } = await import('#models/poziomy')
-    const pierwszy = await Poziomy.query().whereNull('deleted_at').orderBy('position').first()
-    return response.redirect().toRoute('sciezka', { id: pierwszy ? pierwszy.idPoziomu : 1 })
-  })
-  .as('home')
+router.get('/', [SciezkaController, 'home']).as('home')
 
 // router.on('/').render('pages/index').as('home')
 router.get('/sciezka/:id', [SciezkaController, 'index']).as('sciezka')

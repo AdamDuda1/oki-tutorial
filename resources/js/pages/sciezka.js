@@ -1,7 +1,23 @@
 import Alpine from 'alpinejs'
 
-/* currently open topic on /sciezka, drives the sidenav indicator */
 Alpine.store('topic', { current: null })
+
+const OSTATNIA_SCIEZKA_KEY = 'ostatnia_sciezka'
+const YEAR_IN_SECONDS = 60 * 60 * 24 * 365
+
+function rememberPosition() {
+  const poziom = location.pathname.match(/^\/sciezka\/(\d+)\/?$/)?.[1]
+  if (!poziom) return
+  const temat = Alpine.store('topic').current
+  const value = temat ? `${poziom}.${temat}` : poziom
+  document.cookie =
+    `${OSTATNIA_SCIEZKA_KEY}=${value}; path=/; max-age=${YEAR_IN_SECONDS}; samesite=lax` +
+    (location.protocol === 'https:' ? '; secure' : '')
+}
+
+/* the effect fires on every topic change; turbo:load covers switching levels */
+Alpine.effect(() => rememberPosition())
+document.addEventListener('turbo:load', rememberPosition)
 
 /* same-page #anchor links (topic list in the /sciezka sidenav): skip the
    turbo visit and its transition animation, smooth-scroll to the target instead.
@@ -102,7 +118,19 @@ function initSciezkaUrlSync() {
   boxes.forEach((b) => observer.observe(b))
 }
 
+/* `/` redirects here as /sciezka/:id?temat=:t (SciezkaController.home). The server already
+   expanded that topic via autoOpenId, so all that is left is scrolling to it and turning
+   ?temat into a #hash, so the URL looks like any other visit to a topic. Has to run on
+   turbo:load — inside the inline script in the body `location` is still the old one. */
+function openRememberedTopic() {
+  const temat = new URLSearchParams(location.search).get('temat')
+  if (!temat) return
+  history.replaceState(null, '', location.pathname + '#' + temat)
+  document.getElementById(temat)?.scrollIntoView()
+}
+
 document.addEventListener('turbo:load', () => {
   // initSciezkaUrlSync()
+  openRememberedTopic()
   keepScrollSlack()
 })
