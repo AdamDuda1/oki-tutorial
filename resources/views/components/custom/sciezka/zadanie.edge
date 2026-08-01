@@ -18,8 +18,8 @@
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
         @end
-        @if(zadanie.urlWyslij)
-          <a href="{{ zadanie.urlWyslij }}" target="_blank" rel="noopener" @click.stop>
+        @if(zadanie.linkTresc)
+          <a href="{{ zadanie.linkTresc }}" target="_blank" rel="noopener" @click.stop>
             {{ zadanie.nazwa }}
           </a>
         @else
@@ -32,7 +32,7 @@
         </span>
       @end
       <a
-        href="{{ zadanie.urlWyslij }}"
+        href="{{ zadanie.linkWyslij }}"
         class="task-action task-action-sm"
         target="_blank"
         rel="noopener"
