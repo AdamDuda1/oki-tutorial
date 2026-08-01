@@ -76,10 +76,10 @@ async function pobierzZeSzkopula(token: string, cele: Cel[]): Promise<Map<number
           headers: { Authorization: `Token ${token}` },
           signal: AbortSignal.timeout(TIMEOUT_MS),
         })
-        if (!odp.ok) return { konkurs, problemy: [] as any[] }
-        return { konkurs, problemy: (await odp.json()) as any[] }
+        if (!odp.ok) return { konkurs, ok: false, problemy: [] as any[] }
+        return { konkurs, ok: true, problemy: (await odp.json()) as any[] }
       } catch {
-        return { konkurs, problemy: [] as any[] }
+        return { konkurs, ok: false, problemy: [] as any[] }
       }
     })
   )
@@ -87,6 +87,9 @@ async function pobierzZeSzkopula(token: string, cele: Cel[]): Promise<Map<number
   const poKonkursie = new Map(
     odpowiedzi.map((o) => [o.konkurs, new Map(o.problemy.map((p) => [p.id, p]))])
   )
+  // Niektóre konkursy zwracają 500 na problem_list, choć problem_submission_list
+  // działa. Bez tego zadania z takiego konkursu nigdy nie dostałyby wyniku.
+  const zepsute = new Set(odpowiedzi.filter((o) => !o.ok).map((o) => o.konkurs))
 
   const wyniki = new Map<number, Wynik>()
   const doDopytania: Cel[] = []
@@ -99,7 +102,7 @@ async function pobierzZeSzkopula(token: string, cele: Cel[]): Promise<Map<number
       wyniki.set(cel.idZadania, wynik)
       continue
     }
-    if (problem && cel.slug) doDopytania.push(cel)
+    if ((problem || zepsute.has(cel.konkurs)) && cel.slug) doDopytania.push(cel)
   }
 
   const partie = doDopytania.slice(0, MAX_DOPYTAN)
