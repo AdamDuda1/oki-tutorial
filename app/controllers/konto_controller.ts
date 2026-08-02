@@ -32,6 +32,7 @@ export default class KontoController {
     await wyczyscWyniki(ctx)
 
     session.flash('success', `Połączono ze Szkopułem jako ${wynik.username}.`)
+    session.flash('trackSzkopul', ctx.auth.user ? 'konto' : 'gosc')
     if (!ctx.auth.user) {
       session.flash(
         'successNext',

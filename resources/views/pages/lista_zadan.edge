@@ -56,7 +56,14 @@
           }
           }"
       >
-        <input class="search-input" type="text" placeholder="Szukaj zadań..." x-model="q" @input="search()" />
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Szukaj zadań..."
+          data-track-szukanie
+          x-model="q"
+          @input="search()"
+        />
       </div>
     </div>
 

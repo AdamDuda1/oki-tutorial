@@ -2,8 +2,8 @@
 @let(poziomyTrudnosci = $props.get('poziomyTrudnosci'))
 @let(withAlpha = $props.get('withAlpha'))
 
-<tbody x-data="expandable" class="task-row">
-  <tr data-toggle @click="open = !open">
+<tbody x-data="expandable" class="task-row" data-track-zadanie="{{ z.nazwa }}">
+  <tr data-toggle data-track="zadanie-otwarte" @click="open = !open">
     <td class="col-id">
       {{ z.idZadania }}
     </td>
@@ -15,7 +15,7 @@
     </td>
     <td class="col-zrodlo">
       @if(z.linkZrodlo)
-        <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener" @click.stop>{{ z.zrodlo }}</a>
+        <a href="{{ z.linkZrodlo }}" target="_blank" rel="noopener" data-track="zadanie-zrodlo" @click.stop>{{ z.zrodlo }}</a>
       @else
         {{ z.zrodlo }}
       @end
@@ -46,7 +46,13 @@
             })
           @end
           <div class="przyciski">
-            <a href="{{ z.linkTresc }}" class="task-action" target="_blank" rel="noopener">Treść</a>
+            <a
+              href="{{ z.linkTresc }}"
+              class="task-action"
+              target="_blank"
+              rel="noopener"
+              data-track="zadanie-tresc"
+            >Treść</a>
             <!--@if(z.urlWyslij)
               <a href="{{ z.urlWyslij }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
             @end-->
@@ -55,16 +61,24 @@
                 class="task-action underlinable"
                 @click.stop="$store.modal.show('Hint', $el.dataset.hint)"
                 data-hint="{{ z.hint }}"
+                data-track="zadanie-hint"
               >                <img src="/icons/i_hint.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Hint</span></button>
             @end
             @if(z.linkOmowienieVid)
-              <a href="{{ z.linkOmowienieVid }}" class="task-action" target="_blank" rel="noopener">                <img src="/icons/i_vid.svg" alt="" />Omówienie</a>
+              <a
+                href="{{ z.linkOmowienieVid }}"
+                class="task-action"
+                target="_blank"
+                rel="noopener"
+                data-track="zadanie-omowienie-wideo"
+              >                <img src="/icons/i_vid.svg" alt="" />Omówienie</a>
             @end
             @if(z.omowienieText)
               <button
                 class="task-action underlinable"
                 @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
                 data-omowienie="{{ z.omowienieText }}"
+                data-track="zadanie-omowienie"
               >                <img src="/icons/i_note.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Omówienie</span></button>
             @end
             @if(z.kodCpp)
@@ -72,6 +86,7 @@
                 class="task-action underlinable"
                 @click.stop="$store.modal.show('Kod C++', $el.dataset.code, 'cpp')"
                 data-code="{{ z.kodCpp }}"
+                data-track="zadanie-kod-cpp"
               >                <img src="/icons/i_code.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Kod C++</span></button>
             @end
             @if(z.kodPython)
@@ -79,15 +94,22 @@
                 class="task-action underlinable"
                 @click.stop="$store.modal.show('Kod Python', $el.dataset.code, 'python')"
                 data-code="{{ z.kodPython }}"
+                data-track="zadanie-kod-python"
               >                <img src="/icons/i_code.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span></button>
             @end
             @if(z.linkDodatkoweMaterialy)
-              <a href="{{ z.linkDodatkoweMaterialy }}" class="task-action" target="_blank" rel="noopener">Dodatkowe materiały</a>
+              <a
+                href="{{ z.linkDodatkoweMaterialy }}"
+                class="task-action"
+                target="_blank"
+                rel="noopener"
+                data-track="zadanie-materialy"
+              >Dodatkowe materiały</a>
             @end
           </div>
           @if(z.tagi && z.tagi.length)
             <div class="tagi" x-data="{ shown: false }" :class="{ shown }">
-              <a class="pokaz-tagi" x-show="!shown" @click.stop="shown = true">pokaż tagi</a>
+              <a class="pokaz-tagi" x-show="!shown" data-track="zadanie-tagi" @click.stop="shown = true">pokaż tagi</a>
               @each(tag in z.tagi)
                 <span class="tag">{{ tag }}</span>
               @end

@@ -5,6 +5,18 @@
     </h1>
     <br />
     <div style="max-width: 90vw; min-width: 50vw;">
+      <div class="vw90">
+        <h3>
+          Konto nie jest do niczego potrzebne
+        </h3>
+        <span >
+          Wszystko działa bez logowania. Konto daje tylko dwie rzeczy: powiązanie Szkopuła z kontem (we wszystkich przeglądarkach) oraz dostęp do panelu admina, jeśli masz uprawnienia.
+          Nie wysyłamy żadnych maili (możesz wpisać wymyślony adres), a Szkopuła możesz połączyć bez logowania <a style="color: var(--brand)" href="/konto">tutaj</a>.
+        </span>
+        <br />
+        <br />
+      </div>
+
       @form({ route: 'new_account.store', method: 'POST' })
         <div>
           @field.root({ name: 'fullName' })

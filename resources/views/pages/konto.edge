@@ -1,4 +1,11 @@
 @layout({ title: auth.user ? 'Moje konto' : 'Połącz ze Szkopułem' })
+  @if(flashMessages.has('trackSzkopul'))
+    <span
+      hidden
+      data-track-auto="szkopul-polaczony"
+      data-track-tryb="{{ flashMessages.get('trackSzkopul') }}"
+    ></span>
+  @end
   <div class="konto-page">
     <h1>
       {{ auth.user ? 'Moje konto' : 'Połącz ze Szkopułem' }}

@@ -356,7 +356,9 @@ export async function sprawdzZadanie(opts: {
     return {
       stan: 'blad',
       tytul: 'Jest konkurs, ale nic więcej...',
-      szczegoly: ['Uzupełnij numer problemu z linku /submit/.../ lub z edycji zadania (także po dodaniu).'],
+      szczegoly: [
+        'Uzupełnij numer problemu z linku /submit/.../ lub z edycji zadania (także po dodaniu).',
+      ],
     }
   }
 
@@ -429,9 +431,7 @@ export async function sprawdzZadanie(opts: {
     return {
       stan: 'nieznane',
       tytul: `Nie udało się sprawdzić: ${problemy.powod}.`,
-      szczegoly: [
-        'bardzo możliwe że to wina szkopuła',
-      ],
+      szczegoly: ['bardzo możliwe że to wina szkopuła'],
     }
   }
 
@@ -446,9 +446,7 @@ export async function sprawdzZadanie(opts: {
   return {
     stan: 'uwaga',
     tytul: `Konkurs i id problemu się zgadzają, ale brakuje skrótu.`,
-    szczegoly: [
-      `Według API to "${p.short_name}".`,
-    ],
+    szczegoly: [`Według API to "${p.short_name}".`],
   }
 }
 

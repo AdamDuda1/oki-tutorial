@@ -1,5 +1,6 @@
 import TomSelect from 'tom-select'
 import 'tom-select/dist/css/tom-select.css'
+import { track } from '../umami.js'
 
 let tableFetch = null
 
@@ -9,10 +10,15 @@ function initZadaniaFilterSelect(selector, param) {
   if (select.nextElementSibling?.classList.contains('ts-wrapper'))
     select.nextElementSibling.remove()
 
+  let zainicjowany = false
+
   new TomSelect(select, {
     plugins: ['remove_button'],
     maxOptions: null,
     onChange(values) {
+      if (zainicjowany && values.length > 0) {
+        track('filtr-zmieniony', { filtr: param.replace('[]', ''), wartosci: values.join(', ') })
+      }
       const url = new URL(location.href)
       url.searchParams.delete(param)
       for (const v of values) url.searchParams.append(param, v)
@@ -31,6 +37,8 @@ function initZadaniaFilterSelect(selector, param) {
         })
     },
   })
+
+  zainicjowany = true
 }
 
 document.addEventListener('turbo:load', () => {

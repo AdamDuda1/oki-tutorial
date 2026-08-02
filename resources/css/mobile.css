@@ -14,7 +14,15 @@
   color: var(--text);
 }
 
+.vw90 {
+  width: 50vw;
+}
+
 @media (max-width: 900px) {
+  .vw90 {
+    width: 90vw;
+  }
+
   .nav-hamburger {
     display: flex;
     align-items: center;
