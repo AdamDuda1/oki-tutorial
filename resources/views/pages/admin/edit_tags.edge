@@ -6,7 +6,7 @@
       </h1>
       @if(tagi.length === 0)
         <p class="empty-state">
-          Brak tagów. Dodaj pierwszy poniżej. Nowe tagi można też tworzyć bezpośrednio przy edycji zadania.
+          nic tu nie ma :((
         </p>
       @else
         <table class="zadania-table">
@@ -64,7 +64,6 @@
       <h1>
         Dodaj nowy
       </h1>
-      <span>Możesz to zrobić też podczas dodawania zadania.</span>
 
       <form method="POST" action="{{ route('admin.tags.store') }}">
         {{ csrfField() }}

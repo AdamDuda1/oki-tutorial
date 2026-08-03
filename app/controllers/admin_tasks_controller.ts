@@ -6,7 +6,6 @@ import ListaZadan from '#models/lista_zadan'
 import PoziomTrudnosci from '#models/poziom_trudnosci'
 import Tag from '#models/tag'
 import AuditLog from '#models/audit_log'
-import type User from '#models/user'
 import { taskValidator } from '#validators/task'
 import { parseCsv, toCsv, detectDelimiter } from '#services/csv'
 import {
@@ -52,28 +51,14 @@ function isUrl(value: string): boolean {
   }
 }
 
-async function normalizeTagi(tagi: string[] | undefined, user: User): Promise<string[] | null> {
+async function normalizeTagi(tagi: string[] | undefined): Promise<string[] | null> {
   const names = [...new Set((tagi ?? []).map((t) => t.trim()).filter(Boolean))]
   if (names.length === 0) return null
 
-  await db.transaction(async (trx) => {
-    const rows = await Tag.fetchOrCreateMany(
-      'nazwa',
-      names.map((nazwa) => ({ nazwa })),
-      { client: trx }
-    )
-    for (const tag of rows.filter((t) => t.$isLocal)) {
-      await AuditLog.record({
-        user,
-        akcja: 'utworzono',
-        typObiektu: 'tag',
-        idObiektu: tag.idTagu,
-        opis: `tag „${tag.nazwa}” (przy edycji zadania)`,
-        trx,
-      })
-    }
-  })
-  return names
+  const wiersze = await Tag.query().whereIn('nazwa', names)
+  const istniejace = new Set(wiersze.map((t) => t.nazwa))
+  const znane = names.filter((n) => istniejace.has(n))
+  return znane.length ? znane : null
 }
 
 export default class AdminTasksController {
@@ -99,7 +84,7 @@ export default class AdminTasksController {
     const user = auth.user!
     const payload = await request.validateUsing(taskValidator)
     const published = user.canEditAllContent && request.input('published') === 'on'
-    const tagi = await normalizeTagi(payload.tagi, user)
+    const tagi = await normalizeTagi(payload.tagi)
 
     const mapowanie = SZKOPUL_WLACZONY
       ? await mapowanieDlaZapisu({
@@ -166,7 +151,7 @@ export default class AdminTasksController {
     }
     const payload = await request.validateUsing(taskValidator)
     const published = user.canEditAllContent ? request.input('published') === 'on' : task.published
-    const tagi = await normalizeTagi(payload.tagi, user)
+    const tagi = await normalizeTagi(payload.tagi)
 
     const mapowanie = SZKOPUL_WLACZONY
       ? await mapowanieDlaZapisu({
@@ -293,12 +278,14 @@ export default class AdminTasksController {
       ])
     }
 
-    /* difficulty lookup by skrót or rozwinięcie (case-insensitive) */
     const diffMap = new Map<string, number>()
     for (const p of poziomyTrudnosci) {
       if (p.skrot) diffMap.set(p.skrot.toLowerCase(), p.idPoziomuTrudnosci)
       if (p.rozwiniecie) diffMap.set(p.rozwiniecie.toLowerCase(), p.idPoziomuTrudnosci)
     }
+
+    const wszystkieTagi = await Tag.query()
+    const znaneTagi = new Set(wszystkieTagi.map((t) => t.nazwa))
 
     const get = (row: string[], key: string) => {
       const i = header.indexOf(key)
@@ -330,6 +317,14 @@ export default class AdminTasksController {
         else idPoziomuTrudnosci = id
       }
 
+      const tagiWiersza = get(row, 'tagi')
+        .split(/[;,]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+      for (const t of tagiWiersza) {
+        if (!znaneTagi.has(t)) rowErr.push(`nieznany tag „${t}”`)
+      }
+
       if (rowErr.length) {
         bledy.push(`Wiersz ${nr}: ${rowErr.join(', ')}`)
         continue
@@ -353,10 +348,7 @@ export default class AdminTasksController {
           kodCpp: get(row, 'kod_cpp') || null,
           kodPython: get(row, 'kod_python') || null,
         },
-        tagi: get(row, 'tagi')
-          .split(/[;,]/)
-          .map((t) => t.trim())
-          .filter(Boolean),
+        tagi: tagiWiersza,
       })
     }
 
@@ -373,7 +365,7 @@ export default class AdminTasksController {
 
     const daneDoZapisu = []
     for (const [i, p] of przygotowane.entries()) {
-      const tagi = await normalizeTagi(p.tagi, user)
+      const tagi = await normalizeTagi(p.tagi)
       const mapowanie = p.dane.szkopulContest ? {} : mapowania[i]
       daneDoZapisu.push({
         ...p.dane,

@@ -155,9 +155,7 @@ document.addEventListener('turbo:load', () => {
     new TomSelect(tagi, {
       plugins: ['remove_button'],
       maxOptions: null,
-      create: true,
-      persist: false,
-      createOnBlur: true,
+      create: false,
     })
   }
 })

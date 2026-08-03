@@ -35,7 +35,7 @@
     @if (!isNew)
       <a href="/admin/edit_task" class="back-link" style="margin-bottom: -15px; color: var(--brand);">&lt; wróć</a>
     @end
-    
+
     <h1>
       {{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}
     </h1>
@@ -49,7 +49,7 @@
         @end
       </div>
     @end
-    
+
     @form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
 
       <div class="admin-form-section">
@@ -92,8 +92,10 @@
           </div>
           <div class="span-2">
             @field.root({ name: 'tagi' })
-              @!field.label({ text: 'Tagi' })
-              <select id="tagi-select" name="tagi[]" multiple placeholder="Wybierz lub dodaj tagi...">
+              @!field.label({ text: auth.user.canEditAllContent
+                ? 'Tagi (nowe dodasz w <a href="/admin/edit_tags" style="color: var(--brand)">Tagi zadań</a>)'
+                : 'Tagi' })
+              <select id="tagi-select" name="tagi[]" multiple placeholder="Wybierz tagi...">
                 @each(t in tagi)
                   <option value="{{ t.nazwa }}" {{ task && task.tagi?.includes(t.nazwa) ? 'selected' : '' }}>
                     {{ t.nazwa }}
@@ -238,7 +240,7 @@
           <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
         </div>
       @end
-      
+
       <div style="display: flex; align-items: center; padding-bottom: 2px; gap: 8px;">
         <input
           type="checkbox"
