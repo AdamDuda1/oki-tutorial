@@ -79,14 +79,16 @@
           </div>
         @else
           <div class="nav-konto">
-            <a
-              href="/konto"
-              class="nav-ikona dont-underline"
-              title="Połącz ze Szkopułem"
-              aria-label="Połącz ze Szkopułem"
-            >
-              @!ikona.ustawienia()
-            </a>
+            @if(szkopul.enabled)
+              <a
+                href="/konto"
+                class="nav-ikona dont-underline"
+                title="Połącz ze Szkopułem"
+                aria-label="Połącz ze Szkopułem"
+              >
+                @!ikona.ustawienia()
+              </a>
+            @end
             <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
             @!link({ route: 'session.create', text: 'Zaloguj' })
           </div>

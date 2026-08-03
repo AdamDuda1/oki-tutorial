@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import encryption from '@adonisjs/core/services/encryption'
+import { SZKOPUL_WLACZONY } from '#services/szkopul'
 
 const KLUCZ_TOKEN = 'szkopul_token'
 const KLUCZ_LOGIN = 'szkopul_username'
@@ -10,6 +11,8 @@ export type Polaczenie = {
 }
 
 export function pobierzPolaczenie(ctx: HttpContext): Polaczenie | null {
+  if (!SZKOPUL_WLACZONY) return null
+
   const user = ctx.auth.user
   if (user) {
     return user.szkopulPolaczony ? { username: user.szkopulUsername, gosc: false } : null
@@ -20,6 +23,8 @@ export function pobierzPolaczenie(ctx: HttpContext): Polaczenie | null {
 }
 
 export function pobierzToken(ctx: HttpContext): string | null {
+  if (!SZKOPUL_WLACZONY) return null
+
   const user = ctx.auth.user
   if (user) return user.szkopulTokenJawny
 

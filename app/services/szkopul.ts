@@ -1,6 +1,10 @@
 // oi oi oi
+import env from '#start/env'
+
 export const SZKOPUL_URL = 'https://szkopul.edu.pl'
 export const SZKOPUL_TOKEN_URL = `${SZKOPUL_URL}/api/token`
+
+export const SZKOPUL_WLACZONY = env.get('SZKOPUL_ENABLED') ?? true
 
 const TIMEOUT_MS = 10_000
 

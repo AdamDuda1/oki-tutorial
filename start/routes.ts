@@ -38,14 +38,20 @@ router
   })
   .use(middleware.auth())
 
-// Dostępne też dla gościa — token może siedzieć w sesji, nie tylko w bazie.
-router.post('/szkopul/odswiez', [SzkopulController, 'odswiez']).as('szkopul.odswiez')
+router
+  .post('/szkopul/odswiez', [SzkopulController, 'odswiez'])
+  .as('szkopul.odswiez')
+  .use(middleware.szkopul())
 
 router.get('/konto', [KontoController, 'index']).as('konto')
-router.post('/konto/szkopul', [KontoController, 'polaczSzkopul']).as('konto.szkopul.polacz')
 router
-  .post('/konto/szkopul/rozlacz', [KontoController, 'rozlaczSzkopul'])
-  .as('konto.szkopul.rozlacz')
+  .group(() => {
+    router.post('/konto/szkopul', [KontoController, 'polaczSzkopul']).as('konto.szkopul.polacz')
+    router
+      .post('/konto/szkopul/rozlacz', [KontoController, 'rozlaczSzkopul'])
+      .as('konto.szkopul.rozlacz')
+  })
+  .use(middleware.szkopul())
 
 router
   .group(() => {
@@ -144,10 +150,15 @@ router
       .as('admin.stats_and_audit_log.revert')
     router.get('sql', [AdminSqlController, 'index']).as('admin.sql')
     router.post('sql', [AdminSqlController, 'execute']).as('admin.sql.execute')
-    // Mapowanie Szkopuła: jedyna droga, żeby wypełnić kolumny szkopul_* na
-    // produkcji — tam nie ma dostępu do `node ace`.
-    router.get('szkopul', [AdminSzkopulController, 'index']).as('admin.szkopul')
-    router.post('szkopul', [AdminSzkopulController, 'store']).as('admin.szkopul.store')
+
+    router
+      .get('szkopul', [AdminSzkopulController, 'index'])
+      .as('admin.szkopul')
+      .use(middleware.szkopul())
+    router
+      .post('szkopul', [AdminSzkopulController, 'store'])
+      .as('admin.szkopul.store')
+      .use(middleware.szkopul())
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
     router
       .post('site_settings', [AdminController, 'update_site_settings'])

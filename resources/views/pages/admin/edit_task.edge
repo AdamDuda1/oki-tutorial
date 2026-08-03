@@ -132,6 +132,7 @@
           @!field.error()
           @end
           </div-->
+          @if(szkopul.enabled)
           <div>
             @field.root({ name: 'szkopulContest' })
               @!field.label({ text: 'Szkopuł - konkurs. Razem z numerem problemu zastępuje link do wysłania. Uzupełnia się sam z linku.', required: true })
@@ -153,6 +154,7 @@
               @!field.error()
             @end
           </div>
+          @end
           @if(sprawdzenie)
             <div class="span-2 szkopul-check szkopul-check-{{ sprawdzenie.stan }}">
               <strong>

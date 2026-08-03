@@ -2,6 +2,7 @@ import edge from 'edge.js'
 import { execFileSync } from 'node:child_process'
 import { DateTime } from 'luxon'
 import env from '#start/env'
+import { SZKOPUL_WLACZONY } from '#services/szkopul'
 
 function resolveVersionInfo(): { hash: string; timestamp: number | null } {
   if (process.env.APP_VERSION) {
@@ -36,6 +37,8 @@ edge.global('umami', {
   websiteId: umamiWebsiteId,
   enabled: Boolean(umamiUrl && umamiWebsiteId),
 })
+
+edge.global('szkopul', { enabled: SZKOPUL_WLACZONY })
 
 edge.global('odznakaWyniku', async (wynik: unknown) => {
   const { odznakaWyniku } = await import('#services/szkopul_wyniki')

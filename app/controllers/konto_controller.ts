@@ -1,12 +1,14 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { daneKontaValidator } from '#validators/user'
-import { sprawdzToken, SZKOPUL_TOKEN_URL } from '#services/szkopul'
+import { sprawdzToken, SZKOPUL_TOKEN_URL, SZKOPUL_WLACZONY } from '#services/szkopul'
 import { pobierzPolaczenie, usunPolaczenie, zapiszPolaczenie } from '#services/szkopul_polaczenie'
 import { wyczyscWyniki } from '#services/szkopul_wyniki'
 
 export default class KontoController {
   async index(ctx: HttpContext) {
+    if (!SZKOPUL_WLACZONY && !ctx.auth.user) return ctx.response.notFound()
+
     return ctx.view.render('pages/konto', {
       szkopulTokenUrl: SZKOPUL_TOKEN_URL,
       polaczenie: pobierzPolaczenie(ctx),

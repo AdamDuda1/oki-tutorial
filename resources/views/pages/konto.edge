@@ -1,4 +1,4 @@
-@layout({ title: auth.user ? 'Moje konto' : 'Połącz ze Szkopułem' })
+@layout({ title: auth.user || !szkopul.enabled ? 'Moje konto' : 'Połącz ze Szkopułem' })
   @if(flashMessages.has('trackSzkopul'))
     <span
       hidden
@@ -8,9 +8,10 @@
   @end
   <div class="konto-page">
     <h1>
-      {{ auth.user ? 'Moje konto' : 'Połącz ze Szkopułem' }}
+      {{ auth.user || !szkopul.enabled ? 'Moje konto' : 'Połącz ze Szkopułem' }}
     </h1>
 
+    @if(szkopul.enabled)
     <div class="konto-sekcja">
       <h2>
         Szkopuł
@@ -85,6 +86,7 @@
         przestanie działać.
       </p>
     </div>
+    @end
 
     @if(auth.user)
       <div class="konto-sekcja">

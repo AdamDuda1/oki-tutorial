@@ -29,4 +29,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   // and the admin panel link is hidden.
   UMAMI_URL: Env.schema.string.optional({ format: 'url', tld: false }),
   UMAMI_WEBSITE_ID: Env.schema.string.optional(),
+
+  SZKOPUL_ENABLED: Env.schema.boolean.optional(),
 })

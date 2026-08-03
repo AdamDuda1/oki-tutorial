@@ -10,8 +10,12 @@
           Konto nie jest do niczego potrzebne
         </h3>
         <span >
-          Wszystko działa bez logowania. Konto daje tylko dwie rzeczy: powiązanie Szkopuła z kontem (we wszystkich przeglądarkach) oraz dostęp do panelu admina, jeśli masz uprawnienia.
-          Nie wysyłamy żadnych maili (możesz wpisać wymyślony adres), a Szkopuła możesz połączyć bez logowania <a style="color: var(--brand)" href="/konto">tutaj</a>.
+          @if(szkopul.enabled)
+            Wszystko działa bez logowania. Konto daje tylko dwie rzeczy: powiązanie Szkopuła z kontem (we wszystkich przeglądarkach) oraz dostęp do panelu admina, jeśli masz uprawnienia.
+            Nie wysyłamy żadnych maili (możesz wpisać wymyślony adres), a Szkopuła możesz połączyć bez logowania <a style="color: var(--brand)" href="/konto">tutaj</a>.
+          @else
+            Wszystko działa bez logowania. Nie wysyłamy żadnych maili, możesz wpisać wymyślony adres.
+          @end
         </span>
         <br />
         <br />
