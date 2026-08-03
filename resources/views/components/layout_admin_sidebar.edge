@@ -29,6 +29,8 @@
       >
         Poziomy trudności
       </a>
+    @end
+    @if(auth.user.isAdmin)
       <a
         href="/admin/edit_tags"
         class="{{ $props.get('page') === 'Edytuj tagi zadań' ? 'bold' : 'medium' }} admin-nav-topic"

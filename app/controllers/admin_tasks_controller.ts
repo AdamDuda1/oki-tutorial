@@ -411,6 +411,45 @@ export default class AdminTasksController {
     return response.redirect().back()
   }
 
+  async update_tag({ params, request, response, session, auth }: HttpContext) {
+    const tag = await Tag.findOrFail(params.id)
+    const nazwa = String(request.input('nazwa', '')).trim()
+    const stara = tag.nazwa
+
+    if (!nazwa) {
+      session.flash('error', 'Nazwa tagu jest wymagana.')
+      return response.redirect().back()
+    }
+    if (nazwa === stara) return response.redirect().back()
+
+    const zajety = await Tag.query().where('nazwa', nazwa).whereNot('id_tagu', tag.idTagu).first()
+    if (zajety) {
+      session.flash('error', `Tag „${nazwa}” już istnieje.`)
+      return response.redirect().back()
+    }
+
+    const zadania = await ListaZadan.query().whereNotNull('tagi')
+    let zmienione = 0
+    for (const z of zadania) {
+      if (!(z.tagi ?? []).includes(stara)) continue
+      z.tagi = (z.tagi ?? []).map((t) => (t === stara ? nazwa : t))
+      await z.save()
+      zmienione++
+    }
+
+    tag.nazwa = nazwa
+    await tag.save()
+    await AuditLog.record({
+      user: auth.user!,
+      akcja: 'zaktualizowano',
+      typObiektu: 'tag',
+      idObiektu: tag.idTagu,
+      opis: `tag „${stara}” → „${nazwa}” (w ${zmienione} zadaniach)`,
+    })
+    session.flash('success', 'Nazwa tagu została zmieniona.')
+    return response.redirect().back()
+  }
+
   async destroy_tag({ params, response, session, auth }: HttpContext) {
     const tag = await Tag.findOrFail(params.id)
 

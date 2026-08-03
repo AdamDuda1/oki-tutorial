@@ -110,11 +110,6 @@ router
     router
       .post('edit_task/:id/toggle_published', [AdminTasksController, 'toggle_published'])
       .as('admin.edit_task.toggle_published')
-    router.get('edit_tags', [AdminTasksController, 'create_tags']).as('admin.tags.create')
-    router.post('edit_tags/new', [AdminTasksController, 'store_tags']).as('admin.tags.store')
-    router
-      .post('edit_tags/:id/delete', [AdminTasksController, 'destroy_tag'])
-      .as('admin.tags.destroy')
     router
       .post('materialy/positions', [AdminMaterialyController, 'update_positions'])
       .as('admin.materialy.update_positions')
@@ -136,6 +131,12 @@ router
 
 router
   .group(() => {
+    router.get('edit_tags', [AdminTasksController, 'create_tags']).as('admin.tags.create')
+    router.post('edit_tags/new', [AdminTasksController, 'store_tags']).as('admin.tags.store')
+    router.post('edit_tags/:id', [AdminTasksController, 'update_tag']).as('admin.tags.update')
+    router
+      .post('edit_tags/:id/delete', [AdminTasksController, 'destroy_tag'])
+      .as('admin.tags.destroy')
     router.get('users', [AdminController, 'index_users']).as('admin.users')
     router.post('users/:id/role', [AdminController, 'update_role']).as('admin.users.update_role')
     router

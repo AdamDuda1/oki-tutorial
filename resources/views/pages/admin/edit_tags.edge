@@ -33,7 +33,18 @@
                   {{ t.idTagu }}
                 </td>
                 <td>
-                  {{ t.nazwa }}
+                  <form
+                    method="POST"
+                    action="{{ route('admin.tags.update', { id: t.idTagu }) }}"
+                    class="tag-admin-row"
+                    onsubmit="return confirm('Zmienić nazwę tagu „{{ t.nazwa }}”? Zmieni się we wszystkich zadaniach, które go używają.')"
+                  >
+                    {{ csrfField() }}
+                    <input name="nazwa" value="{{ t.nazwa }}" required aria-label="Nazwa tagu" />
+                    <button type="submit" style="background: transparent; padding: 0; width: max-content;">
+                      <a style="color: var(--brand)">zapisz</a>
+                    </button>
+                  </form>
                 </td>
                 <td>
                   <span class="tag-usage">{{ uzycia[t.nazwa] || 0 }} zadań</span>

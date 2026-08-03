@@ -92,7 +92,7 @@
           </div>
           <div class="span-2">
             @field.root({ name: 'tagi' })
-              @!field.label({ text: auth.user.canEditAllContent
+              @!field.label({ text: auth.user.isAdmin
                 ? 'Tagi (nowe dodasz w <a href="/admin/edit_tags" style="color: var(--brand)">Tagi zadań</a>)'
                 : 'Tagi' })
               <select id="tagi-select" name="tagi[]" multiple placeholder="Wybierz tagi...">

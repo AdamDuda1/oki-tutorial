@@ -37,14 +37,15 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.toggle_published': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.tags.create': { paramsTuple?: []; params?: {} }
-    'admin.tags.store': { paramsTuple?: []; params?: {} }
-    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
+    'admin.tags.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -76,8 +77,8 @@ export type ScannedRoutes = {
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
-    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
     'admin.sql': { paramsTuple?: []; params?: {} }
@@ -102,8 +103,8 @@ export type ScannedRoutes = {
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
-    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.create': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.stats_and_audit_log': { paramsTuple?: []; params?: {} }
     'admin.sql': { paramsTuple?: []; params?: {} }
@@ -127,12 +128,13 @@ export type ScannedRoutes = {
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.toggle_published': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.tags.store': { paramsTuple?: []; params?: {} }
-    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_positions': { paramsTuple?: []; params?: {} }
     'admin.materialy.store_poziom': { paramsTuple?: []; params?: {} }
     'admin.materialy.update_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.destroy_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.store': { paramsTuple?: []; params?: {} }
+    'admin.tags.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.update_role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
