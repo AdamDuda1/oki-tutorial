@@ -19,6 +19,9 @@ export default class ListaZadanController {
     const query = ListaZadan.query()
       .whereNull('deleted_at')
       .where('published', true)
+      .orderByRaw(
+        '(select position from poziomy_trudnosci where poziomy_trudnosci.id_poziomu_trudnosci = lista_zadan.id_poziomu_trudnosci)'
+      )
       .orderBy('id_zadania')
       .preload('poziomuTrudnosci')
       .preload('autor')
@@ -29,9 +32,9 @@ export default class ListaZadanController {
     }
     if (q) query.where('nazwa', 'like', `%${q}%`)
 
-    let paginator = await query.clone().paginate(page, 20)
+    let paginator = await query.clone().paginate(page, 50)
     if (page > paginator.lastPage) {
-      paginator = await query.clone().paginate(paginator.lastPage, 20)
+      paginator = await query.clone().paginate(paginator.lastPage, 50)
     }
     paginator.baseUrl('/lista_zadan')
 
