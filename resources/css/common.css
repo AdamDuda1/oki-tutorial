@@ -243,11 +243,6 @@ main.page-enter {
   font-weight: 460;
 }
 
-.modal-code pre {
-  max-height: 60vh;
-  overflow: auto;
-}
-
 .modal-close {
   width: auto;
   padding: 4px 8px;

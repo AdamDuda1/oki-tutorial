@@ -115,7 +115,6 @@
 }
 
 .code-solution {
-  position: relative;
   margin-bottom: 20px;
 }
 .code-solution:last-child {
@@ -126,6 +125,9 @@
   font-size: 13px;
   font-weight: 650;
   color: var(--text-secondary);
+}
+.code-solution-body {
+  position: relative;
 }
 
 .copy-btn {

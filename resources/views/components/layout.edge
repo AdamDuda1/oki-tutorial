@@ -88,20 +88,22 @@
           <template x-for="(sekcja, i) in $store.modal.sections" :key="i">
             <div class="code-solution">
               <h4 x-show="sekcja.nazwa" x-text="sekcja.nazwa"></h4>
-              <pre>
-                <code
-                  x-effect="$el.innerHTML = window.highlightCode(sekcja.kod, $store.modal.code)"
-                ></code>
-              </pre>
-              <button
-                type="button"
-                class="copy-btn"
-                :class="{ copied: copied === i }"
-                @click="copy(sekcja.kod, i)"
-                x-text="copied === i ? 'Skopiowano ✓' : 'Kopiuj'"
-              >
-                Kopiuj
-              </button>
+              <div class="code-solution-body">
+                <pre>
+                  <code
+                    x-effect="$el.innerHTML = window.highlightCode(sekcja.kod, $store.modal.code)"
+                  ></code>
+                </pre>
+                <button
+                  type="button"
+                  class="copy-btn"
+                  :class="{ copied: copied === i }"
+                  @click="copy(sekcja.kod, i)"
+                  x-text="copied === i ? 'Skopiowano ✓' : 'Kopiuj'"
+                >
+                  Kopiuj
+                </button>
+              </div>
             </div>
           </template>
         </div>
