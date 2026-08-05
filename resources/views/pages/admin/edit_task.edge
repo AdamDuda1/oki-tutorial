@@ -211,14 +211,14 @@
           </div>
           <div>
             @field.root({ name: 'kodCpp' })
-              @!field.label({ text: 'Kod C++' })
+              @!field.label({ text: 'Kod C++; więcej niż jedno rozwiązanie: rozdziel je linią „//// nazwa rozwiązania”' })
               @!textarea.control({ rows: 8, style: 'font-family: var(--font-mono), monospace; font-size: 13px;', value: task ? task.kodCpp : '' })
               @!field.error()
             @end
           </div>
           <div>
             @field.root({ name: 'kodPython' })
-              @!field.label({ text: 'Kod Python' })
+              @!field.label({ text: 'Kod Python; więcej niż jedno rozwiązanie: rozdziel je linią „//// nazwa rozwiązania”' })
               @!textarea.control({ rows: 8, style: 'font-family: var(--font-mono), monospace; font-size: 13px;', value: task ? task.kodPython : '' })
               @!field.error()
             @end
