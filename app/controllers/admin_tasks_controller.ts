@@ -14,7 +14,6 @@ import {
   sprawdzZadanie,
 } from '#services/szkopul_mapowanie'
 import { pobierzToken } from '#services/szkopul_polaczenie'
-import { SZKOPUL_WLACZONY } from '#services/szkopul'
 
 const CSV_COLUMNS = [
   { key: 'nazwa', label: 'Nazwa', required: true, kind: 'text' },
@@ -86,17 +85,15 @@ export default class AdminTasksController {
     const published = user.canEditAllContent && request.input('published') === 'on'
     const tagi = await normalizeTagi(payload.tagi)
 
-    const mapowanie = SZKOPUL_WLACZONY
-      ? await mapowanieDlaZapisu({
-          link: payload.linkWyslij,
-          podane: {
-            szkopulContest: payload.szkopulContest ?? null,
-            szkopulPiId: payload.szkopulPiId ?? null,
-            szkopulShortName: payload.szkopulShortName ?? null,
-          },
-          token: pobierzToken(ctx),
-        })
-      : { szkopulContest: null, szkopulPiId: null, szkopulShortName: null }
+    const mapowanie = await mapowanieDlaZapisu({
+      link: payload.linkWyslij,
+      podane: {
+        szkopulContest: payload.szkopulContest ?? null,
+        szkopulPiId: payload.szkopulPiId ?? null,
+        szkopulShortName: payload.szkopulShortName ?? null,
+      },
+      token: pobierzToken(ctx),
+    })
 
     const task = await ListaZadan.create({
       ...payload,
@@ -128,15 +125,13 @@ export default class AdminTasksController {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
 
-    const sprawdzenie = SZKOPUL_WLACZONY
-      ? await sprawdzZadanie({
-          konkurs: task.szkopulContest,
-          pi: task.szkopulPiId,
-          short: task.szkopulShortName,
-          link: task.linkWyslij,
-          token: pobierzToken(ctx),
-        })
-      : null
+    const sprawdzenie = await sprawdzZadanie({
+      konkurs: task.szkopulContest,
+      pi: task.szkopulPiId,
+      short: task.szkopulShortName,
+      link: task.linkWyslij,
+      token: pobierzToken(ctx),
+    })
 
     return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi, sprawdzenie })
   }
@@ -153,26 +148,20 @@ export default class AdminTasksController {
     const published = user.canEditAllContent ? request.input('published') === 'on' : task.published
     const tagi = await normalizeTagi(payload.tagi)
 
-    const mapowanie = SZKOPUL_WLACZONY
-      ? await mapowanieDlaZapisu({
-          link: payload.linkWyslij,
-          podane: {
-            szkopulContest: payload.szkopulContest ?? null,
-            szkopulPiId: payload.szkopulPiId ?? null,
-            szkopulShortName: payload.szkopulShortName ?? null,
-          },
-          poprzednie: {
-            szkopulContest: task.szkopulContest,
-            szkopulPiId: task.szkopulPiId,
-            szkopulShortName: task.szkopulShortName,
-          },
-          token: pobierzToken(ctx),
-        })
-      : {
-          szkopulContest: task.szkopulContest,
-          szkopulPiId: task.szkopulPiId,
-          szkopulShortName: task.szkopulShortName,
-        }
+    const mapowanie = await mapowanieDlaZapisu({
+      link: payload.linkWyslij,
+      podane: {
+        szkopulContest: payload.szkopulContest ?? null,
+        szkopulPiId: payload.szkopulPiId ?? null,
+        szkopulShortName: payload.szkopulShortName ?? null,
+      },
+      poprzednie: {
+        szkopulContest: task.szkopulContest,
+        szkopulPiId: task.szkopulPiId,
+        szkopulShortName: task.szkopulShortName,
+      },
+      token: pobierzToken(ctx),
+    })
 
     task.merge({ ...payload, ...mapowanie, published, tagi })
     await AuditLog.recordUpdate({

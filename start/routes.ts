@@ -151,14 +151,8 @@ router
     router.get('sql', [AdminSqlController, 'index']).as('admin.sql')
     router.post('sql', [AdminSqlController, 'execute']).as('admin.sql.execute')
 
-    router
-      .get('szkopul', [AdminSzkopulController, 'index'])
-      .as('admin.szkopul')
-      .use(middleware.szkopul())
-    router
-      .post('szkopul', [AdminSzkopulController, 'store'])
-      .as('admin.szkopul.store')
-      .use(middleware.szkopul())
+    router.get('szkopul', [AdminSzkopulController, 'index']).as('admin.szkopul')
+    router.post('szkopul', [AdminSzkopulController, 'store']).as('admin.szkopul.store')
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
     router
       .post('site_settings', [AdminController, 'update_site_settings'])

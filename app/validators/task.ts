@@ -1,15 +1,7 @@
 import vine from '@vinejs/vine'
-import { SZKOPUL_WLACZONY } from '#services/szkopul'
 
 const optionalUrl = () => vine.string().url().optional().nullable()
 const optionalText = () => vine.string().optional().nullable()
-
-const szkopulTekst = () =>
-  SZKOPUL_WLACZONY
-    ? vine.string().trim().minLength(1)
-    : vine.string().trim().minLength(1).optional().nullable()
-const szkopulNumer = () =>
-  SZKOPUL_WLACZONY ? vine.number().positive() : vine.number().positive().optional().nullable()
 
 export const taskValidator = vine.create({
   nazwa: vine.string().trim().minLength(1),
@@ -20,9 +12,9 @@ export const taskValidator = vine.create({
   omowienieText: optionalText(),
   linkOmowienieVid: optionalUrl(),
   linkDodatkoweMaterialy: optionalUrl(),
-  szkopulContest: szkopulTekst(),
-  szkopulPiId: szkopulNumer(),
-  szkopulShortName: szkopulTekst(),
+  szkopulContest: vine.string().trim().minLength(1),
+  szkopulPiId: vine.number().positive(),
+  szkopulShortName: vine.string().trim().minLength(1),
   idPoziomuTrudnosci: vine.number(),
   hint: optionalText(),
   kodCpp: optionalText(),
