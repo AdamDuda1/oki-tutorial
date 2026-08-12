@@ -36,6 +36,8 @@
       <a href="/admin/edit_task" class="back-link" style="margin-bottom: -15px; color: var(--brand);">&lt; wróć</a>
     @end
 
+    <div id="zadania-nazwy-data" hidden data-json="{{ JSON.stringify(znaneNazwy) }}"></div>
+
     <h1>
       {{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}
     </h1>
@@ -60,9 +62,10 @@
           <div class="span-2">
             @field.root({ name: 'nazwa' })
               @!field.label({ text: 'Nazwa', required: true })
-              @!input.control({ value: task ? task.nazwa : '', required: true })
+              @!input.control({ value: task ? task.nazwa : '', required: true, autocomplete: 'off' })
               @!field.error()
             @end
+            <div id="nazwa-podobne-warning" class="szkopul-check szkopul-check-uwaga" hidden></div>
           </div>
           <div>
             @field.root({ name: 'zrodlo' })

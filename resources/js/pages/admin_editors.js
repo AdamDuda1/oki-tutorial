@@ -159,3 +159,77 @@ document.addEventListener('turbo:load', () => {
     })
   }
 })
+
+function normalizujNazweZadania(s) {
+  return s
+    .normalize('NFD')
+    .replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+function podobienstwoNazw(a, b) {
+  const na = normalizujNazweZadania(a)
+  const nb = normalizujNazweZadania(b)
+  if (!na || !nb) return 0
+  if (na === nb || na.includes(nb) || nb.includes(na)) return 1
+
+  const slowaA = new Set(na.split(' '))
+  const slowaB = new Set(nb.split(' '))
+  const wspolne = [...slowaA].filter((slowo) => slowaB.has(slowo)).length
+  return wspolne / Math.max(slowaA.size, slowaB.size)
+}
+
+const PROG_PODOBIENSTWA_NAZWY = 0.6
+const MIN_DLUGOSC_DO_SPRAWDZENIA = 4
+
+document.addEventListener('turbo:load', () => {
+  const nazwaInput = document.querySelector('#nazwa')
+  const dataEl = document.querySelector('#zadania-nazwy-data')
+  const warningEl = document.querySelector('#nazwa-podobne-warning')
+  if (!nazwaInput || !dataEl || !warningEl) return
+
+  const zadania = JSON.parse(dataEl.dataset.json || '[]')
+  let timeoutId = null
+
+  const sprawdz = () => {
+    const wartosc = nazwaInput.value.trim()
+    warningEl.textContent = ''
+
+    if (wartosc.length < MIN_DLUGOSC_DO_SPRAWDZENIA) {
+      warningEl.hidden = true
+      return
+    }
+
+    const podobne = zadania
+      .map((z) => ({ ...z, wynik: podobienstwoNazw(wartosc, z.nazwa) }))
+      .filter((z) => z.wynik >= PROG_PODOBIENSTWA_NAZWY)
+      .sort((a, b) => b.wynik - a.wynik)
+      .slice(0, 5)
+
+    if (!podobne.length) {
+      warningEl.hidden = true
+      return
+    }
+
+    warningEl.append('Serdecznie informuję, iż w aktualnej bazie znajdują się już zadania ')
+    podobne.forEach((z, i) => {
+      if (i > 0) warningEl.append(', ')
+      const link = document.createElement('a')
+      link.href = `/admin/edit_task/${z.idZadania}`
+      link.target = '_blank'
+      link.rel = 'noopener'
+      link.textContent = z.nazwa
+      warningEl.append(link)
+    })
+    warningEl.append('. Pozdrawiam.')
+    warningEl.hidden = false
+  }
+
+  nazwaInput.addEventListener('input', () => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(sprawdz, 250)
+  })
+  sprawdz()
+})

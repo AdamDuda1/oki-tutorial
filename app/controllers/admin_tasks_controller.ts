@@ -50,6 +50,13 @@ function isUrl(value: string): boolean {
   }
 }
 
+async function pobierzZnaneNazwy(excludeId?: number): Promise<{ idZadania: number; nazwa: string }[]> {
+  const query = ListaZadan.query().whereNull('deleted_at').select('id_zadania', 'nazwa')
+  if (excludeId) query.whereNot('id_zadania', excludeId)
+  const wiersze = await query
+  return wiersze.map((z) => ({ idZadania: z.idZadania, nazwa: z.nazwa }))
+}
+
 async function normalizeTagi(tagi: string[] | undefined): Promise<string[] | null> {
   const names = [...new Set((tagi ?? []).map((t) => t.trim()).filter(Boolean))]
   if (names.length === 0) return null
@@ -70,11 +77,13 @@ export default class AdminTasksController {
   async create({ view }: HttpContext) {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
+    const znaneNazwy = await pobierzZnaneNazwy()
     return view.render('pages/admin/edit_task', {
       task: null,
       poziomyTrudnosci,
       tagi,
       sprawdzenie: null,
+      znaneNazwy,
     })
   }
 
@@ -124,6 +133,7 @@ export default class AdminTasksController {
     await task.load('autor')
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
+    const znaneNazwy = await pobierzZnaneNazwy(task.idZadania)
 
     const sprawdzenie = await sprawdzZadanie({
       konkurs: task.szkopulContest,
@@ -133,7 +143,13 @@ export default class AdminTasksController {
       token: pobierzToken(ctx),
     })
 
-    return view.render('pages/admin/edit_task', { task, poziomyTrudnosci, tagi, sprawdzenie })
+    return view.render('pages/admin/edit_task', {
+      task,
+      poziomyTrudnosci,
+      tagi,
+      sprawdzenie,
+      znaneNazwy,
+    })
   }
 
   async update(ctx: HttpContext) {
