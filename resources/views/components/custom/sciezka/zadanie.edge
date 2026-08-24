@@ -136,6 +136,18 @@
           <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span>
         </button>
       @end
+      @if(zadanie.urlPytanie)
+        <a
+          href="{{ zadanie.urlPytanie }}"
+          class="task-action"
+          target="_blank"
+          rel="noopener"
+          data-track="zadanie-pytanie"
+        >
+          <img src="/icons/i_question.svg" alt="" />
+          Zadaj pytanie
+        </a>
+      @end
     </div>
   </div>
 </div>

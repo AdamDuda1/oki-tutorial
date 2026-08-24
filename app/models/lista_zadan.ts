@@ -15,6 +15,13 @@ export default class ListaZadan extends ListaZadanSchema {
     return this.linkWyslij
   }
 
+  get urlPytanie(): string | null {
+    if (this.szkopulContest && this.szkopulPiId) {
+      return `${SZKOPUL_URL}/c/${this.szkopulContest}/questions/add/?category=p_${this.szkopulPiId}`
+    }
+    return null
+  }
+
   @column({
     prepare: (value: string[] | null) => JSON.stringify(value),
     consume: (value: any) => (typeof value === 'string' ? JSON.parse(value) : value),
