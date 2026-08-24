@@ -4,9 +4,9 @@
 
 <tbody x-data="expandable" class="task-row" data-track-zadanie="{{ z.nazwa }}">
   <tr data-toggle data-track="zadanie-otwarte" @click="open = !open">
-    <td class="col-id">
+    <!--td class="col-id">
       {{ z.idZadania }}
-    </td>
+    </td-->
     <td class="col-nazwa">
       <div class="toggle-left">
         <span class="box-arrow" :class="{ open }"></span>
