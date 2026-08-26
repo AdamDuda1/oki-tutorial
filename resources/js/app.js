@@ -5,6 +5,7 @@ import './ui.js'
 import './katex.js'
 import './highlight.js'
 import './save_shortcut.js'
+import './search_shortcut.js'
 import './umami.js'
 
 import './pages/transitions.js'
