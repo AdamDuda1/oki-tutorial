@@ -2,18 +2,22 @@
 @let(title = $props.get('title', ''))
 @let(text = $props.get('text', title))
 @let(code = $props.get('code', false))
+@let(html = $props.get('html', false))
 @let(variant = $props.get('variant', 'link'))
 @let(rawBody = slot || ($props.get('body') ?? ''))
 @let(body = code ? rawBody : rawBody.replace(/^[ \t]+/gm, ''))
+@let(onClick = html
+  ? '$store.modal.showHtml($el.dataset.title, $el.dataset.body)'
+: `$store.modal.show($el.dataset.title, $el.dataset.body, ${code ? 'true' : 'false'})`)
 
 <button
   type="button"
   x-data
   data-title="{{ title }}"
-  data-body="{{{ body }}}"
-  @click="$store.modal.show($el.dataset.title, $el.dataset.body, {{ code ? 'true' : 'false' }})"
+  data-body="{{ body }}"
+  @click="{{ onClick }}"
   {{ $props
-      .except(['title', 'text', 'body', 'code', 'variant'])
+      .except(['title', 'text', 'body', 'code', 'html', 'variant'])
       .merge({ class: ['custom-modal-link', variant] })
       .toAttrs() }}
 >

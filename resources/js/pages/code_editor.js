@@ -46,6 +46,14 @@ document.addEventListener('turbo:load', async () => {
         type: 'function',
       }
     ),
+    snippetCompletion(
+      '@custom.modalLink({ title: \'${tytuł}\', text: \'${tekst odnośnika}\', html: true })\n  <img src="${url obrazka}" alt="${opis}" />\n@end',
+      {
+        label: '@custom.modalLink (html)',
+        detail: 'okienko z obrazkiem / HTML w treści',
+        type: 'function',
+      }
+    ),
     snippetCompletion("@!custom.code({ lang: '${python}', code: `${kod}` })", {
       label: '@!custom.code',
       detail: 'blok kodu z przyciskiem kopiowania',
