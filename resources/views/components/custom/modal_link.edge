@@ -10,7 +10,7 @@
   type="button"
   x-data
   data-title="{{ title }}"
-  data-body="{{ body }}"
+  data-body="{{{ body }}}"
   @click="$store.modal.show($el.dataset.title, $el.dataset.body, {{ code ? 'true' : 'false' }})"
   {{ $props
       .except(['title', 'text', 'body', 'code', 'variant'])
