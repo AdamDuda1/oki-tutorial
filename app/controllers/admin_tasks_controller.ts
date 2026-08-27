@@ -50,7 +50,9 @@ function isUrl(value: string): boolean {
   }
 }
 
-async function pobierzZnaneNazwy(excludeId?: number): Promise<{ idZadania: number; nazwa: string }[]> {
+async function pobierzZnaneNazwy(
+  excludeId?: number
+): Promise<{ idZadania: number; nazwa: string }[]> {
   const query = ListaZadan.query().whereNull('deleted_at').select('id_zadania', 'nazwa')
   if (excludeId) query.whereNot('id_zadania', excludeId)
   const wiersze = await query

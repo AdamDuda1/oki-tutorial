@@ -13,7 +13,9 @@ function podzielRozwiazania(kod) {
     }
   }
   sekcje.push(biezaca)
-  return sekcje.map((s) => ({ nazwa: s.nazwa, kod: s.linie.join('\n').trim() })).filter((s) => s.kod)
+  return sekcje
+    .map((s) => ({ nazwa: s.nazwa, kod: s.linie.join('\n').trim() }))
+    .filter((s) => s.kod)
 }
 
 Alpine.store('modal', {

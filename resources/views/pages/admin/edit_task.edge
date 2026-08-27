@@ -35,8 +35,9 @@
     @if (!isNew)
       <a href="/admin/edit_task" class="back-link" style="margin-bottom: -15px; color: var(--brand);">&lt; wróć</a>
     @end
-
-    <div id="zadania-nazwy-data" hidden data-json="{{ JSON.stringify(znaneNazwy) }}"></div>
+    
+    <div id="zadania-nazwy-data" hidden data-json="{{ JSON.stringify(znaneNazwy) }}">
+    </div>
 
     <h1>
       {{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}
@@ -51,7 +52,7 @@
         @end
       </div>
     @end
-
+    
     @form({ route: formRoute, routeParams: formParams, method: 'POST', 'data-save-shortcut': true })
 
       <div class="admin-form-section">
@@ -65,7 +66,8 @@
               @!input.control({ value: task ? task.nazwa : '', required: true, autocomplete: 'off' })
               @!field.error()
             @end
-            <div id="nazwa-podobne-warning" class="szkopul-check szkopul-check-uwaga" hidden></div>
+            <div id="nazwa-podobne-warning" class="szkopul-check szkopul-check-uwaga" hidden>
+            </div>
           </div>
           <div>
             @field.root({ name: 'zrodlo' })
@@ -97,7 +99,7 @@
             @field.root({ name: 'tagi' })
               @!field.label({ text: auth.user.isAdmin
                 ? 'Tagi (nowe dodasz w <a href="/admin/edit_tags" style="color: var(--brand)">Tagi zadań</a>)'
-                : 'Tagi' })
+              : 'Tagi' })
               <select id="tagi-select" name="tagi[]" multiple placeholder="Wybierz tagi...">
                 @each(t in tagi)
                   <option value="{{ t.nazwa }}" {{ task && task.tagi?.includes(t.nazwa) ? 'selected' : '' }}>
@@ -241,7 +243,7 @@
           <label for="published" style="margin: 0; cursor: pointer;">Opublikowane</label>
         </div>
       @end
-
+      
       <div style="display: flex; align-items: center; padding-bottom: 2px; gap: 8px;">
         <input
           type="checkbox"
