@@ -56,7 +56,7 @@
         {{ ustawienia.banner }}
       </div>
     @end
-
+    
     <main>
       @if(!$props.get('noAlerts'))
         @include('partials/flash_alerts')
@@ -87,12 +87,11 @@
         <div x-show="$store.modal.code" x-data="copyable" class="code-block modal-code">
           <template x-for="(sekcja, i) in $store.modal.sections" :key="i">
             <div class="code-solution">
-              <h4 x-show="sekcja.nazwa" x-text="sekcja.nazwa"></h4>
+              <h4 x-show="sekcja.nazwa" x-text="sekcja.nazwa">
+              </h4>
               <div class="code-solution-body">
                 <pre>
-                  <code
-                    x-effect="$el.innerHTML = window.highlightCode(sekcja.kod, $store.modal.code)"
-                  ></code>
+                  <code x-effect="$el.innerHTML = window.highlightCode(sekcja.kod, $store.modal.code)"></code>
                 </pre>
                 <button
                   type="button"

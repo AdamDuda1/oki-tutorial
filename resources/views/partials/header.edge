@@ -58,42 +58,66 @@
           @endif
         </div>
 
-        @if(auth?.user)
-          <div class="nav-konto">
-            <span style="position: relative; top: 1px;">
-              @!avatar({ initials: auth?.user?.initials })
-            </span>
-            <a
-              href="/konto"
-              class="nav-ikona dont-underline"
-              title="Ustawienia konta"
-              aria-label="Ustawienia konta"
-            >
-              @!ikona.ustawienia()
-            </a>
-            @form({ route: 'session.destroy', method: 'POST' })
-              <button type="submit" class="nav-ikona" title="Wyloguj się" aria-label="Wyloguj się">
-                @!ikona.wyloguj()
-              </button>
-            @end
-          </div>
-        @else
-          <div class="nav-konto">
-            @if(szkopul.enabled)
+        <div style="gap: 7px">
+          @if(auth?.user)
+            <div class="nav-konto">
+              <span style="position: relative; top: 1px;">
+                @!avatar({ initials: auth?.user?.initials })
+              </span>
               <a
                 href="/konto"
                 class="nav-ikona dont-underline"
-                title="Połącz ze Szkopułem"
-                aria-label="Połącz ze Szkopułem"
+                title="Ustawienia konta"
+                aria-label="Ustawienia konta"
               >
                 @!ikona.ustawienia()
               </a>
-            @end
-            <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
-            @!link({ route: 'session.create', text: 'Zaloguj' })
+              @form({ route: 'session.destroy', method: 'POST' })
+                <button type="submit" class="nav-ikona" title="Wyloguj się" aria-label="Wyloguj się">
+                  @!ikona.wyloguj()
+                </button>
+              @end
+            </div>
+          @else
+            <div class="nav-konto">
+              @if(szkopul.enabled)
+                <a
+                  href="/konto"
+                  class="nav-ikona dont-underline"
+                  title="Połącz ze Szkopułem"
+                  aria-label="Połącz ze Szkopułem"
+                >
+                  @!ikona.ustawienia()
+                </a>
+              @end
+              <!--@!link({ route: 'new_account.create', text: 'Signup' })-->
+              <!--@!link({ route: 'session.create', text: 'Zaloguj' })-->
+            </div>
+          @end
+
+          <div>
+            <span class="nav-separator">/</span>
+            <a href="https://forms.gle/tfh7giji3Pizx31S7" target="_blank" rel="noopener">Kontakt
+              <svg
+                width="9"
+                height="9"
+                viewBox="0 0 11 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style="margin-left: 5px"
+                aria-label="nowa karta"
+                role="img"
+              >
+                <path
+                  d="M11 0.999999C11 0.447714 10.5523 -1.17941e-06 10 -7.11386e-07L0.999999 -1.63477e-07C0.447715 -1.16923e-07 -5.18088e-07 0.447715 -4.71534e-07 1C-4.2498e-07 1.55228 0.447715 2 1 2L9 2L9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10L11 0.999999ZM1 10L1.70711 10.7071L10.7071 1.70711L10 0.999999L9.29289 0.292892L0.292893 9.29289L1 10Z"
+                  fill="currentColor"
+                />
+              </svg></a>
           </div>
-        @end
+        </div>
+
       </div>
+
     </div>
 
     <div>

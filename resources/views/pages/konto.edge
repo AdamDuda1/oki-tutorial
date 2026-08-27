@@ -12,80 +12,80 @@
     </h1>
 
     @if(szkopul.enabled)
-    <div class="konto-sekcja">
-      <h2>
-        Szkopuł
-      </h2>
+      <div class="konto-sekcja">
+        <h2>
+          Szkopuł
+        </h2>
 
-      @if(polaczenie)
-        <p class="konto-status">
-          Połączono jako
+        @if(polaczenie)
+          <p class="konto-status">
+            Połączono jako
           <strong>{{ polaczenie.username }}</strong>
-        </p>
-        @if(polaczenie.gosc)
-          <p class="konto-opis">
-            Bez konta trzymamy to połączenie tylko w tej przeglądarce - zniknie, kiedy
-            wyczyścisz dane strony. Załóż konto, żeby zostało na stałe.
           </p>
-          @!link({ route: 'new_account.create', text: 'Załóż konto' })
+          @if(polaczenie.gosc)
+            <p class="konto-opis">
+              Bez konta trzymamy to połączenie tylko w tej przeglądarce - zniknie, kiedy
+            wyczyścisz dane strony. Załóż konto, żeby zostało na stałe.
+            </p>
+            @!link({ route: 'new_account.create', text: 'Załóż konto' })
+          @else
+            <p class="konto-opis">
+              Twoje wyniki ze Szkopuła będą widoczne przy zadaniach.
+            </p>
+          @end
+          @form({ route: 'konto.szkopul.rozlacz', method: 'POST' })
+            @!button({ text: 'Odłącz konto', type: 'submit', class: 'konto-rozlacz' })
+          @end
         @else
           <p class="konto-opis">
-            Twoje wyniki ze Szkopuła będą widoczne przy zadaniach.
-          </p>
-        @end
-        @form({ route: 'konto.szkopul.rozlacz', method: 'POST' })
-          @!button({ text: 'Odłącz konto', type: 'submit', class: 'konto-rozlacz' })
-        @end
-      @else
-        <p class="konto-opis">
-          Połącz konto ze Szkopułem, a przy zadaniach zobaczysz, które masz już wysłane
+            Połącz konto ze Szkopułem, a przy zadaniach zobaczysz, które masz już wysłane
           i za ile punktów. Połączenie jest dobrowolne i możesz je w każdej chwili cofnąć.
-        </p>
-
-        @if(!auth.user)
-          <p class="konto-opis">
-            Nie musisz mieć u nas konta - token zostanie wtedy tylko w tej przeglądarce.
           </p>
-        @end
-        
-        <ol class="konto-kroki">
-          <li>
-            Wejdź na
-            <a href="{{ szkopulTokenUrl }}" target="_blank" rel="noopener" class="konto-link">{{ szkopulTokenUrl }}</a>
-            (musisz być zalogowany na Szkopule).
-          </li>
-          <li>
-            Kliknij przycisk, który wygeneruje token, i skopiuj go.
-          </li>
-          <li>
-            Wklej go poniżej.
-          </li>
-        </ol>
 
-        @form({ route: 'konto.szkopul.polacz', method: 'POST' })
-          <div class="konto-form">
-            @field.root({ name: 'token' })
-              @!field.label({ text: 'Token ze Szkopuła' })
-              @!input.control({
+          @if(!auth.user)
+            <p class="konto-opis">
+              Nie musisz mieć u nas konta - token zostanie wtedy tylko w tej przeglądarce.
+            </p>
+          @end
+
+          <ol class="konto-kroki">
+            <li>
+              Wejdź na
+            <a href="{{ szkopulTokenUrl }}" target="_blank" rel="noopener" class="konto-link">{{ szkopulTokenUrl }}</a>
+              (musisz być zalogowany na Szkopule).
+            </li>
+            <li>
+              Kliknij przycisk, który wygeneruje token, i skopiuj go.
+            </li>
+            <li>
+              Wklej go poniżej.
+            </li>
+          </ol>
+
+          @form({ route: 'konto.szkopul.polacz', method: 'POST' })
+            <div class="konto-form">
+              @field.root({ name: 'token' })
+                @!field.label({ text: 'Token ze Szkopuła' })
+                @!input.control({
                 type: 'password',
                 autocomplete: 'off',
                 spellcheck: 'false',
                 placeholder: 'wklej token',
-              })
-              @!field.error()
-            @end
-            @!button({ text: 'Połącz', type: 'submit' })
-          </div>
+                })
+                @!field.error()
+              @end
+              @!button({ text: 'Połącz', type: 'submit' })
+            </div>
+          @end
         @end
-      @end
-      
-      <p class="konto-uwaga">
-        Ten token pozwala też wysyłać zgłoszenia na Twoje konto na Szkopule, więc
+
+        <p class="konto-uwaga">
+          Ten token pozwala też wysyłać zgłoszenia na Twoje konto na Szkopule, więc
         trzymamy go zaszyfrowanego i nigdzie nie wyświetlamy. Jeśli kiedykolwiek
         uznasz, że coś jest nie tak - zregeneruj token na Szkopule, a stary od razu
         przestanie działać.
-      </p>
-    </div>
+        </p>
+      </div>
     @end
 
     @if(auth.user)
@@ -101,16 +101,28 @@
               @!input.control({ type: 'text', value: auth.user.fullName ?? '' })
               @!field.error()
             @end
-            
+
             @field.root({ name: 'email' })
               @!field.label({ text: 'E-mail' })
               @!input.control({ type: 'email', value: auth.user.email })
               @!field.error()
             @end
-            
+
             @!button({ text: 'Zapisz', type: 'submit' })
           </div>
         @end
+      </div>
+    @else
+      <div class="konto-sekcja">
+        <h2>
+          Konto
+        </h2>
+
+        <div style="color: var(--brand)">
+          @!link({ route: 'session.create', text: 'Zaloguj się' })
+          <br>
+          @!link({ route: 'new_account.create', text: 'Nowe konto' })
+        </div>
       </div>
     @end
   </div>
