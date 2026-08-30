@@ -1,7 +1,6 @@
-<h1>
-  server error {{ error.code }} :((
-</h1>
-<span>sorry, that one is on us</span>
-<br />
-<br />
-<span>{{ error.message }}</span>
+@!errorPage({
+  znak: 'Błąd serwera',
+  tytulStrony: 'Coś poszło nie tak :((',
+  tytul: 'Coś poszło nie tak :((',
+  opis: 'To po naszej stronie. Spróbuj odświeżyć za chwilę.'
+})
