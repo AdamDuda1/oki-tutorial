@@ -7,6 +7,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
+    'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -33,6 +34,9 @@ export type ScannedRoutes = {
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.update_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.obrazki.index': { paramsTuple?: []; params?: {} }
+    'admin.obrazki.store': { paramsTuple?: []; params?: {} }
+    'admin.obrazki.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
@@ -63,6 +67,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
+    'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
@@ -76,6 +81,7 @@ export type ScannedRoutes = {
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.obrazki.index': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
@@ -89,6 +95,7 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
+    'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'moja_sciezka': { paramsTuple?: []; params?: {} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
@@ -102,6 +109,7 @@ export type ScannedRoutes = {
     'admin.materialy': { paramsTuple?: []; params?: {} }
     'admin.materialy.create_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.obrazki.index': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.create': { paramsTuple?: []; params?: {} }
     'admin.materialy.edit_poziom': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.tags.create': { paramsTuple?: []; params?: {} }
@@ -125,6 +133,8 @@ export type ScannedRoutes = {
     'admin.edit_task.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.materialy.store_temat': { paramsTuple?: []; params?: {} }
     'admin.materialy.update_temat': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.obrazki.store': { paramsTuple?: []; params?: {} }
+    'admin.obrazki.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.difficulty_levels.update': { paramsTuple?: []; params?: {} }
     'admin.difficulty_levels.store': { paramsTuple?: []; params?: {} }
     'admin.edit_task.toggle_published': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

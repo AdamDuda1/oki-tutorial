@@ -73,11 +73,11 @@
                 data-track="zadanie-omowienie-wideo"
               >                <img src="/icons/i_vid.svg" alt="" />Omówienie</a>
             @end
-            @if(z.omowienieText)
+            @if(z.omowienieHtml)
               <button
                 class="task-action underlinable"
-                @click.stop="$store.modal.show('Omówienie', $el.dataset.omowienie)"
-                data-omowienie="{{ z.omowienieText }}"
+                @click.stop="$store.modal.showHtml('Omówienie', $el.dataset.omowienie)"
+                data-omowienie="{{ z.omowienieHtml }}"
                 data-track="zadanie-omowienie"
               >                <img src="/icons/i_note.svg" alt="" />                <span style="color: var(--text-inverted)" class="underlinable">Omówienie</span></button>
             @end

@@ -243,6 +243,14 @@ main.page-enter {
   font-weight: 460;
 }
 
+.modal-box img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px auto;
+  border-radius: 6px;
+}
+
 .modal-close {
   width: auto;
   padding: 4px 8px;

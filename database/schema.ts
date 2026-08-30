@@ -112,6 +112,27 @@ export class ListaZadanSchema extends BaseModel {
   declare zrodlo: string
 }
 
+export class ObrazkiSchema extends BaseModel {
+  static $columns = ['createdAt', 'dane', 'hash', 'id', 'idAutora', 'mime', 'nazwa', 'rozmiar'] as const
+  $columns = ObrazkiSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare dane: Buffer
+  @column()
+  declare hash: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare idAutora: number | null
+  @column()
+  declare mime: string
+  @column()
+  declare nazwa: string
+  @column()
+  declare rozmiar: number
+}
+
 export class PasswordResetTokenSchema extends BaseModel {
   static $columns = ['createdAt', 'expiresAt', 'id', 'token', 'userId'] as const
   $columns = PasswordResetTokenSchema.$columns

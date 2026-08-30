@@ -8,6 +8,8 @@ const AdminTasksController = () => import('#controllers/admin_tasks_controller')
 const AdminMaterialyController = () => import('#controllers/admin_materialy_controller')
 const AdminSqlController = () => import('#controllers/admin_sql_controller')
 const AdminSzkopulController = () => import('#controllers/admin_szkopul_controller')
+const ObrazkiController = () => import('#controllers/obrazki_controller')
+const AdminObrazkiController = () => import('#controllers/admin_obrazki_controller')
 const KontoController = () => import('#controllers/konto_controller')
 const SzkopulController = () => import('#controllers/szkopul_controller')
 
@@ -16,6 +18,7 @@ router.get('/', [SciezkaController, 'home']).as('home')
 // router.on('/').render('pages/index').as('home')
 router.get('/sciezka/:id', [SciezkaController, 'index']).as('sciezka')
 router.get('/lista_zadan', [ListaZadanController, 'index']).as('lista_zadan')
+router.get('/obrazki/:id', [ObrazkiController, 'show']).as('obrazki.show')
 
 router
   .get('/moja_sciezka', async ({ view }) => view.render('pages/moja_sciezka'))
@@ -92,6 +95,11 @@ router
     router
       .post('materialy/temat/:id', [AdminMaterialyController, 'update_temat'])
       .as('admin.materialy.update_temat')
+    router.get('obrazki', [AdminObrazkiController, 'index']).as('admin.obrazki.index')
+    router.post('obrazki', [AdminObrazkiController, 'store']).as('admin.obrazki.store')
+    router
+      .post('obrazki/:id/delete', [AdminObrazkiController, 'destroy'])
+      .as('admin.obrazki.destroy')
   })
   .prefix('/admin')
   .use(middleware.admin({ roles: ['admin', 'editor1', 'editor2'] }))
