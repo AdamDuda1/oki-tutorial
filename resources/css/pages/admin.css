@@ -116,21 +116,6 @@
   margin: -16px 0 16px;
   font-size: 14px;
 
-  input[type='search'] {
-    flex: 1;
-    min-width: 220px;
-  }
-
-  input,
-  select {
-    width: auto;
-    height: 34px;
-    padding: 0 8px;
-    border: 1px solid var(--brand-lighter);
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
   label {
     display: flex;
     align-items: center;
@@ -702,4 +687,126 @@ body.embed-mode .content {
   color: var(--text-secondary);
   border-color: var(--border);
   background: var(--background-darker);
+}
+
+.kontakt-karta {
+  border-left: 4px solid var(--oki-gray);
+  border-radius: 8px;
+  padding: 11px 14px 13px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  transition: outline-color 0.15s ease;
+  background: #1f1f1f;
+}
+
+.kontakt-karta--noweZadanie {
+  border-left-color: var(--easy);
+}
+.kontakt-karta--pomoc {
+  border-left-color: var(--medium);
+}
+.kontakt-karta--poprawka {
+  border-left-color: var(--hard);
+}
+.kontakt-karta--wiadomosc {
+  border-left-color: var(--brand);
+}
+
+.kontakt-naglowek {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kontakt-rodzaj {
+  color: white;
+  font-family: var(--font-quicksand), serif !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.kontakt-data {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #abababff;
+  white-space: nowrap;
+}
+
+.kontakt-email {
+  font-size: 13px;
+  color: var(--brand);
+  align-self: flex-start;
+}
+
+.kontakt-wiadomosc {
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.kontakt-pole {
+  font-size: 13px;
+  pre {
+    padding: 0 !important;
+  }
+  .copy-btn {
+    top: -1px !important;
+  }
+}
+
+.kontakt-pole a {
+  color: var(--brand);
+}
+
+.kontakt-etykieta {
+  font-family: var(--font-brand), serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.kontakt-nadawca {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.kontakt-odpowiedz {
+  padding: 0 5px;
+  border: 1px solid var(--brand);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--brand);
+  white-space: nowrap;
+}
+
+.kontakt-odpowiedz:hover {
+  background: var(--brand);
+  color: var(--text-inverted);
+}
+
+.kontakt-pozostale {
+  border-top: 1px dashed var(--border-light);
+  padding-top: 7px;
+}
+
+.kontakt-pozostale > summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.kontakt-pozostale > summary:hover {
+  color: var(--brand);
+}
+
+.kontakt-pozostale .kontakt-pole {
+  margin-top: 7px;
 }

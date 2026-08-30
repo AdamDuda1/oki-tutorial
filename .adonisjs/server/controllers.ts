@@ -5,13 +5,16 @@
 
 export const controllers = {
   Admin: () => import('#controllers/admin_controller'),
+  AdminKontakt: () => import('#controllers/admin_kontakt_controller'),
   AdminMaterialy: () => import('#controllers/admin_materialy_controller'),
+  AdminObrazki: () => import('#controllers/admin_obrazki_controller'),
   AdminSql: () => import('#controllers/admin_sql_controller'),
   AdminSzkopul: () => import('#controllers/admin_szkopul_controller'),
   AdminTasks: () => import('#controllers/admin_tasks_controller'),
   Konto: () => import('#controllers/konto_controller'),
   ListaZadan: () => import('#controllers/lista_zadan_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  Obrazki: () => import('#controllers/obrazki_controller'),
   Sciezka: () => import('#controllers/sciezka_controller'),
   Session: () => import('#controllers/session_controller'),
   Szkopul: () => import('#controllers/szkopul_controller'),

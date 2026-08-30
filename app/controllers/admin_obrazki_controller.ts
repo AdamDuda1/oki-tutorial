@@ -45,7 +45,10 @@ export default class AdminObrazkiController {
 
     const dane = await readFile(plik.tmpPath!)
     const mime = wykryjMime(dane)
-    if (!mime) return odrzuc('Tego formatu nie ma na liście dozwolonych. Można to zmienić w źródle w admin_obrazki_controller.ts. Możliwe, że to rozszerzenie jest w stanie wykonywać skrypty (np. SVG), dlatego zostało wykluczone.')
+    if (!mime)
+      return odrzuc(
+        'Tego formatu nie ma na liście dozwolonych. Można to zmienić w źródle w admin_obrazki_controller.ts. Możliwe, że to rozszerzenie jest w stanie wykonywać skrypty (np. SVG), dlatego zostało wykluczone.'
+      )
 
     const hash = createHash('sha256').update(dane).digest('hex')
     const istniejacy = await Obrazek.query()

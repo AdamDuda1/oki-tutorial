@@ -1,0 +1,125 @@
+@layout({ title: 'Formularz kontaktowy' })
+  @layoutAdminSidebar({ page: 'Formularz kontaktowy' })
+    <div class="admin-edit-task">
+      <h1>
+        Formularz kontaktowy
+      </h1>
+      <span style="margin-bottom: 35px; display: block">
+        Odpowiedzi z arkusza Google, odświeżane co 5 minut (<a href="{{ route('admin.kontakt') }}?odswiez=1" style="color: var(--brand)">odświerz teraz &#x21bb;</a>).
+        Zawierają adresy e-mail nadawców, więc ta strona jest tylko dla adminów!!! RRRRRRRODO!!!
+      </span>
+
+      @if(blad)
+        <p class="empty-state" style="margin-top: 20px">
+          {{ blad }}
+        </p>
+      @else
+        @if(rodzaje.length > 1)
+          <form method="GET" action="{{ route('admin.kontakt') }}" class="audit-filters">
+            <label>
+              Kategoria
+              <select name="kategoria" onchange="this.form.submit()">
+                <option value="">
+                  wszystkie ({{ lacznie }})
+                </option>
+                @each(r in rodzaje)
+                  <option value="{{ r.nazwa }}" {{ wybranaKategoria === r.nazwa ? 'selected' : '' }}>
+                    {{ r.nazwa }} ({{ r.ile }})
+                  </option>
+                @end
+              </select>
+            </label>
+          </form>
+        @end
+        
+        @if(karty.length === 0)
+          <p class="empty-state">
+            @if(wybranaKategoria)
+              Nic w tej kategorii.
+            @else
+              Arkusz jest pusty.
+            @end
+          </p>
+        @end
+        
+        @each(k in karty)
+          <article class="kontakt-karta kontakt-karta--{{ k.kategoria }}">
+            <div class="kontakt-naglowek">
+              <span class="kontakt-rodzaj">{{ k.rodzaj || 'Bez kategorii' }}</span>
+              <span class="kontakt-data">
+                {{ k.data ? k.data.setLocale('pl').toFormat('d.LL.yyyy HH:mm') : k.dataTekst }}
+              </span>
+            </div>
+
+            @if(k.email)
+              <div class="kontakt-nadawca">
+                <a class="kontakt-email" href="mailto:{{ k.email }}">{{ k.email }}</a>
+                <a class="kontakt-odpowiedz" href="{{ k.mailto }}">Odpowiedz &#x2192;</a>
+              </div>
+            @end
+            
+            @each(pole in k.pola)
+              <div class="kontakt-pole">
+                <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                @!custom.code({ lang: 'text', code: pole.wartosc })
+              </div>
+              {{-- @if(pole.typ === 'kod')
+                <div class="kontakt-pole" x-data="copyable">
+                  <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                  <div class="kontakt-kod-blok">
+                    <!-- prettier-ignore -->
+                    <pre class="kontakt-kod" x-ref="tresc">{{ pole.wartosc }}</pre>
+              
+              
+                    <button
+                      type="button"
+                      class="copy-btn"
+                      :class="{ copied }"
+                      @click="copy($refs.tresc.textContent)"
+                      x-text="copied ? 'Skopiowano ✓' : 'Kopiuj'"
+                    >
+                      Kopiuj
+                    </button>
+                  </div>
+                </div>
+              @elseif(pole.typ === 'link')
+                <div class="kontakt-pole">
+                  <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                  @if(pole.wartosc.startsWith('http://') || pole.wartosc.startsWith('https://'))
+                    <a href="{{ pole.wartosc }}" target="_blank" rel="noopener">{{ pole.wartosc }}</a>
+                  @else
+                    <span>{{ pole.wartosc }}</span>
+                  @end
+                </div>
+              @else
+                <div class="kontakt-pole">
+                  <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                  <p class="kontakt-wiadomosc">
+                    {{ pole.wartosc }}
+                  </p>
+                </div>
+              @end --}}
+              @end
+              @if(k.pozostale.length > 0)
+                <details class="kontakt-pozostale">
+                  <summary>
+                    Pozostałe odpowiedzi ({{ k.pozostale.length }})
+                  </summary>
+                  @each(pole in k.pozostale)
+                    <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                    @!custom.code({ lang: 'text', code: pole.wartosc })
+                    {{-- <div class="kontakt-pole">
+                    <span class="kontakt-etykieta">{{ pole.etykieta }}</span>
+                    <p class="kontakt-wiadomosc">
+                      {{ pole.wartosc }}
+                    </p>
+                    </div> --}}
+                  @end
+                </details>
+              @end
+            </article>
+          @end
+        @end
+      </div>
+    @end
+  @end

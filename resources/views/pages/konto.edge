@@ -47,7 +47,7 @@
               Nie musisz mieć u nas konta - token zostanie wtedy tylko w tej przeglądarce.
             </p>
           @end
-
+          
           <ol class="konto-kroki">
             <li>
               Wejdź na
@@ -78,7 +78,7 @@
             </div>
           @end
         @end
-
+        
         <p class="konto-uwaga">
           Ten token pozwala też wysyłać zgłoszenia na Twoje konto na Szkopule, więc
         trzymamy go zaszyfrowanego i nigdzie nie wyświetlamy. Jeśli kiedykolwiek
@@ -87,7 +87,7 @@
         </p>
       </div>
     @end
-
+    
     @if(auth.user)
       <div class="konto-sekcja">
         <h2>
@@ -101,13 +101,13 @@
               @!input.control({ type: 'text', value: auth.user.fullName ?? '' })
               @!field.error()
             @end
-
+            
             @field.root({ name: 'email' })
               @!field.label({ text: 'E-mail' })
               @!input.control({ type: 'email', value: auth.user.email })
               @!field.error()
             @end
-
+            
             @!button({ text: 'Zapisz', type: 'submit' })
           </div>
         @end
@@ -120,7 +120,7 @@
 
         <div style="color: var(--brand)">
           @!link({ route: 'session.create', text: 'Zaloguj się' })
-          <br>
+          <br />
           @!link({ route: 'new_account.create', text: 'Nowe konto' })
         </div>
       </div>

@@ -113,7 +113,16 @@ export class ListaZadanSchema extends BaseModel {
 }
 
 export class ObrazkiSchema extends BaseModel {
-  static $columns = ['createdAt', 'dane', 'hash', 'id', 'idAutora', 'mime', 'nazwa', 'rozmiar'] as const
+  static $columns = [
+    'createdAt',
+    'dane',
+    'hash',
+    'id',
+    'idAutora',
+    'mime',
+    'nazwa',
+    'rozmiar',
+  ] as const
   $columns = ObrazkiSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

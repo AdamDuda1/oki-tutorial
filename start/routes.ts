@@ -11,6 +11,7 @@ const AdminSzkopulController = () => import('#controllers/admin_szkopul_controll
 const ObrazkiController = () => import('#controllers/obrazki_controller')
 const AdminObrazkiController = () => import('#controllers/admin_obrazki_controller')
 const KontoController = () => import('#controllers/konto_controller')
+const AdminKontaktController = () => import('#controllers/admin_kontakt_controller')
 const SzkopulController = () => import('#controllers/szkopul_controller')
 
 router.get('/', [SciezkaController, 'home']).as('home')
@@ -162,6 +163,7 @@ router
 
     router.get('szkopul', [AdminSzkopulController, 'index']).as('admin.szkopul')
     router.post('szkopul', [AdminSzkopulController, 'store']).as('admin.szkopul.store')
+    router.get('kontakt', [AdminKontaktController, 'index']).as('admin.kontakt')
     router.get('site_settings', [AdminController, 'site_settings']).as('admin.site_settings')
     router
       .post('site_settings', [AdminController, 'update_site_settings'])

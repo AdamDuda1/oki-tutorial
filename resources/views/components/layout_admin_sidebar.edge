@@ -38,7 +38,13 @@
         Tagi zadań
       </a>
     @end
-    
+    <a
+      href="/admin/obrazki"
+      class="{{ $props.get('page') === 'Obrazki' ? 'bold' : 'medium' }} admin-nav-topic"
+    >
+      Obrazki
+    </a>
+
     <span class="admin-nav-separator" style="margin-top: 25px">ZAKŁADKA KRUS</span>
     <a
       href="/admin/materialy"
@@ -66,6 +72,12 @@
         class="{{ $props.get('page') === 'Statystyki i historia zmian' ? 'bold' : 'medium' }} admin-nav-topic"
       >
         Statystyki i historia zmian
+      </a>
+      <a
+        href="/admin/kontakt"
+        class="{{ $props.get('page') === 'Formularz kontaktowy' ? 'bold' : 'medium' }} admin-nav-topic"
+      >
+        Formularz kontaktowy
       </a>
       <a
         href="/admin/site_settings"
