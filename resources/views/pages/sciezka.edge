@@ -31,7 +31,7 @@
           </a>
         @end
       @end
-      
+
       <span
         class="mobile-menu-handle"
         onclick="const opened = this.parentElement.classList.toggle('opened'); this.textContent = opened ? 'Zwiń ścieżkę v' : 'Rozwiń ścieżkę v'"
@@ -45,7 +45,7 @@
         {{ ustawienia.banner }}
       </div>
     @end
-    
+
     <div class="content">
       @if(postepPoziomu)
         <div class="postep-poziom">
@@ -55,12 +55,12 @@
               <span class="postep-liczby">
                 <span class="postep-procent">{{ postepPoziomu.procent }}%</span>
                 <span class="postep-ulamek">
-                  {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
-                  @if(postepPoziomu.wszystkichDodatkowych > 0)
-                    <span class="postep-dodatkowe" title="Zadania dodatkowe — nie wliczają się do procentu">
+                  {{ postepPoziomu.zrobione + postepPoziomu.zrobioneDodatkowe }}/{{ postepPoziomu.wszystkich + postepPoziomu.wszystkichDodatkowych }}
+                  {{-- @if(postepPoziomu.wszystkichDodatkowych > 0)
+                    <span class="postep-dodatkowe" title="Zadania dodatkowe - nie wliczają się do procentu">
                       + {{ postepPoziomu.zrobioneDodatkowe }}/{{ postepPoziomu.wszystkichDodatkowych }}
                     </span>
-                  @end
+                  @end --}}
                 </span>
               </span>
               <form method="POST" action="{{ route('szkopul.odswiez') }}" class="postep-form">
@@ -141,7 +141,7 @@
                       : null,
                 })
               @end
-              
+
               <div class="topic-header">
                 <div>
                   @if(temat.linkYt)
