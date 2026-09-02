@@ -244,6 +244,7 @@
     padding: 8px 12px;
 
     .counter {
+      font-family: var(--font-mono), monospace;
       font-size: medium;
       color: var(--text-secondary);
       font-weight: 500;
