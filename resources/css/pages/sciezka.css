@@ -412,6 +412,10 @@
   color: var(--text-secondary);
 }
 
+.postep-dodatkowe {
+  color: var(--brand);
+}
+
 .postep-tor {
   display: block;
   height: 6px;

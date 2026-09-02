@@ -79,7 +79,8 @@ export default class SciezkaController {
 
     const wynikiMapa = await pobierzWyniki(ctx)
     const pokazPostep = Boolean(pobierzToken(ctx))
-    const sledzoneWPoziomie = new Map<number, InstanceType<typeof ListaZadan>>()
+    const zadaniaWPoziomie = new Map<number, InstanceType<typeof ListaZadan>>()
+    const podstawoweWPoziomie = new Set<number>()
 
     for (const temat of tematy) {
       const dodatkoweSet = new Set(temat.zadaniaDodatkowe ?? [])
@@ -113,12 +114,17 @@ export default class SciezkaController {
         : null
 
       for (const z of wszystkieTematu) {
-        if (!dodatkoweSet.has(z.idZadania)) sledzoneWPoziomie.set(z.idZadania, z)
+        zadaniaWPoziomie.set(z.idZadania, z)
+        if (!dodatkoweSet.has(z.idZadania)) podstawoweWPoziomie.add(z.idZadania)
       }
     }
 
+    const dodatkoweWPoziomie = new Set(
+      [...zadaniaWPoziomie.keys()].filter((id) => !podstawoweWPoziomie.has(id))
+    )
+
     const postepPoziomu = pokazPostep
-      ? policzPostep([...sledzoneWPoziomie.values()], wynikiMapa)
+      ? policzPostep([...zadaniaWPoziomie.values()], wynikiMapa, dodatkoweWPoziomie)
       : null
 
     const renderCustom = async (html: string | null | undefined) => {

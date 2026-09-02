@@ -87,8 +87,7 @@ async function pobierzZeSzkopula(token: string, cele: Cel[]): Promise<Map<number
   const poKonkursie = new Map(
     odpowiedzi.map((o) => [o.konkurs, new Map(o.problemy.map((p) => [p.id, p]))])
   )
-  // Niektóre konkursy zwracają 500 na problem_list, choć problem_submission_list
-  // działa. Bez tego zadania z takiego konkursu nigdy nie dostałyby wyniku.
+
   const zepsute = new Set(odpowiedzi.filter((o) => !o.ok).map((o) => o.konkurs))
 
   const wyniki = new Map<number, Wynik>()
@@ -163,8 +162,6 @@ async function wynikiZBazy(idUzytkownika: number) {
   )
 }
 
-// Znacznik czasu stawiamy zawsze, także gdy Szkopuł nic nie zwrócił — inaczej
-// użytkownik bez wyników odpytywałby API przy każdym wejściu na stronę.
 async function odswiezDlaUzytkownika(idUzytkownika: number, token: string) {
   const cele = await celeZadan()
   const swiezo = await pobierzZeSzkopula(token, cele)
@@ -186,11 +183,6 @@ function swiezyZnacznik(znacznik: unknown) {
   return czas.isValid && czas.diffNow('minutes').minutes > -TTL_MINUT
 }
 
-/**
- * Wyniki do pokazania. Strona nigdy nie czeka na Szkopuł: oddajemy to, co mamy
- * w cache, a nieświeże dane odświeżamy w tle, więc następne wejście jest już
- * aktualne. `wymus` (przycisk „odśwież") czeka na odpowiedź.
- */
 export async function pobierzWyniki(
   ctx: HttpContext,
   opcje: { wymus?: boolean } = {}
@@ -213,8 +205,6 @@ export async function pobierzWyniki(
     return wyniki
   }
 
-  // Gość trzyma cache w sesji, a sesji nie da się zapisać po odesłaniu
-  // odpowiedzi — więc tu odświeżamy synchronicznie, inaczej wynik przepadłby.
   const czas = ctx.session.get(KLUCZ_SESJI_CZAS)
   const zapisane = ctx.session.get(KLUCZ_SESJI) as Record<string, [number | null, string | null]>
 
@@ -240,8 +230,6 @@ export async function wyczyscWyniki(ctx: HttpContext) {
   const user = ctx.auth.user
   if (user) {
     await db.from('wyniki_szkopul').where('id_uzytkownika', user.id).delete()
-    // Bez zerowania znacznika po zmianie tokenu przez cały TTL nie odpytalibyśmy
-    // Szkopuła — wyglądałoby to jak „konto podłączone, ale nic nie widać".
     await db.from('users').where('id', user.id).update({ szkopul_wyniki_odswiezone_at: null })
     user.szkopulWynikiOdswiezoneAt = null
   }
@@ -253,43 +241,55 @@ export function czyZrobione(wynik: Wynik | undefined) {
   return Boolean(wynik && wynik.score !== null && wynik.score >= 100)
 }
 
-// Liczą się wyłącznie punkty. Statusu użyć się nie da: Szkopuł zwraca tu wynik
-// testów przykładowych (`INI_OK` / `INI_ERR`), a nie akceptację — zadanie za 100
-// i zadanie za 6 mają tak samo `INI_OK` (sprawdzone na żywych danych 31.07.2026).
-// Statusu `OK` nie ma tam w ogóle.
-//
-// Próg 100 to założenie: API nie podaje maksymalnej liczby punktów — nie ma jej
-// w żadnym endpoincie. We wszystkich sprawdzonych konkursach skala to 0-100.
 export function czyRozwiazane(wynik: Wynik | undefined | null) {
   if (!wynik) return false
   return wynik.score !== null && wynik.score >= 100
 }
 
-export type Postep = { zrobione: number; wszystkich: number; procent: number }
+export type Postep = {
+  zrobione: number
+  wszystkich: number
+  procent: number
+  zrobioneDodatkowe: number
+  wszystkichDodatkowych: number
+}
 
 type ZadanieDoPostepu = { idZadania: number; szkopulPiId: number | null }
 
 export function policzPostep(
   zadania: ZadanieDoPostepu[],
   wyniki: Map<number, Wynik>,
-  pomijane: Set<number> = new Set()
+  dodatkowe: Set<number> = new Set()
 ): Postep | null {
-  const sledzone = new Map<number, ZadanieDoPostepu>()
+  const podstawowe = new Set<number>()
+  const nadprogramowe = new Set<number>()
+
   for (const z of zadania) {
     if (z.szkopulPiId === null || z.szkopulPiId === undefined) continue
-    if (pomijane.has(z.idZadania)) continue
-    sledzone.set(z.idZadania, z)
+    if (dodatkowe.has(z.idZadania)) nadprogramowe.add(z.idZadania)
+    else podstawowe.add(z.idZadania)
   }
 
-  if (sledzone.size === 0) return null
+  if (podstawowe.size === 0 && nadprogramowe.size === 0) return null
 
-  let zrobione = 0
-  for (const id of sledzone.keys()) if (czyRozwiazane(wyniki.get(id))) zrobione++
+  const policz = (ids: Set<number>) => {
+    let ile = 0
+    for (const id of ids) if (czyRozwiazane(wyniki.get(id))) ile++
+    return ile
+  }
+
+  const zrobione = policz(podstawowe)
+  const zrobioneDodatkowe = policz(nadprogramowe)
+
+  const bazaWszystkich = podstawowe.size || nadprogramowe.size
+  const bazaZrobionych = podstawowe.size ? zrobione : zrobioneDodatkowe
 
   return {
     zrobione,
-    wszystkich: sledzone.size,
-    procent: Math.round((zrobione / sledzone.size) * 100),
+    wszystkich: podstawowe.size,
+    procent: Math.round((bazaZrobionych / bazaWszystkich) * 100),
+    zrobioneDodatkowe,
+    wszystkichDodatkowych: nadprogramowe.size,
   }
 }
 

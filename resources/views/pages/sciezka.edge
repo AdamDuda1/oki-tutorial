@@ -56,6 +56,11 @@
                 <span class="postep-procent">{{ postepPoziomu.procent }}%</span>
                 <span class="postep-ulamek">
                   {{ postepPoziomu.zrobione }}/{{ postepPoziomu.wszystkich }}
+                  @if(postepPoziomu.wszystkichDodatkowych > 0)
+                    <span class="postep-dodatkowe" title="Zadania dodatkowe — nie wliczają się do procentu">
+                      + {{ postepPoziomu.zrobioneDodatkowe }}/{{ postepPoziomu.wszystkichDodatkowych }}
+                    </span>
+                  @end
                 </span>
               </span>
               <form method="POST" action="{{ route('szkopul.odswiez') }}" class="postep-form">
@@ -113,7 +118,7 @@
               @let(p = temat.$extras.postep)
               <span
                 class="postep-temat {{ p.procent === 100 ? 'ukonczony' : '' }}"
-                title="Rozwiązane {{ p.zrobione }} z {{ p.wszystkich }} śledzonych zadań"
+                title="Rozwiązane {{ p.zrobione }} z {{ p.wszystkich }} śledzonych zadań{{ p.wszystkichDodatkowych > 0 ? `, plus ${p.zrobioneDodatkowe} z ${p.wszystkichDodatkowych} dodatkowych` : '' }}"
               >
                 <span class="postep-tor mini">
                   <span class="postep-wypelnienie" style="width: {{ p.procent }}%"></span>
