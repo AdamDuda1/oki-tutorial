@@ -2,9 +2,11 @@ import type { HttpContext } from '@adonisjs/core/http'
 import ListaZadan from '#models/lista_zadan'
 import PoziomTrudnosci from '#models/poziom_trudnosci'
 import Tag from '#models/tag'
+import { pobierzWyniki } from '#services/szkopul_wyniki'
 
 export default class ListaZadanController {
-  async index({ view, request }: HttpContext) {
+  async index(ctx: HttpContext) {
+    const { view, request } = ctx
     const qs = request.qs()
     const poziomFilter = [qs.poziom].flat().filter(Boolean).map(Number).filter(Number.isFinite)
     const zrodloFilter = [qs.zrodlo].flat().filter(Boolean).map(String)
@@ -61,6 +63,7 @@ export default class ListaZadanController {
       .orderBy('zrodlo')
     const zrodla = zrodlaRows.map((r) => r.zrodlo)
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
+    const wyniki = Object.fromEntries(await pobierzWyniki(ctx))
 
     if (request.header('x-requested-with') === 'fetch') {
       return view.render('pages/partials/zadania_table', {
@@ -69,6 +72,7 @@ export default class ListaZadanController {
         poziomyTrudnosci,
         filters,
         withAlpha,
+        wyniki,
       })
     }
     return view.render('pages/lista_zadan', {
@@ -78,6 +82,7 @@ export default class ListaZadanController {
       poziomyTrudnosci,
       filters,
       withAlpha,
+      wyniki,
     })
   }
 }

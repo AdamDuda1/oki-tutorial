@@ -136,6 +136,17 @@
           <span style="color: var(--text-inverted)" class="underlinable">Kod Python</span>
         </button>
       @end
+      @if(zadanie.linkDodatkoweMaterialy)
+        <a
+          href="{{ zadanie.linkDodatkoweMaterialy }}"
+          class="task-action"
+          target="_blank"
+          rel="noopener"
+          data-track="zadanie-materialy"
+        >
+          Dodatkowe materiały
+        </a>
+      @end
       @if(zadanie.urlPytanie)
         <a
           href="{{ zadanie.urlPytanie }}"

@@ -1,6 +1,7 @@
 @let(z = $props.get('zadanie'))
 @let(poziomyTrudnosci = $props.get('poziomyTrudnosci'))
 @let(withAlpha = $props.get('withAlpha'))
+@let(odznaka = await odznakaWyniku($props.get('wynik')))
 
 <tbody x-data="expandable" class="task-row" data-track-zadanie="{{ z.nazwa }}">
   <tr data-toggle data-track="zadanie-otwarte" @click="open = !open">
@@ -53,9 +54,26 @@
               rel="noopener"
               data-track="zadanie-tresc"
             >Treść</a>
-            <!--@if(z.urlWyslij)
-              <a href="{{ z.urlWyslij }}" class="task-action" target="_blank" rel="noopener"><img src="/icons/i_send.svg" alt=""> Wyślij</a>
-            @end-->
+            @if(z.urlWyslij)
+              <a
+                href="{{ z.urlWyslij }}"
+                class="task-action"
+                target="_blank"
+                rel="noopener"
+                data-track="zadanie-wyslij"
+              ><img src="/icons/i_send.svg" alt="" />
+                Wyślij w konkursie
+                @if(odznaka)
+                  (<span class="wynik-badge" style="background: white; padding: 0;
+                    border: 0; color: white; position: relative; top: 1px; margin: 0 -5px;">
+                    <span class="wynik-badge {{ odznaka.klasa }}" title="{{ odznaka.tytul }}"
+                      style="margin-left: -5px; margin-right: -5px; padding: 0;">
+                      {{ odznaka.tekst }}
+                    </span>
+                  </span>)
+                @end
+                </a>
+            @end
             @if(z.hint)
               <button
                 class="task-action underlinable"
@@ -106,6 +124,15 @@
                 data-track="zadanie-materialy"
               >Dodatkowe materiały</a>
             @end
+            {{--@if(z.urlPytanie)
+              <a
+                href="{{ z.urlPytanie }}"
+                class="task-action"
+                target="_blank"
+                rel="noopener"
+                data-track="zadanie-pytanie"
+              ><img src="/icons/i_question.svg" alt="" />Zadaj pytanie</a>
+            @end--}}
           </div>
           @if(z.tagi && z.tagi.length)
             <div class="tagi" x-data="{ shown: false }" :class="{ shown }">
