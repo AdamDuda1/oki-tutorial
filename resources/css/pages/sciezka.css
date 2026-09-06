@@ -113,6 +113,17 @@
   font-size: 1.21rem;
 }
 
+.rozwin-wszystko {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -5px;
+}
+
+.rozwin-wszystko .task-action {
+  padding: 3px 12px;
+  font-size: 13px;
+}
+
 .topic-box {
   outline: 1px solid var(--border);
   border-radius: 8px;

@@ -50,6 +50,11 @@ Alpine.data('expandable', () => ({
   open: false,
   init() {
     this.open = this.$el.querySelector('.box')?.classList.contains('open') ?? false
+    this.przelacz = (e) => (this.open = e.detail)
+    window.addEventListener('rozwin-wszystko', this.przelacz)
+  },
+  destroy() {
+    window.removeEventListener('rozwin-wszystko', this.przelacz)
   },
 }))
 

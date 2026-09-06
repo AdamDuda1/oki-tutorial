@@ -95,6 +95,17 @@
           {{{ poziomHtml }}}
         </div>
       @end
+      @if(auth.user && auth.user.canAccessAdmin)
+        <div class="rozwin-wszystko" x-data="{ wszystko: false }">
+          <button
+            type="button"
+            class="task-action"
+            @click="wszystko = !wszystko; $dispatch('rozwin-wszystko', wszystko)"
+          >
+            <span x-text="wszystko ? 'Zwiń wszystko' : 'Rozwiń wszystko'">Rozwiń wszystko</span>
+          </button>
+        </div>
+      @end
       @each(temat in tematy)
         <div
           class="topic-box"
