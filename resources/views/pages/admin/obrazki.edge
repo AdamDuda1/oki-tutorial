@@ -65,13 +65,13 @@
                   {{ o.rozmiarKb }} kB
                 </td>
                 <td>
+                  <!-- eslint-disable -->
+                  <!-- prettier-ignore -->
                   <input
                     readonly
                     onclick="this.select()"
-                    value=img
-                    src="{{ o.url }}"
-                    style="width: 100%; min-width: 220px;"
-                  />' />
+                    value='<img src="{{ o.url }}" style="width: 100%; min-width: 220px;" />' />
+                  <!-- eslint-enable -->
                 </td>
                 <td style="text-align: right;">
                   <form
