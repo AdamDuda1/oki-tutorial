@@ -19,7 +19,8 @@
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
         @end
-        @if(zadanie.urlTresc) {{-- zadanie.linkTresc --}}
+        {{-- dawniej: zadanie.linkTresc --}}
+        @if(zadanie.urlTresc)
           <a
             href="{{ zadanie.urlTresc }}" {{-- zadanie.linkTresc --}}
             target="_blank"
