@@ -233,3 +233,66 @@ document.addEventListener('turbo:load', () => {
   })
   sprawdz()
 })
+
+function podobienstwoZrodel(wpisane, zrodlo) {
+  const a = normalizujNazweZadania(wpisane)
+  const b = normalizujNazweZadania(zrodlo)
+  if (!a || !b) return 0
+  if (a === b) return 3
+  if (b.startsWith(a)) return 2
+  if (b.includes(a)) return 1.5
+
+  const slowaA = new Set(a.split(' '))
+  const slowaB = new Set(b.split(' '))
+  const wspolne = [...slowaA].filter((slowo) => slowaB.has(slowo)).length
+  return wspolne / Math.max(slowaA.size, slowaB.size)
+}
+
+const MAKS_PODPOWIEDZI_ZRODLA = 5
+
+document.addEventListener('turbo:load', () => {
+  const zrodloInput = document.querySelector('#zrodlo')
+  const dataEl = document.querySelector('#zrodla-data')
+  const listaEl = document.querySelector('#zrodlo-podpowiedzi')
+  if (!zrodloInput || !dataEl || !listaEl) return
+
+  const zrodla = JSON.parse(dataEl.dataset.json || '[]')
+
+  const pokaz = () => {
+    const wartosc = zrodloInput.value.trim()
+    listaEl.textContent = ''
+
+    if (wartosc.length < 2) {
+      listaEl.hidden = true
+      return
+    }
+
+    const podobne = zrodla
+      .map((z) => ({ ...z, wynik: podobienstwoZrodel(wartosc, z.zrodlo) }))
+      .filter((z) => z.wynik > 0 && z.zrodlo !== wartosc)
+      .sort((a, b) => b.wynik - a.wynik || b.ile - a.ile)
+      .slice(0, MAKS_PODPOWIEDZI_ZRODLA)
+
+    if (!podobne.length) {
+      listaEl.hidden = true
+      return
+    }
+
+    for (const z of podobne) {
+      const przycisk = document.createElement('button')
+      przycisk.type = 'button'
+      przycisk.textContent = z.zrodlo
+      przycisk.title = `Użyte w ${z.ile} ${z.ile === 1 ? 'zadaniu' : 'zadaniach'}`
+      przycisk.addEventListener('click', () => {
+        zrodloInput.value = z.zrodlo
+        zrodloInput.dispatchEvent(new Event('input', { bubbles: true }))
+        zrodloInput.focus()
+      })
+      listaEl.append(przycisk)
+    }
+    listaEl.hidden = false
+  }
+
+  zrodloInput.addEventListener('input', pokaz)
+  zrodloInput.addEventListener('focus', pokaz)
+})

@@ -38,6 +38,8 @@
     
     <div id="zadania-nazwy-data" hidden data-json="{{ JSON.stringify(znaneNazwy) }}">
     </div>
+    <div id="zrodla-data" hidden data-json="{{ JSON.stringify(znaneZrodla) }}">
+    </div>
 
     <h1>
       {{ isNew ? 'Nowe zadanie' : 'Edytuj zadanie #' + task.idZadania }}
@@ -75,6 +77,8 @@
               @!input.control({ value: task ? task.zrodlo : '', required: true })
               @!field.error()
             @end
+            <div id="zrodlo-podpowiedzi" class="zrodlo-podpowiedzi" hidden>
+            </div>
             <details>
               <summary class="underlinable ">
                 użycie (rozwiń)

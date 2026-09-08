@@ -59,6 +59,18 @@ async function pobierzZnaneNazwy(
   return wiersze.map((z) => ({ idZadania: z.idZadania, nazwa: z.nazwa }))
 }
 
+async function pobierzZnaneZrodla(): Promise<{ zrodlo: string; ile: number }[]> {
+  const wiersze = await ListaZadan.query()
+    .whereNull('deleted_at')
+    .select('zrodlo')
+    .count('* as ile')
+    .groupBy('zrodlo')
+  return wiersze
+    .map((z) => ({ zrodlo: z.zrodlo, ile: Number(z.$extras.ile) }))
+    .filter((z) => Boolean(z.zrodlo))
+    .sort((a, b) => b.ile - a.ile)
+}
+
 async function normalizeTagi(tagi: string[] | undefined): Promise<string[] | null> {
   const names = [...new Set((tagi ?? []).map((t) => t.trim()).filter(Boolean))]
   if (names.length === 0) return null
@@ -80,12 +92,14 @@ export default class AdminTasksController {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
     const znaneNazwy = await pobierzZnaneNazwy()
+    const znaneZrodla = await pobierzZnaneZrodla()
     return view.render('pages/admin/edit_task', {
       task: null,
       poziomyTrudnosci,
       tagi,
       sprawdzenie: null,
       znaneNazwy,
+      znaneZrodla,
     })
   }
 
@@ -136,6 +150,7 @@ export default class AdminTasksController {
     const poziomyTrudnosci = await PoziomTrudnosci.query().orderBy('position')
     const tagi = await Tag.query().orderBy('nazwa')
     const znaneNazwy = await pobierzZnaneNazwy(task.idZadania)
+    const znaneZrodla = await pobierzZnaneZrodla()
 
     const sprawdzenie = await sprawdzZadanie({
       konkurs: task.szkopulContest,
@@ -151,6 +166,7 @@ export default class AdminTasksController {
       tagi,
       sprawdzenie,
       znaneNazwy,
+      znaneZrodla,
     })
   }
 

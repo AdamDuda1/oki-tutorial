@@ -649,6 +649,30 @@ body.embed-mode .content {
   line-height: 1.8;
 }
 
+.zrodlo-podpowiedzi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.zrodlo-podpowiedzi button {
+  width: auto;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background-darker);
+  color: var(--text-secondary);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.zrodlo-podpowiedzi button:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
 .szkopul-check {
   padding: 10px 14px;
   border-radius: 6px;
