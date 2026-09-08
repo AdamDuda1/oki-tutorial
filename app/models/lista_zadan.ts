@@ -28,6 +28,13 @@ export default class ListaZadan extends ListaZadanSchema {
     return this.linkWyslij
   }
 
+  get urlTresc(): string {
+    if (this.szkopulContest && this.szkopulShortName) {
+      return `${SZKOPUL_URL}/c/${this.szkopulContest}/p/${this.szkopulShortName}/`
+    }
+    return this.linkTresc
+  }
+
   get omowienieHtml(): string | null {
     const src = this.omowienieText
     if (!src) return null

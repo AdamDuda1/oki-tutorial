@@ -19,9 +19,9 @@
         @if(dodatkowe)
           <span class="dodatkowe-tag">Dodatkowe:</span>
         @end
-        @if(zadanie.linkTresc)
+        @if(zadanie.urlTresc) {{-- zadanie.linkTresc --}}
           <a
-            href="{{ zadanie.linkTresc }}"
+            href="{{ zadanie.urlTresc }}" {{-- zadanie.linkTresc --}}
             target="_blank"
             rel="noopener"
             data-track="zadanie-tresc"
@@ -73,7 +73,7 @@
               : null,
         })
       @end
-      
+
       @if(zadanie.urlWyslij && false)
         <a href="{{ zadanie.urlWyslij }}" class="task-action" target="_blank" rel="noopener">
           <img src="/icons/i_send.svg" alt="" />
