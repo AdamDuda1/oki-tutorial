@@ -205,16 +205,24 @@ export default class AdminController {
     }
 
     const leaderboard = await db
-      .from('audit_log')
-      .join('users', 'users.id', 'audit_log.id_uzytkownika')
+      .from('users')
       .whereIn(
         'users.role',
         USER_ROLES.filter((r) => r !== 'user')
       )
-      .select('users.email')
-      .count('audit_log.id as zmiany')
-      .groupBy('users.email')
-      .orderBy('zmiany', 'desc')
+      .select('users.email', 'users.full_name as nazwa')
+      .select(
+        db.raw(
+          '(select count(*) from audit_log where audit_log.id_uzytkownika = users.id) as zmiany'
+        ),
+        db.raw(
+          '(select count(*) from lista_zadan where lista_zadan.id_autora = users.id and lista_zadan.deleted_at is null) as zadania'
+        )
+      )
+      .orderBy([
+        { column: 'zmiany', order: 'desc' },
+        { column: 'zadania', order: 'desc' },
+      ])
 
     const stats = {
       zadania: await countRows(ListaZadan.query().whereNull('deleted_at')),

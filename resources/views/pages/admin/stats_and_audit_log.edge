@@ -45,18 +45,29 @@
         <h1>
           Ranking zmian
         </h1>
-        <ul
-          style="margin: 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; display: flex; flex-direction: column; gap: 4px;"
-        >
-          @each(wpis in leaderboard)
-            <li>
-              <strong>{{ wpis.email }}:</strong>{{ wpis.zmiany }}
-            </li>
-          @end
-        </ul>
+        <table class="zadania-table">
+          <thead>
+            <tr><th>Kto</th><th>Zmiany</th><th>Zadania</th></tr>
+          </thead>
+          <tbody>
+            @each(wpis in leaderboard)
+              <tr>
+                <td>
+                  {{ wpis.nazwa || wpis.email }}
+                </td>
+                <td>
+                  {{ wpis.zmiany }}
+                </td>
+                <td>
+                  {{ wpis.zadania }}
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
       </div>
     @end
-    
+
     <div class="admin-edit-task">
       <h1>
         Audit log
