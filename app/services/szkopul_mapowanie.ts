@@ -287,15 +287,11 @@ async function pobierzProblem(
   }
 }
 
-async function podpowiedzDlaNumeru(
-  token: string,
-  konkurs: string,
+function podpowiedzDlaNumeru(
+  problemy: Problemy,
   pi: number | null
-): Promise<{ zdanie: string | null; short: string | null }> {
-  if (!pi) return { zdanie: null, short: null }
-
-  const problemy = await pobierzProblemy(token, konkurs)
-  if (!problemy.ok) return { zdanie: null, short: null }
+): { zdanie: string | null; short: string | null } {
+  if (!pi || !problemy.ok) return { zdanie: null, short: null }
 
   const p = problemy.poId.get(pi)
   if (!p) {
@@ -315,6 +311,35 @@ function powodHttp(status: number | null): string {
   if (status === 403) return 'nie jesteś zapisany na ten konkurs'
   if (status === null) return 'Szkopuł nie odpowiedział'
   return `HTTP ${status}`
+}
+
+function potwierdzZListy(problemy: Problemy, pi: number | null, short: string): any | null {
+  if (!problemy.ok) return null
+
+  if (!pi) {
+    return problemy.poShort.get(short) ?? null
+  }
+
+  const p = problemy.poId.get(pi)
+  return p && p.short_name === short ? p : null
+}
+
+function opisZListy(konkurs: string, pi: number | null, short: string, p: any): Sprawdzenie {
+  if (!pi) {
+    return {
+      stan: 'uwaga',
+      tytul: `Skrót „${short}” istnieje w konkursie ${konkurs}, ale brakuje ID.`,
+      szczegoly: [`Według listy problemów to ${p.id}.`],
+    }
+  }
+
+  return {
+    stan: 'ok',
+    tytul: `Zgadza się z listą problemów: ${konkurs} / problem ${pi} / „${short}”.`,
+    szczegoly: [
+      `Szkopuł nie zna „${short}” pod /problems/, bo tam szuka po nazwie problemu, a to jest nazwa jego instancji w konkursie. Wysyłanie i treść działają (dla /submit/).`,
+    ],
+  }
 }
 
 export async function sprawdzZadanie(opts: {
@@ -373,8 +398,33 @@ export async function sprawdzZadanie(opts: {
   if (short) {
     const odp = await pobierzProblem(token, konkurs, short)
 
-    if (!odp.ok && odp.status === 404) {
-      const podpowiedz = await podpowiedzDlaNumeru(token, konkurs, pi)
+    const wartoZweryfikowac = !odp.ok && (odp.status === 404 || odp.status === 500)
+
+    if (!odp.ok && !wartoZweryfikowac) {
+      return {
+        stan: 'nieznane',
+        tytul: `err ${powodHttp(odp.status)} :((`,
+        szczegoly: [],
+      }
+    }
+
+    if (!odp.ok) {
+      const problemy = await pobierzProblemy(token, konkurs)
+      const zListy = potwierdzZListy(problemy, pi, short)
+
+      if (zListy) {
+        return opisZListy(konkurs, pi, short, zListy)
+      }
+
+      if (odp.status !== 404) {
+        return {
+          stan: 'nieznane',
+          tytul: `err ${powodHttp(odp.status)} :((`,
+          szczegoly: [],
+        }
+      }
+
+      const podpowiedz = podpowiedzDlaNumeru(problemy, pi)
 
       return {
         stan: 'blad',
@@ -388,13 +438,6 @@ export async function sprawdzZadanie(opts: {
         ],
       }
     }
-    if (!odp.ok) {
-      return {
-        stan: 'nieznane',
-        tytul: `err ${powodHttp(odp.status)} :((`,
-        szczegoly: [],
-      }
-    }
 
     const piZApi = odp.dane.problem_instance_id as number | undefined
     if (!pi) {
@@ -405,7 +448,10 @@ export async function sprawdzZadanie(opts: {
       }
     }
     if (piZApi !== pi) {
-      const podpowiedz = await podpowiedzDlaNumeru(token, konkurs, pi)
+      const problemy = await pobierzProblemy(token, konkurs)
+      const zListy = potwierdzZListy(problemy, pi, short)
+      if (zListy) return opisZListy(konkurs, pi, short, zListy)
+      const podpowiedz = podpowiedzDlaNumeru(problemy, pi)
 
       return {
         stan: 'blad',
