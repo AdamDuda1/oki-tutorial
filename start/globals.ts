@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import { SZKOPUL_WLACZONY } from '#services/szkopul'
+import { SEO, adresBazowy, adresBezwzgledny, czyPrywatna, jsonLdScript } from '#services/seo'
 
 function resolveVersionInfo(): { hash: string; timestamp: number | null } {
   if (process.env.APP_VERSION) {
@@ -39,6 +40,14 @@ edge.global('umami', {
 })
 
 edge.global('szkopul', { enabled: SZKOPUL_WLACZONY })
+
+edge.global('seo', {
+  ...SEO,
+  baza: adresBazowy(),
+  absolutny: adresBezwzgledny,
+  prywatna: czyPrywatna,
+  jsonLd: jsonLdScript(),
+})
 
 edge.global('odznakaWyniku', async (wynik: unknown) => {
   const { odznakaWyniku } = await import('#services/szkopul_wyniki')

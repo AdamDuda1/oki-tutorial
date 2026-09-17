@@ -13,8 +13,11 @@ const AdminObrazkiController = () => import('#controllers/admin_obrazki_controll
 const KontoController = () => import('#controllers/konto_controller')
 const AdminKontaktController = () => import('#controllers/admin_kontakt_controller')
 const SzkopulController = () => import('#controllers/szkopul_controller')
+const SeoController = () => import('#controllers/seo_controller')
 
 router.get('/', [SciezkaController, 'home']).as('home')
+router.get('/robots.txt', [SeoController, 'robots']).as('robots')
+router.get('/sitemap.xml', [SeoController, 'sitemap']).as('sitemap')
 
 // router.on('/').render('pages/index').as('home')
 router.get('/sciezka/:id', [SciezkaController, 'index']).as('sciezka')

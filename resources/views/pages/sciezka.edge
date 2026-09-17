@@ -1,4 +1,10 @@
-@layout({ title: 'Materiały' })
+@let(seoPoziom = poziomy.find((p) => p.idPoziomu == params.id))
+@let(seoOpisPoziomu = seoPoziom ? seoPoziom.nazwa + ' w kursie OKI' : 'Kurs OKI')
+@layout({
+  title: 'Materiały',
+  seoTitle: seoPoziom ? seoPoziom.nazwa : 'Materiały',
+  description: seoOpisPoziomu + ': materiały, omówienia wideo i zadania z algorytmiki oraz programowania w C++, krok po kroku od podstaw do Olimpiady Informatycznej.'
+})
   <div class="sciezka-app">
     <nav class="sidenav" id="collapsable-sidenav" x-data>
       @each(poziom in poziomy)

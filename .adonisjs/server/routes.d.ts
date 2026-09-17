@@ -5,6 +5,8 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'home': { paramsTuple?: []; params?: {} }
+    'robots': { paramsTuple?: []; params?: {} }
+    'sitemap': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -66,6 +68,8 @@ export type ScannedRoutes = {
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
+    'robots': { paramsTuple?: []; params?: {} }
+    'sitemap': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -95,6 +99,8 @@ export type ScannedRoutes = {
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
+    'robots': { paramsTuple?: []; params?: {} }
+    'sitemap': { paramsTuple?: []; params?: {} }
     'sciezka': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'lista_zadan': { paramsTuple?: []; params?: {} }
     'obrazki.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

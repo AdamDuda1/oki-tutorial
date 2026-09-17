@@ -16,6 +16,7 @@ export const controllers = {
   NewAccount: () => import('#controllers/new_account_controller'),
   Obrazki: () => import('#controllers/obrazki_controller'),
   Sciezka: () => import('#controllers/sciezka_controller'),
+  Seo: () => import('#controllers/seo_controller'),
   Session: () => import('#controllers/session_controller'),
   Szkopul: () => import('#controllers/szkopul_controller'),
 }
