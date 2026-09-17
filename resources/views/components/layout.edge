@@ -1,8 +1,9 @@
+@let(seoBaza = seo.baza(request))
 @let(seoSciezka = request.url())
 @let(seoTytul = $props.get('seoTitle', $props.get('title', 'Home')) + ' | ' + seo.nazwaStrony)
 @let(seoOpis = $props.get('description', seo.opis))
-@let(seoUrl = $props.get('canonical', seo.absolutny(seoSciezka)))
-@let(seoObrazek = seo.absolutny($props.get('image', seo.obrazek)))
+@let(seoUrl = $props.get('canonical', seoBaza + seoSciezka))
+@let(seoObrazek = seoBaza + $props.get('image', seo.obrazek))
 @let(seoUkryjDomyslnie = seo.prywatna(seoSciezka) || Boolean(request.qs().embed))
 @let(seoUkryj = $props.get('noindex', seoUkryjDomyslnie))
 
@@ -29,7 +30,7 @@
     <meta property="og:image" content="{{ seoObrazek }}" />
     <meta name="twitter:card" content="summary" />
     @if(!seoUkryj)
-      {{{ seo.jsonLd }}}
+      {{{ seo.jsonLd(seoBaza) }}}
     @end
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/logo_square.png" />

@@ -18,10 +18,10 @@ function nowszy(a: string | null, b: string | null): string | null {
 }
 
 export default class SeoController {
-  async robots({ response }: HttpContext) {
+  async robots({ request, response }: HttpContext) {
     const linie = ['User-agent: *']
 
-    if (czyIndeksowac()) {
+    if (czyIndeksowac(request)) {
       linie.push(
         'Allow: /',
         'Disallow: /admin',
@@ -32,7 +32,7 @@ export default class SeoController {
         'Disallow: /logout',
         'Disallow: /*?*embed=',
         '',
-        `Sitemap: ${adresBezwzgledny('/sitemap.xml')}`
+        `Sitemap: ${adresBezwzgledny('/sitemap.xml', request)}`
       )
     } else {
       linie.push('Disallow: /')
@@ -44,7 +44,7 @@ export default class SeoController {
       .send(`${linie.join('\n')}\n`)
   }
 
-  async sitemap({ response }: HttpContext) {
+  async sitemap({ request, response }: HttpContext) {
     const wpisy: WpisSitemap[] = []
 
     const poziomy = await Poziomy.query().whereNull('deleted_at').orderBy('position')
@@ -64,7 +64,7 @@ export default class SeoController {
 
     for (const [i, poziom] of poziomy.entries()) {
       wpisy.push({
-        loc: adresBezwzgledny(`/sciezka/${poziom.idPoziomu}`),
+        loc: adresBezwzgledny(`/sciezka/${poziom.idPoziomu}`, request),
         lastmod: nowszy(zmianaWPoziomie.get(poziom.idPoziomu) ?? null, dzien(poziom.updatedAt)),
         priority: i === 0 ? '1.0' : '0.8',
       })
@@ -77,7 +77,7 @@ export default class SeoController {
       .first()
 
     wpisy.push({
-      loc: adresBezwzgledny('/lista_zadan'),
+      loc: adresBezwzgledny('/lista_zadan', request),
       lastmod: dzien(ostatnieZadanie?.updatedAt),
       priority: '0.7',
     })
@@ -104,7 +104,7 @@ export default class SeoController {
     return response
       .header('content-type', 'application/xml; charset=utf-8')
       .header('cache-control', 'public, max-age=3600')
-      .header('x-robots-tag', czyIndeksowac() ? 'all' : 'noindex')
+      .header('x-robots-tag', czyIndeksowac(request) ? 'all' : 'noindex')
       .send(xml)
   }
 }
